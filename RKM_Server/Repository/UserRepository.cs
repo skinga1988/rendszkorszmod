@@ -2,6 +2,8 @@
 using RKM_Server.DTO;
 using RKM_Server.Interfaces;
 using RKM_Server.Models;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace RKM_Server.Repository
 {
@@ -15,6 +17,11 @@ namespace RKM_Server.Repository
 
         public bool CreateUser(User user)
         {
+            SHA256 sha256 = SHA256.Create();
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(user.Password);
+            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+            string passwordHash = Convert.ToBase64String(hashBytes);
+            user.Password = passwordHash;
             _context.Add(user);
             return Save();
         }
