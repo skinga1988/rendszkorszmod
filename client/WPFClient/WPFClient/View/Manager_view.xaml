@@ -1,0 +1,20 @@
+﻿<Window x:Class="WPFClient.Manager_view"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient"
+        mc:Ignorable="d"
+        Title="Manager_view" Height="450" Width="800">
+    <Grid>
+        <TextBlock x:Name="Manager_Page" Text="Manager" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
+        <TextBlock Text="Part items" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,66,0,0" Width="144"/>
+        <Button Content="1. Create new part item" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <Button Content="2. Modify price" HorizontalAlignment="Left" Margin="10,124,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <Button Content="3. List missing part items" HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <Button Content="4. List reserved part items" HorizontalAlignment="Left" Margin="10,174,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <TextBlock Text="Store" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,199,0,0" Width="144"/>
+        <Button Content="5. Add items to store" HorizontalAlignment="Left" Margin="10,232,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <Button Content="6. Manage max quantity" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+    </Grid>
+</Window>
