@@ -58,14 +58,23 @@ namespace WPFClient
                     if (loginResponse.roleType == "Manager")
                     {
                         MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a MANAGER");
+                        Manager_view manager_view = new Manager_view();
+                        this.Close();
+                        manager_view.Show();
                     }
                     else if (loginResponse.roleType == "Technician")
                     {
                         MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a TECHNICIAN");
+                        Technician_view technician_view = new Technician_view();
+                        this.Close();
+                        technician_view.Show();
                     }
                     else if (loginResponse.roleType == "Storekeeper")
                     {
                         MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a STOREKEEPER");
+                        Storekeeper_view storekeeper_view = new Storekeeper_view();
+                        this.Close();
+                        storekeeper_view.Show();
                     }
                     
                 }
