@@ -31,10 +31,10 @@ namespace WPFClient.View
             classObj.Button_Click_modify_price_controller(this);
         }*/
 
-        private void ListBoxLoad(object sender, RoutedEventArgs e)
+        private async void ListBoxLoad(object sender, RoutedEventArgs e)
         {
             Manager_controller classObj = new Manager_controller();
-            classObj.ListBoxLoad_controller(this);
+            await classObj.ListBoxLoad_controller(this);
         }
 
         private void Button_Click_Back(object sender, RoutedEventArgs e)
@@ -49,5 +49,12 @@ namespace WPFClient.View
             this.Close();
         }
 
+        private async void Part_Item_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Manager_controller classObj = new Manager_controller();
+            await classObj.Part_Item_combobox_SelectionChanged(this);
+
+            
+        }
     }
 }
