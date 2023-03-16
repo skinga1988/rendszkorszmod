@@ -25,11 +25,11 @@ namespace WPFClient.View
             InitializeComponent();
         }
 
-        /*private void Button_Click_modify_price(object sender, RoutedEventArgs e)
+        private async void Button_Click_modify_price(object sender, RoutedEventArgs e)
         {
             Manager_controller classObj = new Manager_controller();
-            classObj.Button_Click_modify_price_controller(this);
-        }*/
+            await classObj.Button_Click_modify_price_controller(this);
+        }
 
         private async void ListBoxLoad(object sender, RoutedEventArgs e)
         {

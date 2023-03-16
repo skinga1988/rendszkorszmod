@@ -10,16 +10,51 @@ using static WPFClient.Controller.Login_controller;
 using System.Windows;
 using WPFClient.View;
 using System.Windows.Controls;
+using WPFClient.Model;
+using System.Security.RightsManagement;
 
 namespace WPFClient.Controller
 {
     internal class Manager_controller
     {
-        public void Button_Click_2modify_price_controller(Manager_modify_price_view obj)
+        public async Task Button_Click_modify_price_controller(Manager_modify_price_view obj)
         {
-            Manager_view manager_view = new Manager_view();
-            obj.Close();
-            manager_view.Show();
+            int new_price;
+            if (int.TryParse(obj.New_price_textbox.Text, out new_price))
+            {
+                if (new_price > 0)
+                {
+                    // get the ItemId
+                    var selectedItem = obj.Part_Item_combobox.SelectedItem.ToString();
+                    var itemId = await GetIdForSelectedItem(selectedItem);
+
+                    //modify an item based on the Id
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://localhost:7243");
+                        var request = new HttpRequestMessage(HttpMethod.Put, "/api/StockItem/" + itemId);
+                        var content = new StringContent
+                        (
+                            "{\"itemPrice\": " + new_price.ToString() + "}",
+                            Encoding.UTF8,
+                            "application/json"
+                        );
+                        request.Content = content;
+                        var response = await client.SendAsync(request);
+                        var status = response.StatusCode;
+                        MessageBox.Show(status.ToString());
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Price cannot be negative!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please provide an integer as price!");
+            }
         }
 
         public async Task ListBoxLoad_controller(Manager_modify_price_view obj)
@@ -31,8 +66,8 @@ namespace WPFClient.Controller
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var items = JsonConvert.DeserializeObject<List<Item>>(content);
-                    obj.Part_Item_combobox.ItemsSource = items.Select(x => x.itemType);
+                    var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
+                    obj.Part_Item_combobox.ItemsSource = items.Select(x => x.ItemType);
                 }
             }
         }
@@ -50,17 +85,22 @@ namespace WPFClient.Controller
             {
                 var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var items = JsonConvert.DeserializeObject<List<Item>>(responseContent);
-                var selectedItemType = items.Find(item => item.itemType == selectedItem);
-                return selectedItemType.itemPrice;
+                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
+                return selectedItemType.ItemPrice;
             }
         }
 
-        public class Item
+        public async Task<int> GetIdForSelectedItem(string selectedItem)
         {
-            public int id { get; set; }
-            public int itemPrice { get; set; }
-            public string itemType { get; set; }
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
+                return selectedItemType.Id;
+            }
         }
     }
 }
