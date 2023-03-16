@@ -58,8 +58,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View\LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    <Compile Include="Controller\Login_controller.cs" />
+    <Compile Include="Controller\Manager_controller.cs" />
+    <Compile Include="Controller\Storekeeper_controller.cs" />
+    <Compile Include="Controller\Technician_controller.cs" />
+    <Compile Include="Model\Orderer_model.cs" />
+    <Compile Include="Model\ProjectAccount_model.cs" />
+    <Compile Include="Model\Project_model.cs" />
+    <Compile Include="Model\StockAccount_model.cs" />
+    <Compile Include="Model\StockItem_model.cs" />
+    <Compile Include="Model\Stock_model.cs" />
+    <Compile Include="Model\User_model.cs" />
+    <Compile Include="View\LoginWindow_view.xaml.cs">
+      <DependentUpon>LoginWindow_view.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Manager_modify_price_view.xaml.cs">
+      <DependentUpon>Manager_modify_price_view.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Storekeeper_view.xaml.cs">
       <DependentUpon>Storekeeper_view.xaml</DependentUpon>
@@ -74,9 +88,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\LoginWindow.xaml">
+    <Page Include="View\LoginWindow_view.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Manager_modify_price_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Storekeeper_view.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -118,8 +136,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

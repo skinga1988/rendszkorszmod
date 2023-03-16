@@ -1,40 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
-using System.Security.Cryptography;
+using System.Windows;
 
-namespace WPFClient
+namespace WPFClient.Controller
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class LoginWindow : Window
+    internal class Login_controller
     {
-        public LoginWindow()
-        {
-            InitializeComponent();
-        }
-
-        
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        public async void Button_Click_controller(LoginWindow obj)
         {
             // Retrieve the username and password from the textboxes on the UI
-            string username = entered_name.Text;
-            string password = entered_password.Password;
+            string username = obj.entered_name.Text;
+            string password = obj.entered_password.Password;
             SHA256 sha256 = SHA256.Create();
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
             byte[] hashBytes = sha256.ComputeHash(passwordBytes);
@@ -59,24 +42,24 @@ namespace WPFClient
                     {
                         MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a MANAGER");
                         Manager_view manager_view = new Manager_view();
-                        this.Close();
+                        obj.Close();
                         manager_view.Show();
                     }
                     else if (loginResponse.roleType == "Technician")
                     {
                         MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a TECHNICIAN");
                         Technician_view technician_view = new Technician_view();
-                        this.Close();
+                        obj.Close();
                         technician_view.Show();
                     }
                     else if (loginResponse.roleType == "Storekeeper")
                     {
                         MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a STOREKEEPER");
                         Storekeeper_view storekeeper_view = new Storekeeper_view();
-                        this.Close();
+                        obj.Close();
                         storekeeper_view.Show();
                     }
-                    
+
                 }
                 else
                 {
@@ -85,7 +68,7 @@ namespace WPFClient
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public void TextBox_TextChanged_controller(LoginWindow obj)
         {
 
         }
@@ -102,24 +85,24 @@ namespace WPFClient
             public string password { get; set; }
         }
 
-        private void ShowPassword_Checked(object sender, RoutedEventArgs e)
+        public void ShowPassword_Checked_controller(LoginWindow obj)
         {
-            entered_password.PasswordChar = '\0'; // null character, displays plain text
-            password_text.Visibility = Visibility.Visible;
-            password_text.Text = entered_password.Password;
-            entered_password.Visibility = Visibility.Collapsed;
+            obj.entered_password.PasswordChar = '\0'; // null character, displays plain text
+            obj.password_text.Visibility = Visibility.Visible;
+            obj.password_text.Text = obj.entered_password.Password;
+            obj.entered_password.Visibility = Visibility.Collapsed;
         }
 
-        private void ShowPassword_Unchecked(object sender, RoutedEventArgs e)
+        public void ShowPassword_Unchecked_controller(LoginWindow obj)
         {
-            entered_password.PasswordChar = '*'; // bullet character, hides password text
-            password_text.Visibility = Visibility.Collapsed;
-            entered_password.Visibility = Visibility.Visible;
+            obj.entered_password.PasswordChar = '*'; // bullet character, hides password text
+            obj.password_text.Visibility = Visibility.Collapsed;
+            obj.entered_password.Visibility = Visibility.Visible;
         }
 
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        public void PasswordBox_PasswordChanged_controller(LoginWindow obj)
         {
-            string password = entered_password.Password;
+            string password = obj.entered_password.Password;
             // do something with the entered password...
         }
     }

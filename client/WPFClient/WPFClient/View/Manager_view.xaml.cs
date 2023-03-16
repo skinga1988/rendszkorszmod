@@ -26,23 +26,23 @@ namespace WPFClient
         public Manager_view()
         {
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
             this.Close();
         }
 
-        private void Button_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
         {
             this.Close();
+        }
+
+        private void Button_Click_modify_price(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
