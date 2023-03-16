@@ -8,12 +8,13 @@
         Title="Manager_modify_price_view" Height="450" Width="800">
     <Grid>
         <TextBlock x:Name="Modify_price_textblock" Text="Modify price" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
-        <TextBlock x:Name="Part_item_textblock" Text="Part item:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="272,117,0,0" Width="96"></TextBlock>
-        <ListBox x:Name="Part_Item_listbox" HorizontalAlignment="Left" Height="20" Margin="373,117,0,0" VerticalAlignment="Top" Width="175"></ListBox>
-        <TextBlock x:Name="Current_Price_textblock" Text="Current price:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="272,142,0,0"><Run Language="hu-hu"/></TextBlock>
-        <TextBox x:Name="Current_price_textbox" HorizontalAlignment="Left" Height="20" Margin="373,142,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
-        <Button x:Name="Modify_price_button" Content="Modify" HorizontalAlignment="Left" Height="28" Margin="374,192,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_modify_price"/>
-        <TextBox x:Name="New_price_textbox" HorizontalAlignment="Left" Height="20" Margin="373,167,0,0" VerticalAlignment="Top" Width="176" TextWrapping="Wrap"/>
-        <TextBlock x:Name="New_Price_textblock" Text="New price:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="272,167,0,0"><Run Language="hu-hu"/></TextBlock>
+        <TextBlock x:Name="Part_item_textblock" Text="Part item:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,117,0,0" Width="96"></TextBlock>
+        <ListBox x:Name="Part_Item_listbox" HorizontalAlignment="Left" Height="20" Margin="357,117,0,0" VerticalAlignment="Top" Width="175" Loaded="ListBoxLoad"></ListBox>
+        <TextBlock x:Name="Current_Price_textblock" Text="Current price:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,142,0,0"><Run Language="hu-hu"/></TextBlock>
+        <TextBox x:Name="Current_price_textbox" HorizontalAlignment="Left" Height="20" Margin="357,142,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <Button x:Name="Modify_price_button" Content="Modify" HorizontalAlignment="Left" Height="28" Margin="358,192,0,0" VerticalAlignment="Top" Width="174"/>
+        <TextBox x:Name="New_price_textbox" HorizontalAlignment="Left" Height="20" Margin="357,167,0,0" VerticalAlignment="Top" Width="176" TextWrapping="Wrap"/>
+        <TextBlock x:Name="New_Price_textblock" Text="New price:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,167,0,0"><Run Language="hu-hu"/></TextBlock>
+        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
     </Grid>
 </Window>

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using WPFClient.View;
 
 namespace WPFClient
 {
@@ -40,9 +41,11 @@ namespace WPFClient
             this.Close();
         }
 
-        private void Button_Click_modify_price(object sender, RoutedEventArgs e)
+        private void Button_Click_2modify_price(object sender, RoutedEventArgs e)
         {
-
+            Manager_modify_price_view window = new Manager_modify_price_view();
+            window.Show();
+            this.Close();
         }
     }
 }

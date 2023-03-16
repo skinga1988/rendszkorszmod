@@ -28,14 +28,14 @@ namespace WPFClient
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
             this.Close();
         }
 
-        private void Button_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
         {
             this.Close();
         }

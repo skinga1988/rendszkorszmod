@@ -25,9 +25,29 @@ namespace WPFClient.View
             InitializeComponent();
         }
 
-        private void Button_Click_modify_price(object sender, RoutedEventArgs e)
+        /*private void Button_Click_modify_price(object sender, RoutedEventArgs e)
         {
+            Manager_controller classObj = new Manager_controller();
+            classObj.Button_Click_modify_price_controller(this);
+        }*/
 
+        private void ListBoxLoad(object sender, RoutedEventArgs e)
+        {
+            Manager_controller classObj = new Manager_controller();
+            classObj.ListBoxLoad_controller(this);
         }
+
+        private void Button_Click_Back(object sender, RoutedEventArgs e)
+        {
+            Manager_view window = new Manager_view();
+            window.Show();
+            this.Close();
+        }
+
+        private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }
