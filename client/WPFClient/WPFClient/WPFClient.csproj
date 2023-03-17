@@ -39,6 +39,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,6 +70,7 @@
     <Compile Include="Model\StockItem_model.cs" />
     <Compile Include="Model\Stock_model.cs" />
     <Compile Include="Model\User_model.cs" />
+    <Compile Include="Utilities\RestHelper.cs" />
     <Compile Include="View\LoginWindow_view.xaml.cs">
       <DependentUpon>LoginWindow_view.xaml</DependentUpon>
     </Compile>

@@ -12,6 +12,7 @@ using WPFClient.View;
 using System.Windows.Controls;
 using WPFClient.Model;
 using System.Security.RightsManagement;
+using WPFClient.Utilities;
 
 namespace WPFClient.Controller
 {
@@ -29,10 +30,9 @@ namespace WPFClient.Controller
                     var itemId = await GetIdForSelectedItem(selectedItem);
 
                     //modify an item based on the Id
-                    using (var client = new HttpClient())
+                    using (var client = RestHelper.GetRestClient())
                     {
-                        client.BaseAddress = new Uri("https://localhost:7243");
-                        var request = new HttpRequestMessage(HttpMethod.Put, "/api/StockItem/" + itemId);
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/StockItem/" + itemId);
                         var content = new StringContent
                         (
                             "{\"itemPrice\": " + new_price.ToString() + "}",
@@ -59,9 +59,8 @@ namespace WPFClient.Controller
 
         public async Task ListBoxLoad_controller(Manager_modify_price_view obj)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                client.BaseAddress = new Uri("https://localhost:7243/");
                 var response = await client.GetAsync("api/StockItem");
                 if (response.IsSuccessStatusCode)
                 {
@@ -81,9 +80,9 @@ namespace WPFClient.Controller
 
         public async Task<int> GetPriceForSelectedItem(string selectedItem)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = RestHelper.GetRestClient())
             {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var response = await httpClient.GetAsync("api/StockItem");
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.ItemType == selectedItem);
@@ -93,9 +92,9 @@ namespace WPFClient.Controller
 
         public async Task<int> GetIdForSelectedItem(string selectedItem)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = RestHelper.GetRestClient())
             {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var response = await httpClient.GetAsync("api/StockItem");
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.ItemType == selectedItem);

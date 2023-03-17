@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using WPFClient.Utilities;
 
 namespace WPFClient.Controller
 {
@@ -24,12 +25,8 @@ namespace WPFClient.Controller
             string passwordHash = Convert.ToBase64String(hashBytes);
 
             // Create an HttpClient instance to send the request
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                // Set the base address of your REST server
-                Uri restServerAddress = new Uri("https://localhost:7243/");
-                client.BaseAddress = restServerAddress;
-
                 // Send a GET request to your server with the user's credentials
                 var response = await client.GetAsync($"api/User/login?userName={username}&password={passwordHash}");
 
