@@ -28,7 +28,9 @@ namespace WPFClient
             InitializeComponent();
         }
 
-        private void Button_Click_Back(object sender, RoutedEventArgs e)
+        ////BUTTONS---------------------------------------------------------------------------------------------
+        //takes us back to the login window
+        private void Button_Click_Logout(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();

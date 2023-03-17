@@ -30,7 +30,9 @@ namespace WPFClient
             InitializeComponent();
         }
 
-        private void Button_Click_Back(object sender, RoutedEventArgs e)
+        ////BUTTONS------------------------------------------------------------------------------------------------
+        //takes us back to the login window
+        private void Button_Click_Logout(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
@@ -42,6 +44,7 @@ namespace WPFClient
             this.Close();
         }
 
+        //opens the part item creation window
         private void Button_Click_1create_new_part_item(object sender, RoutedEventArgs e)
         {
             Manager_create_new_part_item_view window = new Manager_create_new_part_item_view();
@@ -49,6 +52,7 @@ namespace WPFClient
             this.Close();
         }
 
+        //opens the part item price modification window
         private void Button_Click_2modify_price(object sender, RoutedEventArgs e)
         {
             Manager_modify_price_view window = new Manager_modify_price_view();

@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using WPFClient.Model;
 
 namespace WPFClient.Controller
 {
     internal class Login_controller
     {
-        public async void Button_Click_controller(LoginWindow obj)
+        ////BUTTONS--------------------------------------------------------------------------------
+        //user login with a http request
+        public async void Button_Click_Login_controller(LoginWindow obj)
         {
             // Retrieve the username and password from the textboxes on the UI
             string username = obj.entered_name.Text;
@@ -37,24 +40,24 @@ namespace WPFClient.Controller
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseContent);
-                    if (loginResponse.roleType == "Manager")
+                    var loginResponse = JsonConvert.DeserializeObject<User_model>(responseContent);
+                    if (loginResponse.RoleType == "Manager")
                     {
-                        MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a MANAGER");
+                        MessageBox.Show("Login successful! Welcome " + loginResponse.FirstName + " " + loginResponse.LastName + ", you logged in as a MANAGER");
                         Manager_view manager_view = new Manager_view();
                         obj.Close();
                         manager_view.Show();
                     }
-                    else if (loginResponse.roleType == "Technician")
+                    else if (loginResponse.RoleType == "Technician")
                     {
-                        MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a TECHNICIAN");
+                        MessageBox.Show("Login successful! Welcome " + loginResponse.FirstName + " " + loginResponse.LastName + ", you logged in as a TECHNICIAN");
                         Technician_view technician_view = new Technician_view();
                         obj.Close();
                         technician_view.Show();
                     }
-                    else if (loginResponse.roleType == "Storekeeper")
+                    else if (loginResponse.RoleType == "Storekeeper")
                     {
-                        MessageBox.Show("Login successful! Welcome " + loginResponse.firstName + " " + loginResponse.lastName + ", you logged in as a STOREKEEPER");
+                        MessageBox.Show("Login successful! Welcome " + loginResponse.FirstName + " " + loginResponse.LastName + ", you logged in as a STOREKEEPER");
                         Storekeeper_view storekeeper_view = new Storekeeper_view();
                         obj.Close();
                         storekeeper_view.Show();
@@ -68,23 +71,7 @@ namespace WPFClient.Controller
             }
         }
 
-        public void TextBox_TextChanged_controller(LoginWindow obj)
-        {
-
-        }
-
-        // Define a class to represent the login response
-        public class LoginResponse
-        {
-            public int userId { get; set; }
-            public string roleType { get; set; }
-            public string firstName { get; set; }
-            public string lastName { get; set; }
-            public string userName { get; set; }
-            public string createdDate { get; set; }
-            public string password { get; set; }
-        }
-
+        //Show button on
         public void ShowPassword_Checked_controller(LoginWindow obj)
         {
             obj.entered_password.PasswordChar = '\0'; // null character, displays plain text
@@ -93,17 +80,12 @@ namespace WPFClient.Controller
             obj.entered_password.Visibility = Visibility.Collapsed;
         }
 
+        //show button off
         public void ShowPassword_Unchecked_controller(LoginWindow obj)
         {
             obj.entered_password.PasswordChar = '*'; // bullet character, hides password text
             obj.password_text.Visibility = Visibility.Collapsed;
             obj.entered_password.Visibility = Visibility.Visible;
-        }
-
-        public void PasswordBox_PasswordChanged_controller(LoginWindow obj)
-        {
-            string password = obj.entered_password.Password;
-            // do something with the entered password...
         }
     }
 }

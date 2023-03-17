@@ -25,18 +25,15 @@ namespace WPFClient.View
             InitializeComponent();
         }
 
+        ////BUTTONS--------------------------------------------------------------------------------------------
+        //modifies the price of the item
         private async void Button_Click_modify_price(object sender, RoutedEventArgs e)
         {
             Manager_controller classObj = new Manager_controller();
             await classObj.Button_Click_modify_price_controller(this);
         }
-
-        private async void ListBoxLoad(object sender, RoutedEventArgs e)
-        {
-            Manager_controller classObj = new Manager_controller();
-            await classObj.ListBoxLoad_controller(this);
-        }
-
+        
+        //takes us back to the manager main menu
         private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
             Manager_view window = new Manager_view();
@@ -49,6 +46,15 @@ namespace WPFClient.View
             this.Close();
         }
 
+        ////LISTENERS-------------------------------------------------------------------------------------------
+        //loads the content of the combobox in the price modification site
+        private async void ListBoxLoad(object sender, RoutedEventArgs e)
+        {
+            Manager_controller classObj = new Manager_controller();
+            await classObj.ListBoxLoad_controller(this);
+        }
+
+        //listener for combobox selection changes
         private async void Part_Item_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Manager_controller classObj = new Manager_controller();

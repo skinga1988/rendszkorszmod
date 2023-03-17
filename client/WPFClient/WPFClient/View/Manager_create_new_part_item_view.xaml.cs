@@ -20,11 +20,14 @@ namespace WPFClient.View
     /// </summary>
     public partial class Manager_create_new_part_item_view : Window
     {
+        //
         public Manager_create_new_part_item_view()
         {
             InitializeComponent();
         }
 
+        ////BUTTONS----------------------------------------------------------------------------------------------------
+        //Back button: back to the manager main menu
         private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
             Manager_view window = new Manager_view();
@@ -37,6 +40,7 @@ namespace WPFClient.View
             this.Close();
         }
 
+        //Creates a new part item
         private async void Button_Click_Create(object sender, RoutedEventArgs e)
         {
             Manager_controller classObj = new Manager_controller();

@@ -30,36 +30,26 @@ namespace WPFClient
         }
 
         
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        ////BUTTONS-------------------------------------------------------------------------------------------
+        //Login button
+        private void Button_Click_Login(object sender, RoutedEventArgs e)
         {
             Login_controller classObj = new Login_controller();
-            classObj.Button_Click_controller(this);
+            classObj.Button_Click_Login_controller(this);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Login_controller classObj = new Login_controller();
-            classObj.TextBox_TextChanged_controller(this);
-        }
-
-
+        //Show button on
         private void ShowPassword_Checked(object sender, RoutedEventArgs e)
         {
             Login_controller classObj = new Login_controller();
             classObj.ShowPassword_Checked_controller(this);
         }
 
+        //Show button off
         private void ShowPassword_Unchecked(object sender, RoutedEventArgs e)
         {
             Login_controller classObj = new Login_controller();
             classObj.ShowPassword_Unchecked_controller(this);
-        }
-
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            Login_controller classObj = new Login_controller();
-            classObj.PasswordBox_PasswordChanged_controller(this);
         }
     }
 }

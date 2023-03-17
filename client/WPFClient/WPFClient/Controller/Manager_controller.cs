@@ -17,6 +17,8 @@ namespace WPFClient.Controller
 {
     internal class Manager_controller
     {
+        ////BUTTONS--------------------------------------------------------------------------------------------
+        //modifies the price of the item
         public async Task Button_Click_modify_price_controller(Manager_modify_price_view obj)
         {
             int new_price;
@@ -24,85 +26,50 @@ namespace WPFClient.Controller
             {
                 if (new_price > 0)
                 {
-                    // get the ItemId
-                    var selectedItem = obj.Part_Item_combobox.SelectedItem.ToString();
-                    var itemId = await GetIdForSelectedItem(selectedItem);
+                    // get the ItemId, ItemType and MaxItem
+                    var selectedItemType = obj.Part_Item_combobox.SelectedItem.ToString();
+                    var selectedItemId = await GetIdForSelectedItem(selectedItemType);
+                    var selectedItemMaxItem = await GetMaxQuantityForSelectedItem(selectedItemType);
+                    
+                    var putObject = new
+                    {
+                        id = selectedItemId,
+                        itemPrice = new_price,
+                        itemType = selectedItemType,
+                        maxItem = selectedItemMaxItem
+                    };
 
-                    //modify an item based on the Id
+                    //modify an item price based on the Id
                     using (var client = new HttpClient())
                     {
                         client.BaseAddress = new Uri("https://localhost:7243");
-                        var request = new HttpRequestMessage(HttpMethod.Put, "/api/StockItem/" + itemId);
-                        var content = new StringContent
-                        (
-                            "{\"itemPrice\": " + new_price.ToString() + "}",
-                            Encoding.UTF8,
-                            "application/json"
-                        );
+                        var request = new HttpRequestMessage(HttpMethod.Put, "/api/StockItem?id=" + selectedItemId);
+                        var content = new StringContent(JsonConvert.SerializeObject(putObject), Encoding.UTF8, "application/json");
                         request.Content = content;
                         var response = await client.SendAsync(request);
                         var status = response.StatusCode;
-                        MessageBox.Show(status.ToString());
-                        var responseContent = await response.Content.ReadAsStringAsync();
+                        if (status.ToString() == "NoContent")
+                        {
+                            MessageBox.Show("Part item price update successfully finished.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: price update denied: " + status.ToString());
+                        }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Price cannot be negative!");
+                    MessageBox.Show("Price must be greater than 0!");
                 }
             }
             else
             {
-                MessageBox.Show("Please provide an integer as price!");
+                MessageBox.Show("Price must be an integer!");
             }
         }
 
-        public async Task ListBoxLoad_controller(Manager_modify_price_view obj)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:7243/");
-                var response = await client.GetAsync("api/StockItem");
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
-                    obj.Part_Item_combobox.ItemsSource = items.Select(x => x.ItemType);
-                }
-            }
-        }
-
-        public async Task Part_Item_combobox_SelectionChanged(Manager_modify_price_view obj)
-        {
-            var selectedItem = obj.Part_Item_combobox.SelectedItem.ToString();
-            var itemPrice = await GetPriceForSelectedItem(selectedItem);
-            obj.Current_price_textbox.Text = itemPrice.ToString();
-        }
-
-        public async Task<int> GetPriceForSelectedItem(string selectedItem)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
-                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
-                return selectedItemType.ItemPrice;
-            }
-        }
-
-        public async Task<int> GetIdForSelectedItem(string selectedItem)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
-                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
-                return selectedItemType.Id;
-            }
-        }
-
+        //creates a new item in the StockItem table
         public async Task Button_Click_Create_controller(Manager_create_new_part_item_view obj)
         {
             int item_price, max_quantity;
@@ -132,10 +99,11 @@ namespace WPFClient.Controller
                                     {
                                         itemType = item_type,
                                         itemPrice = item_price,
-                                        //maxQuantity = max_quantity
+                                        maxItem = max_quantity
                                     };
                                     var json = JsonConvert.SerializeObject(newItem);
                                     var response = await client.PostAsync("/api/StockItem", new StringContent(json, Encoding.UTF8, "application/json"));
+                                    string status = response.StatusCode.ToString();
                                     if (response.IsSuccessStatusCode)
                                     {
                                         // Item created successfully
@@ -144,8 +112,14 @@ namespace WPFClient.Controller
                                     else
                                     {
                                         // Item creation failed
-                                        var status = response.StatusCode;
-                                        MessageBox.Show("Item creation failed: " + status.ToString());
+                                        if (status == "422")
+                                        {
+                                            MessageBox.Show("Item creation failed: existing item type!");
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Item creation failed: " + status);
+                                        }
                                     }
                                 }
                             }
@@ -156,7 +130,7 @@ namespace WPFClient.Controller
                         }
                         else
                         {
-                            MessageBox.Show("Max quantity must be numeric!");
+                            MessageBox.Show("Max quantity must be an integer!");
                         }
                     }
                     else
@@ -166,7 +140,7 @@ namespace WPFClient.Controller
                 }
                 else
                 {
-                    MessageBox.Show("Price must be numeric!");
+                    MessageBox.Show("Price must be an integer!");
                 }
             }
             else
@@ -174,5 +148,75 @@ namespace WPFClient.Controller
                 MessageBox.Show("Item type is invalid or empty!");
             }
         }
+
+        
+        ////LISTENERS-------------------------------------------------------------------------------------------
+        //loads the content of the combobox in the price modification site
+        public async Task ListBoxLoad_controller(Manager_modify_price_view obj)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7243/");
+                var response = await client.GetAsync("api/StockItem");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
+                    var sortedItems = items.OrderBy(x => x.ItemType).ToList(); // sort the items by ItemType in ascending order
+                    obj.Part_Item_combobox.ItemsSource = sortedItems.Select(x => x.ItemType);
+                }
+            }
+        }
+
+        //listener for combobox selection changes
+        public async Task Part_Item_combobox_SelectionChanged(Manager_modify_price_view obj)
+        {
+            var selectedItem = obj.Part_Item_combobox.SelectedItem.ToString();
+            var itemPrice = await GetPriceForSelectedItem(selectedItem);
+            obj.Current_price_textbox.Text = itemPrice.ToString();
+        }
+
+        ////FUNCTIONS--------------------------------------------------------------------------------------------
+        //gets the price of the selected item in the combobox list
+        public async Task<int> GetPriceForSelectedItem(string selectedItem)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
+                return selectedItemType.ItemPrice;
+            }
+        }
+
+        //gets the id of the selected item in the combobox list
+        public async Task<int> GetIdForSelectedItem(string selectedItem)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
+                return selectedItemType.Id;
+            }
+        }
+
+        //gets the maximum quantity of the selected item in the combobox list
+        public async Task<int> GetMaxQuantityForSelectedItem(string selectedItem)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.ItemType == selectedItem);
+                return selectedItemType.MaxItem;
+            }
+        }
+
+        
+
     }
 }
