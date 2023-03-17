@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using WPFClient.View;
+using WPFClient.Controller;
 
 namespace WPFClient
 {
@@ -38,6 +39,13 @@ namespace WPFClient
 
         private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
         {
+            this.Close();
+        }
+
+        private void Button_Click_1create_new_part_item(object sender, RoutedEventArgs e)
+        {
+            Manager_create_new_part_item_view window = new Manager_create_new_part_item_view();
+            window.Show();
             this.Close();
         }
 

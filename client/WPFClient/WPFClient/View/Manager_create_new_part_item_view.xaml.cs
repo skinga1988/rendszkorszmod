@@ -16,25 +16,13 @@ using WPFClient.Controller;
 namespace WPFClient.View
 {
     /// <summary>
-    /// Interaction logic for Manager_modify_price_view.xaml
+    /// Interaction logic for Manager_create_new_part_item_view.xaml
     /// </summary>
-    public partial class Manager_modify_price_view : Window
+    public partial class Manager_create_new_part_item_view : Window
     {
-        public Manager_modify_price_view()
+        public Manager_create_new_part_item_view()
         {
             InitializeComponent();
-        }
-
-        private async void Button_Click_modify_price(object sender, RoutedEventArgs e)
-        {
-            Manager_controller classObj = new Manager_controller();
-            await classObj.Button_Click_modify_price_controller(this);
-        }
-
-        private async void ListBoxLoad(object sender, RoutedEventArgs e)
-        {
-            Manager_controller classObj = new Manager_controller();
-            await classObj.ListBoxLoad_controller(this);
         }
 
         private void Button_Click_Back(object sender, RoutedEventArgs e)
@@ -49,10 +37,10 @@ namespace WPFClient.View
             this.Close();
         }
 
-        private async void Part_Item_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Button_Click_Create(object sender, RoutedEventArgs e)
         {
             Manager_controller classObj = new Manager_controller();
-            await classObj.Part_Item_combobox_SelectionChanged(this);
+            await classObj.Button_Click_Create_controller(this);
         }
     }
 }

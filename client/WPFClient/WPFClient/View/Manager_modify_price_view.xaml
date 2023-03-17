@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Manager_modify_price_view" Height="450" Width="800">
     <Grid>
-        <TextBlock x:Name="Modify_price_textblock" Text="Modify price" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
+        <TextBlock x:Name="Modify_price_textblock" Text="Modify price" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
         <TextBlock x:Name="Part_item_textblock" Text="Part item:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,117,0,0" Width="96"></TextBlock>
         <ComboBox x:Name="Part_Item_combobox" HorizontalAlignment="Left" Height="20" Margin="357,117,0,0" VerticalAlignment="Top" Width="175" Loaded="ListBoxLoad" SelectionChanged="Part_Item_combobox_SelectionChanged"></ComboBox>
         <TextBlock x:Name="Current_Price_textblock" Text="Current price:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,142,0,0"><Run Language="hu-hu"/></TextBlock>

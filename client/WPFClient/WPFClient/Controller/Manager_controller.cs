@@ -102,5 +102,77 @@ namespace WPFClient.Controller
                 return selectedItemType.Id;
             }
         }
+
+        public async Task Button_Click_Create_controller(Manager_create_new_part_item_view obj)
+        {
+            int item_price, max_quantity;
+            string item_type = obj.New_item_type_textbox.Text;
+            string item_price_string = obj.Item_price_textbox.Text;
+            string max_quantity_string = obj.Max_quantity_textbox.Text;
+
+            //if item name is not an empty string
+            if (item_type != "")
+            {
+                //correct item type
+                if (int.TryParse(item_price_string, out item_price))
+                {
+                    if (item_price > 0)
+                    {
+                        //correct item name and price
+
+                        if (int.TryParse(max_quantity_string, out max_quantity))
+                        {
+                            if (max_quantity > 0)
+                            {
+                                //correct item name and price and quantity
+                                using (var client = new HttpClient())
+                                {
+                                    client.BaseAddress = new Uri("https://localhost:7243");
+                                    var newItem = new
+                                    {
+                                        itemType = item_type,
+                                        itemPrice = item_price,
+                                        //maxQuantity = max_quantity
+                                    };
+                                    var json = JsonConvert.SerializeObject(newItem);
+                                    var response = await client.PostAsync("/api/StockItem", new StringContent(json, Encoding.UTF8, "application/json"));
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        // Item created successfully
+                                        MessageBox.Show("Item created successfully!");
+                                    }
+                                    else
+                                    {
+                                        // Item creation failed
+                                        var status = response.StatusCode;
+                                        MessageBox.Show("Item creation failed: " + status.ToString());
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Max quantity must be greater than 0!");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Max quantity must be numeric!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Price must be greater than 0!");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Price must be numeric!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Item type is invalid or empty!");
+            }
+        }
     }
 }
