@@ -12,6 +12,7 @@ using WPFClient.View;
 using System.Windows.Controls;
 using WPFClient.Model;
 using System.Security.RightsManagement;
+using WPFClient.Utilities;
 
 namespace WPFClient.Controller
 {
@@ -40,10 +41,9 @@ namespace WPFClient.Controller
                     };
 
                     //modify an item price based on the Id
-                    using (var client = new HttpClient())
+                    using (var client = RestHelper.GetRestClient())
                     {
-                        client.BaseAddress = new Uri("https://localhost:7243");
-                        var request = new HttpRequestMessage(HttpMethod.Put, "/api/StockItem?id=" + selectedItemId);
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/StockItem?id=" + selectedItemId);
                         var content = new StringContent(JsonConvert.SerializeObject(putObject), Encoding.UTF8, "application/json");
                         request.Content = content;
                         var response = await client.SendAsync(request);
@@ -92,9 +92,8 @@ namespace WPFClient.Controller
                             if (max_quantity > 0)
                             {
                                 //correct item name and price and quantity
-                                using (var client = new HttpClient())
+                                using (var client = RestHelper.GetRestClient())
                                 {
-                                    client.BaseAddress = new Uri("https://localhost:7243");
                                     var newItem = new
                                     {
                                         itemType = item_type,
@@ -102,7 +101,7 @@ namespace WPFClient.Controller
                                         maxItem = max_quantity
                                     };
                                     var json = JsonConvert.SerializeObject(newItem);
-                                    var response = await client.PostAsync("/api/StockItem", new StringContent(json, Encoding.UTF8, "application/json"));
+                                    var response = await client.PostAsync("api/StockItem", new StringContent(json, Encoding.UTF8, "application/json"));
                                     string status = response.StatusCode.ToString();
                                     if (response.IsSuccessStatusCode)
                                     {
@@ -154,9 +153,8 @@ namespace WPFClient.Controller
         //loads the content of the combobox in the price modification site
         public async Task ListBoxLoad_controller(Manager_modify_price_view obj)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                client.BaseAddress = new Uri("https://localhost:7243/");
                 var response = await client.GetAsync("api/StockItem");
                 if (response.IsSuccessStatusCode)
                 {
@@ -180,9 +178,9 @@ namespace WPFClient.Controller
         //gets the price of the selected item in the combobox list
         public async Task<int> GetPriceForSelectedItem(string selectedItem)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = RestHelper.GetRestClient())
             {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var response = await httpClient.GetAsync("api/StockItem");
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.ItemType == selectedItem);
@@ -193,9 +191,9 @@ namespace WPFClient.Controller
         //gets the id of the selected item in the combobox list
         public async Task<int> GetIdForSelectedItem(string selectedItem)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = RestHelper.GetRestClient())
             {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var response = await httpClient.GetAsync("api/StockItem");
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.ItemType == selectedItem);
@@ -206,9 +204,9 @@ namespace WPFClient.Controller
         //gets the maximum quantity of the selected item in the combobox list
         public async Task<int> GetMaxQuantityForSelectedItem(string selectedItem)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = RestHelper.GetRestClient())
             {
-                var response = await httpClient.GetAsync("https://localhost:7243/api/StockItem");
+                var response = await httpClient.GetAsync("api/StockItem");
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.ItemType == selectedItem);

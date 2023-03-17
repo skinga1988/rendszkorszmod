@@ -10,7 +10,7 @@
         <TextBlock x:Name="Main_Page" Text="Login" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
         <TextBlock x:Name="User_Name" Text="User name:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="210,117,0,0"></TextBlock>
         <TextBlock x:Name="Password" Text="Password:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="210,142,0,0"><Run Language="hu-hu"/></TextBlock>
-        <Button Content="Login" HorizontalAlignment="Left" Height="28" Margin="307,167,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click_Login"/>
+        <Button Content="Login" HorizontalAlignment="Left" Height="28" Margin="307,167,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click_Login" IsDefault="True"/>
         <TextBox x:Name="entered_name" HorizontalAlignment="Left" Height="20" Margin="307,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175"/>
         <PasswordBox x:Name="entered_password" HorizontalAlignment="Left" Height="20" Margin="307,142,0,0" VerticalAlignment="Top" Width="175" PasswordChar = '*'/>
         <ToggleButton x:Name="show_password_toggle" Content="Show" Checked="ShowPassword_Checked" Unchecked="ShowPassword_Unchecked" HorizontalAlignment="Left" Height="19" Margin="487,143,0,0" VerticalAlignment="Top" Width="98"/>
