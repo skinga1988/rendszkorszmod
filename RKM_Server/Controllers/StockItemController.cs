@@ -33,7 +33,7 @@ namespace RKM_Server.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(200, Type = typeof(StockItem))]
         [ProducesResponseType(400)]
         public IActionResult GetStockItem(int id)
         {
@@ -81,7 +81,7 @@ namespace RKM_Server.Controllers
             return Ok("Successfully created");
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -90,14 +90,8 @@ namespace RKM_Server.Controllers
             if (updatedStockItem == null)
                 return BadRequest(ModelState);
 
-            if (id != updatedStockItem.Id)
-                return BadRequest(ModelState);
-
             if (!_stockItemInterface.StockItemExist(id))
                 return NotFound();
-
-            if (!ModelState.IsValid)
-                return BadRequest();
 
             var stockitemMap = _mapper.Map<StockItem>(updatedStockItem);
 

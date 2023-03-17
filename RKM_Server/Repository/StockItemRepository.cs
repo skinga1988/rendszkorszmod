@@ -2,6 +2,8 @@
 using RKM_Server.DTO;
 using RKM_Server.Interfaces;
 using RKM_Server.Models;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace RKM_Server.Repository
 {

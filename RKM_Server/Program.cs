@@ -19,6 +19,11 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<UserInterface, UserRepository>();
 builder.Services.AddScoped<StockItemInterface, StockItemRepository>();
+builder.Services.AddScoped<ProjectAccountInterface,  ProjectAccountRepository>();
+builder.Services.AddScoped<ProjectInterface, ProjectRepository>();
+builder.Services.AddScoped<StockInterface, StockRepository>();
+builder.Services.AddScoped<StockAccountInterface, StockAccountRepository>();
+builder.Services.AddScoped<OrdererInterface, OrdererRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

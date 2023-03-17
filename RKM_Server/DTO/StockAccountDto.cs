@@ -1,6 +1,6 @@
-﻿namespace RKM_Server.Models
+﻿namespace RKM_Server.DTO
 {
-    public class StockAccount
+    public class StockAccountDto
     {
         public int Id { get; set; }
         public string StockAccountType { get; set; }

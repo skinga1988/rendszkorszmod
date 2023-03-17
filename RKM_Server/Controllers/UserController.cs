@@ -85,9 +85,6 @@ namespace RKM_Server.Controllers
             if (updatedUser == null)
                 return BadRequest(ModelState);
 
-            if (userId != updatedUser.UserId)
-                return BadRequest(ModelState);
-
             if (!_userInterface.UserExist(userId))
                 return NotFound();
 

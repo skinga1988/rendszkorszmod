@@ -19,38 +19,7 @@ namespace RKM_Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Orderer>()
-           .HasOne(b => b.Project)
-           .WithOne(i => i.Orderer)
-           .HasForeignKey<Project>(b => b.OrdererId);
-
-            modelBuilder.Entity<Project>()
-                        .HasOne(u => u.User)
-                        .WithMany(u => u.Projects).
-                        IsRequired().OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<Project>()
-                .HasKey(t => new { t.Id, t.UserId });
-
-            modelBuilder.Entity<Project>()
-                .HasOne(pt => pt.User)
-                .WithMany(p => p.Projects)
-                .HasForeignKey(pt => pt.UserId);
-
-            modelBuilder.Entity<StockAccount>()
-                       .HasOne(u => u.User)
-                       .WithMany(u => u.StockAccounts).
-                       IsRequired().OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<StockAccount>()
-                .HasKey(t => new { t.Id, t.UserId });
-
-            modelBuilder.Entity<StockAccount>()
-                .HasOne(pt => pt.User)
-                .WithMany(p => p.StockAccounts)
-                .HasForeignKey(pt => pt.UserId);
+            
         }
     }
 }
