@@ -212,6 +212,12 @@ namespace WPFClient.Controller
                                         {
                                             {
                                                 MessageBox.Show("StockAccount record creation failed: " + status);
+                                                obj.StockAccount_type_combobox.SelectedValue = 0;
+                                                obj.box_n.SelectedValue = 0;
+                                                obj.Row_n.SelectedValue = 0;
+                                                obj.column_n.SelectedValue = 0;
+                                                obj.Pieces_editable_textbox.Text = "";
+                                                return;
                                             }
                                         }
                                     }
@@ -244,7 +250,12 @@ namespace WPFClient.Controller
                                         }
                                         else
                                         {
-                                            MessageBox.Show("Update Stoc record denied: " + status.ToString());
+                                            MessageBox.Show("Update Stock record denied: " + status.ToString());
+                                            obj.StockAccount_type_combobox.SelectedValue = 0;
+                                            obj.box_n.SelectedValue = 0;
+                                            obj.Row_n.SelectedValue = 0;
+                                            obj.column_n.SelectedValue = 0;
+                                            obj.Pieces_editable_textbox.Text = "";
                                         }
                                     }
 
@@ -297,6 +308,12 @@ namespace WPFClient.Controller
                                     else
                                     {
                                         MessageBox.Show("StockAccount record creation failed: " + status);
+                                        obj.StockAccount_type_combobox.SelectedValue = 0;
+                                        obj.box_n.SelectedValue = 0;
+                                        obj.Row_n.SelectedValue = 0;
+                                        obj.column_n.SelectedValue = 0;
+                                        obj.Pieces_editable_textbox.Text = "";
+                                        return;
                                     }
                                 }
                                 using (var client = RestHelper.GetRestClient())
@@ -327,6 +344,11 @@ namespace WPFClient.Controller
                                     else
                                     {
                                         MessageBox.Show("StockAccount record creation failed: " + status);
+                                        obj.StockAccount_type_combobox.SelectedValue = 0;
+                                        obj.box_n.SelectedValue = 0;
+                                        obj.Row_n.SelectedValue = 0;
+                                        obj.column_n.SelectedValue = 0;
+                                        obj.Pieces_editable_textbox.Text = "";
                                     }
                                 }
                             }
