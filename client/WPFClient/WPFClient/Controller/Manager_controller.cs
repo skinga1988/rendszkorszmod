@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using WPFClient.Model;
 using System.Security.RightsManagement;
 using WPFClient.Utilities;
+using Xceed.Wpf.Toolkit.Primitives;
 
 namespace WPFClient.Controller
 {
@@ -68,6 +69,101 @@ namespace WPFClient.Controller
                 MessageBox.Show("Price must be an integer!");
             }
         }
+
+        //modifies the maximum number of the item
+        public async Task Button_Click_modify_maxnum(Manager_modify_max_item obj)
+        {
+            int new_maxnum;
+            if (int.TryParse(obj.New_maxnum_textbox.Text, out new_maxnum))
+            {
+                if (new_maxnum > 0)
+                {
+                    // get the ItemId, ItemType and MaxItem
+                    var selectedItemType = obj.Part_Item_combobox_2.SelectedItem.ToString();
+                    var selectedItemId = await GetIdForSelectedItem(selectedItemType);
+                    var selectedTtemPrice = await GetPriceForSelectedItem(selectedItemType);
+
+                    var putObject = new
+                    {
+                        id = selectedItemId,
+                        itemPrice = selectedTtemPrice,
+                        itemType = selectedItemType,
+                        maxItem = new_maxnum
+                    };
+
+                    //modify an item maximum number based on the Id
+                    using (var client = RestHelper.GetRestClient())
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/StockItem?id=" + selectedItemId);
+                        var content = new StringContent(JsonConvert.SerializeObject(putObject), Encoding.UTF8, "application/json");
+                        request.Content = content;
+                        var response = await client.SendAsync(request);
+                        var status = response.StatusCode;
+                        if (status.ToString() == "NoContent")
+                        {
+                            MessageBox.Show("Part item maximum number update successfully finished.");
+                            obj.New_maxnum_textbox.Text = "";
+                            obj.Current_maximum_number_textbox.Text = "";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: maximum number update denied: " + status.ToString());
+                        }
+                    }
+                    //Kell egy lista azokból a stock sorokból ahol a változtatott termék id-ja van
+                    List<Stock_model> stocks = await getTheListWhereIdTheSame(selectedItemId);
+                    //egy loopban módosítani kell a maxid-kat
+                    foreach (var Stock in stocks)
+                    {
+                        //put metódus kell 
+                        using (var client = RestHelper.GetRestClient())
+                        {
+                            var selectedItemId_ = Stock.Id;
+                            var row_id_ = Stock.RowId;
+                            var column_id_ = Stock.ColumnId;
+                            var box_id_ = Stock.ColumnId;
+                            var available_pieces_ = Stock.AvailablePieces;
+                            var reserved_pieces_ = Stock.ReservedPieces;
+                            var stockitem_id_ = Stock.StockItemId;
+                            var putStock = new
+                            {
+                                Id = selectedItemId_,
+                                RowId = row_id_,
+                                ColumnID = column_id_,
+                                BoxId = box_id_,
+                                MaxPieces = new_maxnum,
+                                AvailablePieces = available_pieces_,
+                                ReservedPieces = reserved_pieces_,
+                                StockItemId = stockitem_id_
+                            };                           
+                            var request = new HttpRequestMessage(HttpMethod.Put, "api/Stock?id=" + selectedItemId_);
+                            var content = new StringContent(JsonConvert.SerializeObject(putStock), Encoding.UTF8, "application/json");
+                            request.Content = content;
+                            var response = await client.SendAsync(request);
+                            var status = response.StatusCode;
+                            if (status.ToString() == "NoContent")
+                            {
+                                MessageBox.Show("Stock Id: " + selectedItemId_ + " successfully updated.");                               
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error: stock record update denied: " + status.ToString());
+                            }
+                        }
+                    }
+                    
+                }
+                else
+            {
+                MessageBox.Show("Maximum number must be greater than 0!");
+            }
+        }
+            else
+            {
+                MessageBox.Show("Maximum number must be an integer!");
+            }
+
+}
 
         //creates a new item in the StockItem table
         public async Task Button_Click_Create_controller(Manager_create_new_part_item_view obj)
@@ -147,6 +243,7 @@ namespace WPFClient.Controller
                 MessageBox.Show("Item type is invalid or empty!");
             }
         }
+
         //creates a new record in the StockAccount and Stock table
         public async Task Button_Click_new_StockAccount_controller(Manager_create_new_stockrecords obj)
         {
@@ -397,7 +494,22 @@ namespace WPFClient.Controller
                 }
             }
         }
-        
+
+        public async Task ListBoxLoad_controller(Manager_modify_max_item obj)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/StockItem");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
+                    var sortedItems = items.OrderBy(x => x.ItemType).ToList(); // sort the items by ItemType in ascending order
+                    obj.Part_Item_combobox_2.ItemsSource = sortedItems.Select(x => x.ItemType);
+                }
+            }
+        }
+
         //listener for combobox selection changes
         public async Task Part_Item_combobox_SelectionChanged(Manager_modify_price_view obj)
         {
@@ -405,9 +517,17 @@ namespace WPFClient.Controller
             var itemPrice = await GetPriceForSelectedItem(selectedItem);
             obj.Current_price_textbox.Text = itemPrice.ToString();
         }
-        public async Task Part_Item_combobox_SelectionChanged(Manager_create_new_stockrecords obj)
+        public async Task Stock_item_select_SelectionChanged(Manager_create_new_stockrecords obj)
         {
             var selectedItem = obj.Stock_item_select.SelectedItem.ToString();
+           
+        }
+
+        public async Task Part_Item_combobox_SelectionChanged_2(Manager_modify_max_item obj)
+        {
+            var selectedItem = obj.Part_Item_combobox_2.SelectedItem.ToString();
+            var itemMax = await GetMaxQuantityForSelectedItem(selectedItem);
+            obj.Current_maximum_number_textbox.Text = itemMax.ToString();
         }
 
         ////FUNCTIONS--------------------------------------------------------------------------------------------
@@ -517,7 +637,22 @@ namespace WPFClient.Controller
             }
         }
 
-        
+        //gets the list of stock based on id
+        public async Task<List<Stock_model>> getTheListWhereIdTheSame(int stockitemid)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Stock");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Stock_model>>(responseContent);
+                List<Stock_model> selectedStockList = items.FindAll(item => item.StockItemId == stockitemid);
+                return selectedStockList;
+            }
+
+        }
+
+
+
 
     }
 }

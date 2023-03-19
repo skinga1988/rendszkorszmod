@@ -1,0 +1,20 @@
+﻿<Window x:Class="WPFClient.View.Manager_modify_max_item"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient.View"
+        mc:Ignorable="d"
+        Title="Manager_modify_max_item" Height="450" Width="800">
+    <Grid>
+        <TextBlock x:Name="Modify_max_item_textblock" Text="Modify maximum number of pieces" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="212,26,0,0"></TextBlock>
+        <TextBlock x:Name="Part_item_textblock" Text="Part item:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="154,117,0,0" Width="96"></TextBlock>
+        <ComboBox x:Name="Part_Item_combobox_2" HorizontalAlignment="Left" Height="20" Margin="357,117,0,0" VerticalAlignment="Top" Width="175" Loaded="ListBoxLoaded" SelectionChanged="Part_Item_combobox_SelectionChanged_2"></ComboBox>
+        <TextBlock x:Name="Current_MaxNumber_textblock" Text="Current maximum number:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="154,142,0,0"><Run Language="hu-hu"/></TextBlock>
+        <TextBox x:Name="Current_maximum_number_textbox" HorizontalAlignment="Left" Height="20" Margin="357,142,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <Button x:Name="Modify_maxnum_button" Content="Modify" HorizontalAlignment="Left" Height="28" Margin="358,192,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_modify_maxnum"/>
+        <TextBox x:Name="New_maxnum_textbox" HorizontalAlignment="Left" Height="20" Margin="357,167,0,0" VerticalAlignment="Top" Width="176" TextWrapping="Wrap"/>
+        <TextBlock x:Name="New_maxnum_textblock" Text="New maximum number:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="154,167,0,0"><Run Language="hu-hu"/></TextBlock>
+        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
+    </Grid>
+</Window>

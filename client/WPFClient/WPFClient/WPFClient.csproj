@@ -95,6 +95,9 @@
     <Compile Include="View\Manager_create_new_stockrecords.xaml.cs">
       <DependentUpon>Manager_create_new_stockrecords.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Manager_modify_max_item.xaml.cs">
+      <DependentUpon>Manager_modify_max_item.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Manager_modify_price_view.xaml.cs">
       <DependentUpon>Manager_modify_price_view.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Manager_create_new_stockrecords.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Manager_modify_max_item.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

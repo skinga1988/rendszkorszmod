@@ -66,5 +66,12 @@ namespace WPFClient
             window.Show();
             this.Close();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Manager_modify_max_item window = new Manager_modify_max_item();
+            window.Show();
+            this.Close();
+        }
     }
 }

@@ -15,7 +15,7 @@
         <Button Content="4. List reserved part items" HorizontalAlignment="Left" Margin="10,174,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
         <TextBlock Text="Store" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,199,0,0" Width="144"/>
         <Button Content="5. Add items to store" HorizontalAlignment="Left" Margin="10,232,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left" Click="Button_Click"/>
-        <Button Content="6. Manage max quantity" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <Button Content="6. Manage max quantity" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left" Click="Button_Click_1"/>
         <Button Content="Logout" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Logout" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
     </Grid>
 </Window>
