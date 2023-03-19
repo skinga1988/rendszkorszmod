@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using WPFClient.Model;
 using WPFClient.Utilities;
 using WPFClient.View;
@@ -15,7 +16,7 @@ namespace WPFClient.Controller
     {
         public ObservableCollection<ProductListGridRow> gridRows { get; set; }
 
-        public async Task GetProductList(Technician_ListItems_view grid)
+        public async Task GetProductList(Technician_ListItems_view view)
         {
             using (var client = RestHelper.GetRestClient())
             {
@@ -42,11 +43,11 @@ namespace WPFClient.Controller
                 }
                 // Get availibility
                 var responseStock = await RestHelper.GetRestClient().GetAsync("api/Stock");
-                var contentStock = await responseStock.Content.ReadAsStringAsync();
                 if (!responseStock.IsSuccessStatusCode)
                 {
                     return;
                 }
+                var contentStock = await responseStock.Content.ReadAsStringAsync();
                 var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
                 foreach (var stock in stocks)
                 {
@@ -57,7 +58,25 @@ namespace WPFClient.Controller
                         item.Availibility -= stock.ReservedPieces;
                     }
                 }
-                grid.DataContext = gridRows;
+                view.grid.DataContext = gridRows;
+            }
+        }
+
+        public async Task LoadAssignItemsData(Technician_AssignItems_view view, ObservableCollection<ProductListGridRow> allItems)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if(!response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                // TODO filter projects by userID
+                view.projectsComboBox.ItemsSource = projects.Select(i => i.Id);
+
+                view.datagrid.DataContext = allItems;
             }
         }
     }

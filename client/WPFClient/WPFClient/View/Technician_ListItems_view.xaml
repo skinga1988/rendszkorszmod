@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Technician_ListItems_view" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <Button x:Name="menuButton" HorizontalAlignment="Left" Height="20" Margin="661,10,0,0" VerticalAlignment="Top" Width="114" Click="Button_Click" Content="Back to menu"/>
+        <Button x:Name="menuButton" Height="20" Margin="0,10,10,0" VerticalAlignment="Top" Click="Button_Click" Content="Back to menu" HorizontalAlignment="Right" Width="114"/>
         <DataGrid x:Name="grid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,35,10,10" RowHeight="25" ItemsSource="{Binding}" AutoGenerateColumns="False" CellEditEnding="grid_CellEditEnding">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="gridName" Header="Product name" Binding="{Binding Name}" IsReadOnly="True" Width="400">
@@ -41,6 +41,7 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="reserveButton" Content="Reserve selected" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="132" Click="reserveButton_Click"/>
 
     </Grid>
 </Window>

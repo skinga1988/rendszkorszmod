@@ -67,5 +67,12 @@ namespace WPFClient.View
                 }
             }
         }
+
+        private void reserveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Technician_AssignItems_view view = new Technician_AssignItems_view(this.grid.Items);
+            view.Show();
+            Close();
+        }
     }
 }
