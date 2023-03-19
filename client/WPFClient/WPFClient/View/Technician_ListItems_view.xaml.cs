@@ -41,6 +41,7 @@ namespace WPFClient.View
 
         private void grid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            var grid = sender as DataGrid;
             if (e.EditAction == DataGridEditAction.Commit)
             {
                 var column = e.Column as DataGridBoundColumn;
@@ -51,12 +52,13 @@ namespace WPFClient.View
                     if (bindingPath == "Count")
                     {
                         var el = e.EditingElement as TextBox;
-                        // rowIndex has the row index
-                        // bindingPath has the column's binding
-                        // el.Text has the new, user-entered value
                         try
                         {
                             int value = Convert.ToInt32(el.Text);
+                            // Check checkbox automatically
+                            (e.Row.Item as ProductListGridRow).IsSelected = true;
+                            grid.Dispatcher.BeginInvoke(
+                                new Action(() => grid.Items.Refresh()), System.Windows.Threading.DispatcherPriority.Background);
                         }
                         catch
                         {
