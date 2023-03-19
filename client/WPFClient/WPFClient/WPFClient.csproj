@@ -92,6 +92,9 @@
     <Compile Include="View\Manager_create_new_part_item_view.xaml.cs">
       <DependentUpon>Manager_create_new_part_item_view.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Manager_create_new_stockrecords.xaml.cs">
+      <DependentUpon>Manager_create_new_stockrecords.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Manager_modify_price_view.xaml.cs">
       <DependentUpon>Manager_modify_price_view.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Manager_create_new_part_item_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Manager_create_new_stockrecords.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -15,6 +15,7 @@ namespace WPFClient.Model
         public int MaxPieces { get; set; }
         public int AvailablePieces { get; set; }
         public int ReservedPieces { get; set; }
+        public int StockItemId { get; set; }
         public StockItem_model StockItem { get; set; }
         public ICollection<StockAccount_model> StockAccounts { get; set; }
     }

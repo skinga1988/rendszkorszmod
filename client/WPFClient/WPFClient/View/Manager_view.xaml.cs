@@ -59,5 +59,12 @@ namespace WPFClient
             window.Show();
             this.Close();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Manager_create_new_stockrecords window = new Manager_create_new_stockrecords();
+            window.Show();
+            this.Close();
+        }
     }
 }

@@ -1,0 +1,63 @@
+﻿<Window x:Class="WPFClient.View.Manager_create_new_stockrecords"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient.View"
+        mc:Ignorable="d"
+        Title="Manager_create_new_stockrecords" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="Create_new_stockaccount_textblock" HorizontalAlignment="Left" Margin="119,45,0,0" TextWrapping="Wrap" Text="StockAccount Type" VerticalAlignment="Top"/>
+        <ComboBox x:Name="StockAccount_type_combobox" HorizontalAlignment="Left" Margin="252,39,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem x:Name="Item1" Content="Income"></ComboBoxItem>
+        </ComboBox>
+        <TextBlock x:Name="Pieces_textbox" HorizontalAlignment="Left" Margin="119,75,0,0" TextWrapping="Wrap" Text="Pieces" VerticalAlignment="Top" Width="99"/>
+        <TextBox x:Name="Pieces_editable_textbox" HorizontalAlignment="Left" Margin="251,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122"/>
+        <TextBlock HorizontalAlignment="Left" Margin="119,109,0,0" TextWrapping="Wrap" Text="StockItem" VerticalAlignment="Top"/>
+        <ComboBox x:Name="Stock_item_select" HorizontalAlignment="Left" Margin="253,109,0,0" VerticalAlignment="Top" Width="120" Loaded="ListBoxLoaded" SelectionChanged="Stock_item_select_SelectionChanged"/>
+        <TextBlock HorizontalAlignment="Left" Margin="433,45,0,0" TextWrapping="Wrap" Text="Row Number" VerticalAlignment="Top"/>
+        <ComboBox x:Name="Row_n" HorizontalAlignment="Left" Margin="549,37,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
+            <ComboBoxItem>4</ComboBoxItem>
+            <ComboBoxItem>5</ComboBoxItem>
+            <ComboBoxItem>6</ComboBoxItem>
+            <ComboBoxItem>7</ComboBoxItem>
+            <ComboBoxItem>8</ComboBoxItem>
+            <ComboBoxItem>9</ComboBoxItem>
+            <ComboBoxItem>10</ComboBoxItem>
+        </ComboBox>
+        <TextBlock HorizontalAlignment="Left" Margin="433,75,0,0" TextWrapping="Wrap" Text="Column Number" VerticalAlignment="Top"/>
+        <ComboBox x:Name="column_n"  HorizontalAlignment="Left" Margin="549,73,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
+            <ComboBoxItem>4</ComboBoxItem>
+            <ComboBoxItem>5</ComboBoxItem>
+            <ComboBoxItem>6</ComboBoxItem>
+            <ComboBoxItem>7</ComboBoxItem>
+            <ComboBoxItem>8</ComboBoxItem>
+            <ComboBoxItem>9</ComboBoxItem>
+            <ComboBoxItem>10</ComboBoxItem>
+        </ComboBox>
+        <TextBlock HorizontalAlignment="Left" Margin="433,108,0,0" TextWrapping="Wrap" Text="Box number" VerticalAlignment="Top"/>
+        <ComboBox x:Name="box_n" HorizontalAlignment="Left" Margin="549,106,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
+            <ComboBoxItem>4</ComboBoxItem>
+            <ComboBoxItem>5</ComboBoxItem>
+            <ComboBoxItem>6</ComboBoxItem>
+            <ComboBoxItem>7</ComboBoxItem>
+            <ComboBoxItem>8</ComboBoxItem>
+            <ComboBoxItem>9</ComboBoxItem>
+            <ComboBoxItem>10</ComboBoxItem>
+        </ComboBox>
+        <Button  Content="Confirm" HorizontalAlignment="Left" Margin="549,152,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click_new_StockAccount"/>
+        <Button x:Name="back_to_menu"  Content="Back to menu" HorizontalAlignment="Left" Margin="702,39,0,0" VerticalAlignment="Top" Width="76" Click="back_to_menu_Click"/>
+    </Grid>
+</Window>

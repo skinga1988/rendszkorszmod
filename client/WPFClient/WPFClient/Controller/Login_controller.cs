@@ -17,6 +17,7 @@ namespace WPFClient.Controller
     {
         ////BUTTONS--------------------------------------------------------------------------------
         //user login with a http request
+        public static int userid;
         public async void Button_Click_Login_controller(LoginWindow obj)
         {
             // Retrieve the username and password from the textboxes on the UI
@@ -44,6 +45,7 @@ namespace WPFClient.Controller
                         Manager_view manager_view = new Manager_view();
                         obj.Close();
                         manager_view.Show();
+                        userid = loginResponse.UserId;
                     }
                     else if (loginResponse.RoleType == "Technician")
                     {
@@ -51,6 +53,7 @@ namespace WPFClient.Controller
                         Technician_view technician_view = new Technician_view();
                         obj.Close();
                         technician_view.Show();
+                        userid = loginResponse.UserId;
                     }
                     else if (loginResponse.RoleType == "Storekeeper")
                     {
@@ -58,6 +61,7 @@ namespace WPFClient.Controller
                         Storekeeper_view storekeeper_view = new Storekeeper_view();
                         obj.Close();
                         storekeeper_view.Show();
+                        userid = loginResponse.UserId;
                     }
 
                 }
