@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFClient.Controller;
+using WPFClient.Model;
 
 namespace WPFClient.View
 {
@@ -36,6 +37,35 @@ namespace WPFClient.View
         {
             Technician_controller controller = new Technician_controller();
             await controller.GetProductList(this);
+        }
+
+        private void grid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                var column = e.Column as DataGridBoundColumn;
+                if (column != null)
+                {
+                    var bindingPath = (column.Binding as Binding).Path.Path;
+   
+                    if (bindingPath == "Count")
+                    {
+                        var el = e.EditingElement as TextBox;
+                        // rowIndex has the row index
+                        // bindingPath has the column's binding
+                        // el.Text has the new, user-entered value
+                        try
+                        {
+                            int value = Convert.ToInt32(el.Text);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Only numbers are allowed");
+                            e.Cancel = true;
+                        }
+                    }
+                }
+            }
         }
     }
 }
