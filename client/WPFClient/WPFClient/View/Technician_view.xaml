@@ -11,7 +11,7 @@
         <TextBox Text="Projects" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="9,71,0,0" Width="174"/>
         <Button Content="1. New project" HorizontalAlignment="Left" Margin="9,109,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
         <Button Content="2. List projects" HorizontalAlignment="Left" Margin="9,134,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="3. List part items" HorizontalAlignment="Left" Margin="9,222,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="3. List part items" HorizontalAlignment="Left" Margin="9,222,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left" Click="Button_Click"/>
         <Button Content="4. Assign part item to project" HorizontalAlignment="Left" Margin="9,247,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
         <Button Content="5. Calculate working cost" HorizontalAlignment="Left" Margin="9,312,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
         <Button Content="6. Calculate price" HorizontalAlignment="Left" Margin="9,337,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>

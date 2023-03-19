@@ -78,6 +78,7 @@
     <Compile Include="Controller\Manager_controller.cs" />
     <Compile Include="Controller\Storekeeper_controller.cs" />
     <Compile Include="Controller\Technician_controller.cs" />
+    <Compile Include="Model\ProductListGridRow_model.cs" />
     <Compile Include="Model\Orderer_model.cs" />
     <Compile Include="Model\ProjectAccount_model.cs" />
     <Compile Include="Model\Project_model.cs" />
@@ -103,6 +104,9 @@
     </Compile>
     <Compile Include="View\Manager_view.xaml.cs">
       <DependentUpon>Manager_view.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Technician_ListItems_view.xaml.cs">
+      <DependentUpon>Technician_ListItems_view.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Technician_view.xaml.cs">
       <DependentUpon>Technician_view.xaml</DependentUpon>
@@ -134,6 +138,10 @@
     <Page Include="View\Manager_view.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Technician_ListItems_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Technician_view.xaml">
       <Generator>MSBuild:Compile</Generator>
