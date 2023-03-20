@@ -56,9 +56,9 @@ namespace WPFClient.View
                         {
                             int value = Convert.ToInt32(el.Text);
                             // Check checkbox automatically
-                            (e.Row.Item as ProductListGridRow).IsSelected = true;
-                            grid.Dispatcher.BeginInvoke(
-                                new Action(() => grid.Items.Refresh()), System.Windows.Threading.DispatcherPriority.Background);
+                            //(e.Row.Item as ProductListGridRow).IsSelected = true;
+                            //grid.Dispatcher.BeginInvoke(
+                            //    new Action(() => grid.Items.Refresh()), System.Windows.Threading.DispatcherPriority.Background);
                         }
                         catch
                         {
