@@ -86,6 +86,7 @@ namespace WPFClient.Controller
             }
             view.Products = await GetProductCollection();
             view.productComboBox.ItemsSource = view.Products;
+            view.productComboBox.SelectedIndex = 0;
         }
 
         public async Task AssignItems(Technician_AssignItems_view view)
@@ -263,6 +264,25 @@ namespace WPFClient.Controller
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
                 var sortedItems = items.OrderBy(x => x.ItemType).ToList();
                 return new ObservableCollection<StockItem_model>(sortedItems);
+            }
+        }
+
+        internal async Task GetAvailableCount(Technician_AssignItems_view view)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                int availibility = 0;
+                var product = (StockItem_model)view.productComboBox.SelectedItem;
+                
+                var response = await client.GetAsync("api/Stock");
+                var content = await response.Content.ReadAsStringAsync();
+                var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(content);
+                stocks = stocks.FindAll(i => i.StockItemId == product.Id);
+                foreach(var stock in stocks)
+                {
+                    availibility += (stock.AvailablePieces - stock.ReservedPieces);
+                }
+                view.availableTextBox.Text = availibility>=0?availibility.ToString():"0";
             }
         }
     }

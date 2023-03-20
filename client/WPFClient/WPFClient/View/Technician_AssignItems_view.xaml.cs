@@ -58,5 +58,11 @@ namespace WPFClient.View
             Regex regex = new Regex("[^0-9]+"); //regex that matches disallowed text
             e.Handled = regex.IsMatch(e.Text);
         }
+
+        private async void productComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Technician_controller technician_Controller = new Technician_controller();
+            await technician_Controller.GetAvailableCount(this);
+        }
     }
 }
