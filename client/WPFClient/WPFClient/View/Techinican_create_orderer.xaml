@@ -1,0 +1,20 @@
+﻿<Window x:Class="WPFClient.View.Techinican_create_orderer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient.View"
+        mc:Ignorable="d"
+        Title="Techinican_create_orderer" Height="450" Width="800">
+    <Grid>
+        <TextBlock x:Name="Create_new_orderer_textblock" Text="Record new orderer" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
+        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
+        <TextBlock x:Name="New_orderer_textblock" Text="Orderer name:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,117,0,0" Width="128"></TextBlock>
+        <TextBox x:Name="New_orderer_textbox" HorizontalAlignment="Left" Height="20" Margin="389,117,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <TextBlock x:Name="Decription_textblock" Text="Description:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,152,0,0"><Run Language="hu-hu"/></TextBlock>
+        <TextBox x:Name="Description_textbox" HorizontalAlignment="Left" Height="20" Margin="389,152,0,0" VerticalAlignment="Top" Width="174" TextWrapping="Wrap"/>
+        <Button x:Name="Create_button" Content="Create" HorizontalAlignment="Left" Height="28" Margin="390,189,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_Create_orderer"/>
+
+
+    </Grid>
+</Window>

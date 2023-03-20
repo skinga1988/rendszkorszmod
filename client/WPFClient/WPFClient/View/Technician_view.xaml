@@ -7,17 +7,19 @@
         mc:Ignorable="d"
         Title="Technician_view" Height="450" Width="800">
     <Grid>
-        <TextBlock x:Name="Technician_Page" Text="Technician" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
-        <TextBox Text="Projects" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="9,71,0,0" Width="174"/>
-        <Button Content="1. New project" HorizontalAlignment="Left" Margin="9,109,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="2. List projects" HorizontalAlignment="Left" Margin="9,134,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="3. List part items" HorizontalAlignment="Left" Margin="9,222,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="4. Assign part item to project" HorizontalAlignment="Left" Margin="9,247,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="5. Calculate working cost" HorizontalAlignment="Left" Margin="9,312,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="6. Calculate price" HorizontalAlignment="Left" Margin="9,337,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <Button Content="7. Close project" HorizontalAlignment="Left" Margin="9,159,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
-        <TextBox Text="Part items" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="9,182,0,0" Width="174"/>
-        <TextBox Text="Price" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="9,272,0,0" Width="174"/>
-        <Button Content="Logout" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Logout" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
+        <TextBlock x:Name="Technician_Page" Text="Technician" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="320,10,0,0"></TextBlock>
+        <TextBox Text="Projects" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="8,33,0,0" Width="174" Height="36"/>
+        <Button Content="1. New project" HorizontalAlignment="Left" Margin="11,74,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="2. List projects" HorizontalAlignment="Left" Margin="11,99,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="3. List part items" HorizontalAlignment="Left" Margin="9,189,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="4. Assign part item to project" HorizontalAlignment="Left" Margin="11,217,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="5. Calculate working cost" HorizontalAlignment="Left" Margin="11,282,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="6. Calculate price" HorizontalAlignment="Left" Margin="11,307,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="7. Close project" HorizontalAlignment="Left" Margin="11,124,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <TextBox Text="Part items" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="11,149,0,0" Width="174"/>
+        <TextBox Text="Price" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="8,242,0,0" Width="174"/>
+        <Button Content="Logout" HorizontalAlignment="Left" Margin="658,49,0,0" VerticalAlignment="Top" Click="Button_Click_Logout" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
+        <Button HorizontalContentAlignment="Left" Content="8. Create Orderer"  HorizontalAlignment="Left" Margin="10,374,0,0" VerticalAlignment="Top" Width="173" Click="Button_Click_new_orderer"/>
+        <TextBox  Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="8,332,0,0" TextWrapping="Wrap" Text="Orderer"  Width="173" Height="37"/>
     </Grid>
 </Window>

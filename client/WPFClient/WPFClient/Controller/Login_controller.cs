@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows;
 using WPFClient.Utilities;
 using WPFClient.Model;
+using WPFClient.Controller;
 
 namespace WPFClient.Controller
 {

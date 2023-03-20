@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using WPFClient.View;
 
 namespace WPFClient
 {
@@ -40,6 +41,14 @@ namespace WPFClient
         private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
         {
             this.Close();
+        }
+
+        private void Button_Click_new_orderer(object sender, RoutedEventArgs e)
+        {
+            Techinican_create_orderer window = new Techinican_create_orderer();
+            window.Show();
+            this.Close();
+
         }
     }
 }
