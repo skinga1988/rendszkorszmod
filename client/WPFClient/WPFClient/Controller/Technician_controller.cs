@@ -39,9 +39,7 @@ namespace WPFClient.Controller
                         Id = item.Id,
                         Name = item.ItemType,
                         Price = item.ItemPrice,
-                        Availibility = 0,
-                        IsSelected = false,
-                        Count = 0
+                        Availibility = 0
                     });
                 }
                 // Get availibility

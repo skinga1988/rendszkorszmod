@@ -12,7 +12,5 @@ namespace WPFClient.Model
         public string Name { get; set; }
         public int Price { get; set; }
         public int Availibility { get; set; }
-        public bool IsSelected { get; set; }
-        public int Count { get; set; }
     }
 }

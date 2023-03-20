@@ -38,36 +38,5 @@ namespace WPFClient.View
             Technician_controller controller = new Technician_controller();
             await controller.GetProductList(this);
         }
-
-        private void grid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            var grid = sender as DataGrid;
-            if (e.EditAction == DataGridEditAction.Commit)
-            {
-                var column = e.Column as DataGridBoundColumn;
-                if (column != null)
-                {
-                    var bindingPath = (column.Binding as Binding).Path.Path;
-
-                    if (bindingPath == "Count")
-                    {
-                        var el = e.EditingElement as TextBox;
-                        try
-                        {
-                            int value = Convert.ToInt32(el.Text);
-                            // Check checkbox automatically
-                            //(e.Row.Item as ProductListGridRow).IsSelected = true;
-                            //grid.Dispatcher.BeginInvoke(
-                            //    new Action(() => grid.Items.Refresh()), System.Windows.Threading.DispatcherPriority.Background);
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Only numbers are allowed");
-                            e.Cancel = true;
-                        }
-                    }
-                }
-            }
-        }
     }
 }
