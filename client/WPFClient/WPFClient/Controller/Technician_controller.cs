@@ -96,6 +96,7 @@ namespace WPFClient.Controller
 
             var product = (StockItem_model)view.productComboBox.SelectedItem;
             int currentProjectId = (int)view.projectsComboBox.SelectedItem;
+            int count = Convert.ToInt32(view.quantityTextBox.Text);
             using (var client = RestHelper.GetRestClient())
             {
                 var response = await client.GetAsync("api/StockAccount");
@@ -118,7 +119,7 @@ namespace WPFClient.Controller
                     {
                         Id = stockAccount.Id,
                         StockAccountType = "Reservation",
-                        Pieces = stockAccount.Pieces + Convert.ToInt32(view.quantityTextBox.Text),
+                        Pieces = stockAccount.Pieces + count,
                         AccountTime = DateTime.Now,
                         ProjectId = stockAccount.ProjectId,
                         StockItemId = stockAccount.StockItemId,
@@ -133,7 +134,7 @@ namespace WPFClient.Controller
                     var newStockAccount = new
                     {
                         StockAccountType = "Reservation",
-                        Pieces = Convert.ToInt32(view.quantityTextBox.Text),
+                        Pieces = count,
                         AccountTime = DateTime.Now,
                         ProjectId = currentProjectId,
                         StockItemId = product.Id,
@@ -149,7 +150,6 @@ namespace WPFClient.Controller
                 // Step 2: increase reserved pieces in Stock table
                 // Iterate through all Stocks containing the current product
                 var productstock = stocks.Where(i => i.StockItemId == product.Id);
-                int count = Convert.ToInt32(view.quantityTextBox.Text);
                 if (productstock.Count() > 0)
                 {
                     foreach (Stock_model stock in productstock)
