@@ -53,9 +53,10 @@ namespace WPFClient.View
             Close();
         }
 
-        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void PreviewTextInput_event(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+"); //regex that matches disallowed text
+            // Filter every non-numerical character
+            Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
