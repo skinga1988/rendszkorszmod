@@ -76,7 +76,7 @@ namespace WPFClient.Controller
                 }
                 var content = await response.Content.ReadAsStringAsync();
                 var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
-                // TODO filter projects by userID
+                projects = projects.FindAll(i => i.UserId == userid);
                 view.projectsComboBox.ItemsSource = projects.Select(i => i.Id);
                 view.projectsComboBox.SelectedIndex = 0;
 
