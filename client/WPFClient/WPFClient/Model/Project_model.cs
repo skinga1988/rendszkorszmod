@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,8 @@ namespace WPFClient.Model
     internal class Project_model
     {
         public int Id { get; set; }
+        [JsonProperty("projectType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public ProjectStatus Type { get; set; }
         public string ProjectDescription { get; set; }
         public string Place { get; set; }

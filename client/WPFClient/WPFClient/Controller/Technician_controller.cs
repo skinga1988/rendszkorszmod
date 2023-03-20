@@ -121,7 +121,7 @@ namespace WPFClient.Controller
                         {
                             Id = stockAccount.Id,
                             StockAccountType = "Reservation",
-                            Pieces = stockAccount.Pieces+product.Count,
+                            Pieces = stockAccount.Pieces + product.Count,
                             AccountTime = DateTime.Now,
                             ProjectId = stockAccount.ProjectId,
                             StockItemId = stockAccount.StockItemId,
@@ -145,7 +145,7 @@ namespace WPFClient.Controller
                         var content = new StringContent(JsonConvert.SerializeObject(newStockAccount), Encoding.UTF8, "application/json");
                         response = await client.PostAsync("api/StockAccount", content);
                     }
-                    if(!response.IsSuccessStatusCode)
+                    if (!response.IsSuccessStatusCode)
                     {
                         MessageBox.Show("Failed to update StockAccount table");
                     }
@@ -155,10 +155,10 @@ namespace WPFClient.Controller
                     int count = product.Count;
                     if (productstock.Count() > 0)
                     {
-                        foreach(Stock_model stock in productstock)
+                        foreach (Stock_model stock in productstock)
                         {
                             // If we need more pieces than available in the stock
-                            if (count > (stock.AvailablePieces-stock.ReservedPieces))
+                            if (count > (stock.AvailablePieces - stock.ReservedPieces))
                             {
                                 count -= (stock.AvailablePieces - stock.ReservedPieces);
                                 stock.ReservedPieces = stock.AvailablePieces;
@@ -173,43 +173,57 @@ namespace WPFClient.Controller
                                 break;
                             }
                         }
-                        if(count > 0)
+                        if (count > 0)
                         {
                             productstock.First().ReservedPieces += count;
                             UpdateStock(productstock.First());
                         }
-                    } else
+                    }
+                    else
                     {
                         MessageBox.Show("StockItem not found in Stock table");
                     }
                 }
                 // Step 4: update project status
-                StringContent contentProjectAccount;
-                if (allItemsInStock)
+                string projectstatus = allItemsInStock ? "Wait" : "Draft";
+                var responseProject = await client.GetAsync("api/Project/" + currentProjectId);
+                var contentProject = await responseProject.Content.ReadAsStringAsync();
+                var project = JsonConvert.DeserializeObject<Project_model>(contentProject);
+                ProjectStatus projectStatusEnum;
+                Enum.TryParse<ProjectStatus>(projectstatus, true, out projectStatusEnum);
+
+                if (project.Type != projectStatusEnum)
                 {
                     var projectAccount = new
                     {
-                        projectAccounType = "Wait",
+                        projectAccounType = projectstatus,
                         createdDate = DateTime.Now,
                         projectId = currentProjectId
                     };
-                    contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
-                }
-                else
-                {
-                    var projectAccount = new
+                    var contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
+                    var responseProjectAccount = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
+                    if (!responseProjectAccount.IsSuccessStatusCode)
                     {
-                        projectAccounType = "Draft",
-                        createdDate = DateTime.Now,
-                        projectId = currentProjectId
+                        MessageBox.Show("Error creating new ProjectAccount");
+                    }
+
+                    var updatedProject = new
+                    {
+                        id = project.Id,
+                        projectType = projectstatus,
+                        projectDescription = project.ProjectDescription,
+                        place = project.Place,
+                        ordererId = project.OrdererId,
+                        userid = project.UserId,
                     };
-                    contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
+                    var requestProject = new StringContent(JsonConvert.SerializeObject(updatedProject), Encoding.UTF8, "application/json");
+                    var responseProjectUpdate = await client.PutAsync("api/Project?id=" + currentProjectId, requestProject);
+                    if (!responseProjectUpdate.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Error while updating Project");
+                    }
                 }
-                var reponse = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
-                if (reponse.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("All items have been assigned to the project");
-                }
+                MessageBox.Show("All items have been assigned to the project");
             }
         }
 
