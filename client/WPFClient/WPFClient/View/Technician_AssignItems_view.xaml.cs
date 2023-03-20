@@ -49,5 +49,14 @@ namespace WPFClient.View
             view.Show();
             Close();
         }
+
+        private async void assignButton_Click(object sender, RoutedEventArgs e)
+        {
+            Technician_controller controller = new Technician_controller();
+            await controller.AssignItems(this);
+            Technician_view view = new Technician_view();
+            view.Show();
+            Close();
+        }
     }
 }
