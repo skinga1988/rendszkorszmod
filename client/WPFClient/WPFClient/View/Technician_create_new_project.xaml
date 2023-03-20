@@ -1,0 +1,26 @@
+﻿<Window x:Class="WPFClient.View.Technician_create_new_project"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient.View"
+        mc:Ignorable="d"
+        Title="Technician_create_new_project" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="Create_new_project_textblock" HorizontalAlignment="Left" Margin="256,52,0,0" TextWrapping="Wrap" Text="Project Type" VerticalAlignment="Top" Width="91"/>
+        <ComboBox x:Name="Project_type_combobox" HorizontalAlignment="Left" Margin="386,49,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem x:Name="Item1" Content="New"></ComboBoxItem>
+        </ComboBox>
+        <TextBlock x:Name="Description_textblock" HorizontalAlignment="Left" Margin="256,83,0,0" TextWrapping="Wrap" Text="Project Description" VerticalAlignment="Top" Width="113"/>
+        <TextBox x:Name="Description_textbox" HorizontalAlignment="Left" Margin="384,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122"/>
+        <TextBlock HorizontalAlignment="Left" Margin="256,151,0,0" TextWrapping="Wrap" Text="Orderer" VerticalAlignment="Top"/>
+        <ComboBox x:Name="Orderer_select" HorizontalAlignment="Left" Margin="386,148,0,0" VerticalAlignment="Top" Width="120" Loaded="ListBoxLoaded_orderer"/>
+        <Button  Content="Create" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click_new_Project"/>
+        <Button x:Name="back_to_menu"  Content="Back to menu" HorizontalAlignment="Left" Margin="702,39,0,0" VerticalAlignment="Top" Width="76" Click="back_to_menu_Click"/>
+        <TextBlock x:Name="Place_textblock" HorizontalAlignment="Left" Margin="256,116,0,0" TextWrapping="Wrap" Text="Project place" VerticalAlignment="Top" Width="74"/>
+        <TextBox x:Name="Place_textbox" HorizontalAlignment="Left" Margin="386,116,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+    </Grid>
+</Window>

@@ -9,7 +9,7 @@ namespace WPFClient.Model
     internal class Project_model
     {
         public int Id { get; set; }
-        public ProjectStatus Type { get; set; }
+        public string ProjectType  { get; set; }
         public string ProjectDescription { get; set; }
         public string Place { get; set; }
         public int OrdererId { get; set; }

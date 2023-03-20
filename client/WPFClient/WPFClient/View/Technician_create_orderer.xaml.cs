@@ -27,7 +27,7 @@ namespace WPFClient.View
 
         private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
-            Manager_view window = new Manager_view();
+            Technician_view window = new Technician_view();
             window.Show();
             this.Close();
         }

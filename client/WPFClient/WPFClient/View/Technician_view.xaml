@@ -9,7 +9,7 @@
     <Grid>
         <TextBlock x:Name="Technician_Page" Text="Technician" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="320,10,0,0"></TextBlock>
         <TextBox Text="Projects" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="8,33,0,0" Width="174" Height="36"/>
-        <Button Content="1. New project" HorizontalAlignment="Left" Margin="11,74,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
+        <Button Content="1. New project" HorizontalAlignment="Left" Margin="11,74,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left" Click="Button_Click_create_new_project"/>
         <Button Content="2. List projects" HorizontalAlignment="Left" Margin="11,99,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
         <Button Content="3. List part items" HorizontalAlignment="Left" Margin="9,189,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
         <Button Content="4. Assign part item to project" HorizontalAlignment="Left" Margin="11,217,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>

@@ -50,5 +50,12 @@ namespace WPFClient
             this.Close();
 
         }
+
+        private void Button_Click_create_new_project(object sender, RoutedEventArgs e)
+        {
+            Technician_create_new_project window = new Technician_create_new_project();
+            window.Show();
+            this.Close();
+        }
     }
 }

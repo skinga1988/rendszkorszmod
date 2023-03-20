@@ -107,8 +107,11 @@
     <Compile Include="View\Manager_view.xaml.cs">
       <DependentUpon>Manager_view.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Techinican_create_orderer.xaml.cs">
-      <DependentUpon>Techinican_create_orderer.xaml</DependentUpon>
+    <Compile Include="View\Technician_create_orderer.xaml.cs">
+      <DependentUpon>Technician_create_orderer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Technician_create_new_project.xaml.cs">
+      <DependentUpon>Technician_create_new_project.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Technician_view.xaml.cs">
       <DependentUpon>Technician_view.xaml</DependentUpon>
@@ -145,7 +148,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Techinican_create_orderer.xaml">
+    <Page Include="View\Technician_create_orderer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Technician_create_new_project.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
