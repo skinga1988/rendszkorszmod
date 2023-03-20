@@ -59,6 +59,10 @@ namespace WPFClient.Controller
                     {
                         item.Availibility += stock.AvailablePieces;
                         item.Availibility -= stock.ReservedPieces;
+                        if(item.Availibility < 0)
+                        {
+                            item.Availibility = 0;
+                        }
                     }
                 }
                 view.grid.DataContext = gridRows;
@@ -173,6 +177,8 @@ namespace WPFClient.Controller
                                 break;
                             }
                         }
+                        // If we reserved all available pieces and we still need more
+                        // add the remaining count to the reservedPieces value of the first Stock in the list
                         if (count > 0)
                         {
                             productstock.First().ReservedPieces += count;
