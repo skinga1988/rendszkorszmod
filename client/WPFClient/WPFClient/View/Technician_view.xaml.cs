@@ -49,5 +49,12 @@ namespace WPFClient
             window.Show();
             this.Close();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Technician_AssignItems_view window = new Technician_AssignItems_view();
+            window.Show();
+            this.Close();
+        }
     }
 }

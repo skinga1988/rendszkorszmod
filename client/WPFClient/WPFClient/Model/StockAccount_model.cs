@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WPFClient.Model
 {
-    internal class StockAccount_model
+    public class StockAccount_model
     {
         public int Id { get; set; }
 

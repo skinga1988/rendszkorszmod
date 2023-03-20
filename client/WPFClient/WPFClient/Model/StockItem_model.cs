@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFClient.Model
 {
-    internal class StockItem_model
+    public class StockItem_model
     {
         public int Id { get; set; }
         public int ItemPrice { get; set; }

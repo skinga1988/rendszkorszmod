@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,25 +23,18 @@ namespace WPFClient.View
     /// </summary>
     public partial class Technician_AssignItems_view : Window
     {
-        private ObservableCollection<ProductListGridRow> allItems;
-        public Technician_AssignItems_view(ItemCollection griddata)
+        public ObservableCollection<StockItem_model> Products { get; set; }
+        public int SelectedId { get; set; }
+        public Technician_AssignItems_view()
         {
             InitializeComponent();
-            allItems = new ObservableCollection<ProductListGridRow>();
-            foreach (var data in griddata.SourceCollection)
-            {
-                var row = data as ProductListGridRow;
-                if(row.IsSelected && row.Count > 0) 
-                { 
-                    allItems.Add(row); 
-                }
-            }
+            DataContext = this;  
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Technician_controller controller = new Technician_controller();
-            await controller.LoadAssignItemsData(this, allItems);
+            await controller.LoadAssignItemsData(this);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -57,6 +51,12 @@ namespace WPFClient.View
             Technician_view view = new Technician_view();
             view.Show();
             Close();
+        }
+
+        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+"); //regex that matches disallowed text
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

@@ -41,7 +41,6 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="reserveButton" Content="Reserve selected" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="132" Click="reserveButton_Click"/>
 
     </Grid>
 </Window>

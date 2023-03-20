@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFClient.Model
 {
-    internal class User_model
+    public class User_model
     {
         public int UserId { get; set; }
         public string RoleType { get; set; }
