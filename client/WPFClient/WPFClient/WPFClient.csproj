@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -78,6 +79,7 @@
     <Compile Include="Controller\Manager_controller.cs" />
     <Compile Include="Controller\Storekeeper_controller.cs" />
     <Compile Include="Controller\Technician_controller.cs" />
+    <Compile Include="Model\ProductListGridRow_model.cs" />
     <Compile Include="Model\Orderer_model.cs" />
     <Compile Include="Model\ProjectAccount_model.cs" />
     <Compile Include="Model\Project_model.cs" />
@@ -118,6 +120,12 @@
     </Compile>
     <Compile Include="View\Technician_list_projects.xaml.cs">
       <DependentUpon>Technician_list_projects.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Technician_AssignItems_view.xaml.cs">
+      <DependentUpon>Technician_AssignItems_view.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Technician_ListItems_view.xaml.cs">
+      <DependentUpon>Technician_ListItems_view.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Technician_view.xaml.cs">
       <DependentUpon>Technician_view.xaml</DependentUpon>
@@ -167,6 +175,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Technician_list_projects.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Technician_AssignItems_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Technician_ListItems_view.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

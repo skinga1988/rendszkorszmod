@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFClient.Model
 {
-    internal class Project_model
+    public class Project_model
     {
         public int Id { get; set; }
         public string ProjectType  { get; set; }

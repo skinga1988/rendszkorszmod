@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace WPFClient.Model
 {
-    internal class StockAccount_model
+    public class StockAccount_model
     {
         public int Id { get; set; }
+
+        [JsonProperty("stockAccountType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public StockAccountType Type { get; set; }
         public int Pieces { get; set; }
         public DateTime AccountTime { get; set; }

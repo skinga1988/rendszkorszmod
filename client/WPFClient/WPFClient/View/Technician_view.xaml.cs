@@ -73,5 +73,19 @@ namespace WPFClient
             calculate.Show();
             this.Close();
         }
+
+        private void Button_Click_list_items(object sender, RoutedEventArgs e)
+        {
+            Technician_ListItems_view window = new Technician_ListItems_view();
+            window.Show();
+            this.Close();
+        }
+
+        private void Button_Click_assign_items(object sender, RoutedEventArgs e)
+        {
+            Technician_AssignItems_view window = new Technician_AssignItems_view();
+            window.Show();
+            this.Close();
+        }
     }
 }
