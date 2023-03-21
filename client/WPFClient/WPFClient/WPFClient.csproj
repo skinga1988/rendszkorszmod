@@ -107,11 +107,17 @@
     <Compile Include="View\Manager_view.xaml.cs">
       <DependentUpon>Manager_view.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Technician_calculate_workcost.xaml.cs">
+      <DependentUpon>Technician_calculate_workcost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Technician_create_orderer.xaml.cs">
       <DependentUpon>Technician_create_orderer.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Technician_create_new_project.xaml.cs">
       <DependentUpon>Technician_create_new_project.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Technician_list_projects.xaml.cs">
+      <DependentUpon>Technician_list_projects.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Technician_view.xaml.cs">
       <DependentUpon>Technician_view.xaml</DependentUpon>
@@ -148,11 +154,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Technician_calculate_workcost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Technician_create_orderer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Technician_create_new_project.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Technician_list_projects.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

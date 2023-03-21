@@ -200,8 +200,86 @@ namespace WPFClient.Controller
                 
             }
         }
+        //calculates the cost of working hours
+        public async Task Button_Click_Calculate_workhours(Technician_calculate_workcost obj)
+        {
+            int estimated_hours, price_per_hour, disembarkation_cost;
+            string estimated_hours_string = obj.Estimated_hours_textbox.Text;
+            string price_per_hour_string = obj.Price_per_hour_textbox.Text;
+            string disembarkation_cost_string = obj.Disembarkation_cost_textbox.Text;
+            var selectedStockId = obj.ProjectId_combobox.SelectedItem.ToString();
 
+
+
+            //correct time
+            if (int.TryParse(estimated_hours_string, out estimated_hours))
+            {
+                if (estimated_hours > 0)
+                {
+                    //correct time and price
+
+                    if (int.TryParse(price_per_hour_string, out price_per_hour))
+                    {
+                        if (price_per_hour > 0)
+                        {
+                            //correct time and price and one-time-cost
+                            {
+                                if (int.TryParse(disembarkation_cost_string, out disembarkation_cost))
+                                {
+                                    if (disembarkation_cost > 0)
+                                    {
+
+                                        {
+
+
+                                            int calculated_cost = (estimated_hours * price_per_hour) + disembarkation_cost;
+
+                                            MessageBox.Show("The calculated price is: " + calculated_cost);
+
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Price must be greater than 0!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Price must be an integer!");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Number of hours must be greater than 0!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Number of hours must be an integer!");
+            }
+        }
+
+
+
+        public async Task ListBoxLoad_controller2(Technician_calculate_workcost obj)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                    var sortedProjects = projects.OrderBy(x => x.Id).ToList();
+                    obj.ProjectId_combobox.ItemsSource = sortedProjects.Select(x => x.Id);
+                }
+            }
+        }
 
     }
-   
+
 }

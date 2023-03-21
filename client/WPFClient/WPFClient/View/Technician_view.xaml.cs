@@ -57,5 +57,21 @@ namespace WPFClient
             window.Show();
             this.Close();
         }
+
+        //opens the listing projects window
+        private void Button_Click_2list_projects(object sender, RoutedEventArgs e)
+        {
+            Technician_list_projects list = new Technician_list_projects();
+            list.Show();
+            this.Close();
+        }
+
+        //opens the calculating work cost window
+        private void Button_Click_5calculate_workcost(object sender, RoutedEventArgs e)
+        {
+            Technician_calculate_workcost calculate = new Technician_calculate_workcost();
+            calculate.Show();
+            this.Close();
+        }
     }
 }
