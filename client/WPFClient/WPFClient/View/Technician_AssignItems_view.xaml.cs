@@ -24,7 +24,7 @@ namespace WPFClient.View
     public partial class Technician_AssignItems_view : Window
     {
         public ObservableCollection<StockItem_model> Products { get; set; }
-        public int SelectedId { get; set; }
+        public ObservableCollection<Project_model> Projects { get; set; }
         public Technician_AssignItems_view()
         {
             InitializeComponent();

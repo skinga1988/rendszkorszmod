@@ -69,19 +69,10 @@ namespace WPFClient.Controller
 
         public async Task LoadAssignItemsData(Technician_AssignItems_view view)
         {
-            using (var client = RestHelper.GetRestClient())
-            {
-                var response = await client.GetAsync("api/Project");
-                if (!response.IsSuccessStatusCode)
-                {
-                    return;
-                }
-                var content = await response.Content.ReadAsStringAsync();
-                var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
-                projects = projects.FindAll(i => i.UserId == userid);
-                view.projectsComboBox.ItemsSource = projects.Select(i => i.Id);
-                view.projectsComboBox.SelectedIndex = 0;
-            }
+            view.Projects = await GetProjectCollection();
+            view.projectsComboBox.ItemsSource = view.Projects;
+            view.projectsComboBox.SelectedIndex = 0;
+
             view.Products = await GetProductCollection();
             view.productComboBox.ItemsSource = view.Products;
             view.productComboBox.SelectedIndex = 0;
@@ -92,7 +83,7 @@ namespace WPFClient.Controller
             // Tasks:
             // 1. make new StockAccount or update it
             // 2. increase the reserved in the Stock table
-            // 3. ?set the project status? draft
+            // 3. set the project status to Draft
 
             var product = (StockItem_model)view.productComboBox.SelectedItem;
             int currentProjectId = (int)view.projectsComboBox.SelectedItem;
@@ -281,6 +272,21 @@ namespace WPFClient.Controller
                     availibility += (stock.AvailablePieces - stock.ReservedPieces);
                 }
                 view.availableTextBox.Text = availibility>=0?availibility.ToString():"0";
+            }
+        }
+
+        internal async Task<ObservableCollection<Project_model>> GetProjectCollection()
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ObservableCollection<Project_model>();
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                return new ObservableCollection<Project_model>(projects.FindAll(i => i.UserId == userid));
             }
         }
     }
