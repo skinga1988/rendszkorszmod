@@ -13,6 +13,7 @@ using WPFClient.Utilities;
 using WPFClient.Model;
 using WPFClient.View;
 using static WPFClient.Controller.Login_controller;
+using System.IO;
 
 namespace WPFClient.Controller
 {
@@ -517,6 +518,20 @@ namespace WPFClient.Controller
 
                                             MessageBox.Show("The calculated price is: " + calculated_cost);
 
+                                            // Get the text from the textbox
+                                            string textboxText = obj.Estimated_hours_textbox.Text;
+
+                                            // Get the selected item from the ComboBox
+                                            int selectedItem = Convert.ToInt32(obj.ProjectId_combobox.SelectedItem.ToString());
+
+                                            // Create an object to hold the data
+                                            var workhours = new { textboxText, selectedItem };
+
+                                            // Serialize the data to JSON
+                                            string jsonString = JsonConvert.SerializeObject(workhours);
+
+                                            // Write the JSON to a file
+                                            File.WriteAllText("workhours.json", jsonString);
                                         }
                                     }
                                 }
@@ -560,6 +575,7 @@ namespace WPFClient.Controller
                 }
             }
         }
+
     }
 
 }

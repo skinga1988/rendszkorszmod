@@ -5,19 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFClient.View"
         mc:Ignorable="d"
-        Title="Technician_list_projects" Height="450" Width="800">
+        Title="Technician_list_projects" Height="500" Width="850">
     <Grid Margin="0,0,0,-6">
-        <TextBlock x:Name="List_projects_textblock" Text="List projects" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="311,36,0,0"></TextBlock>
-        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="623,43,0,0" VerticalAlignment="Top" Click="Button_Click_Back4" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back4"/>
-        <Button x:Name="List_button" Content="List" HorizontalAlignment="Left" Height="28" Margin="295,90,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_List2"/>
-        <DataGrid x:Name="ProjectsDataGrid" AutoGenerateColumns="False" Margin="192,145,228,35">
+        <TextBlock x:Name="List_projects_textblock" Text="List projects" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="368,36,0,0"></TextBlock>
+        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="647,43,0,0" VerticalAlignment="Top" Click="Button_Click_Back4" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back4"/>
+        <Button x:Name="List_button" Content="List" HorizontalAlignment="Left" Height="28" Margin="352,97,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_List2"/>
+        <DataGrid x:Name="ProjectsDataGrid" AutoGenerateColumns="False" Margin="83,145,83,27">
             <DataGrid.Columns >
-                <DataGridTextColumn Width="auto" Header="ID" Binding="{Binding id}" />
-                <DataGridTextColumn Width="auto" Header="Project Type" Binding="{Binding projectType}" />
-                <DataGridTextColumn Width="auto" Header="Project Description" Binding="{Binding projectDescription}" />
-                <DataGridTextColumn Width="auto" Header="Place" Binding="{Binding place}" />
-                <DataGridTextColumn Width="auto" Header="Orderer ID" Binding="{Binding ordererId}" />
-                <DataGridTextColumn Width="auto" Header="User ID" Binding="{Binding userId}" />
+                <DataGridTextColumn Width="60" Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Width="100" Header="Project Type" Binding="{Binding ProjectType}" />
+                <DataGridTextColumn  Width="150" Header="Project Description" Binding="{Binding ProjectDescription}" />
+                <DataGridTextColumn  Width="100" Header="Place" Binding="{Binding Place}" />
+                <DataGridTextColumn  Width="100" Header="Orderer ID" Binding="{Binding OrdererId}" />
+                <DataGridTextColumn  Width="100" Header="User ID" Binding="{Binding UserId}" />
+                <DataGridTextColumn Width="60" Header="Status" Binding="{Binding Status}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

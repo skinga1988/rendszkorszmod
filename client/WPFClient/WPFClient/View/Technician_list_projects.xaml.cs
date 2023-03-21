@@ -63,7 +63,9 @@ namespace WPFClient.View
 
         }
 
+        private void ProjectsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
-
+        }
     }
 }
