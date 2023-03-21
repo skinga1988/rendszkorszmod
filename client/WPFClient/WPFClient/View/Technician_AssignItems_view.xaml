@@ -11,7 +11,7 @@
                   ItemsSource="{Binding Projects}" DisplayMemberPath="Place" SelectedValuePath="Id"/>
         <Label Content="My projects" HorizontalAlignment="Left" Height="27" Margin="10,10,0,0" VerticalAlignment="Top" Width="160"/>
         <Button x:Name="assignButton" Content="Assign" HorizontalAlignment="Left" Margin="13,0,0,10" Width="158" Height="31" VerticalAlignment="Bottom" Click="assignButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" Margin="0,0,10,10" HorizontalAlignment="Right" Width="158" Height="31" VerticalAlignment="Bottom" Click="cancelButton_Click"/>
+        <Button x:Name="cancelButton" Content="Back to menu" Margin="0,0,10,10" HorizontalAlignment="Right" Width="158" Height="31" VerticalAlignment="Bottom" Click="cancelButton_Click"/>
         <Label Content="Product" HorizontalAlignment="Left" Height="27" Margin="10,68,0,0" VerticalAlignment="Top" Width="173"/>
         <ComboBox x:Name="productComboBox" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="235" Height="26"
                   ItemsSource="{Binding Products}" DisplayMemberPath="ItemType" SelectedValuePath="Id" SelectionChanged="productComboBox_SelectionChanged"/>

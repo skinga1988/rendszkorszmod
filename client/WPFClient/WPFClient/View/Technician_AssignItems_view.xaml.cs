@@ -53,9 +53,8 @@ namespace WPFClient.View
             }
             Technician_controller controller = new Technician_controller();
             await controller.AssignItems(this);
-            Technician_view view = new Technician_view();
-            view.Show();
-            Close();
+            quantityTextBox.Text = "";
+            await controller.GetAvailableCount(this);
         }
 
         private void PreviewTextInput_event(object sender, TextCompositionEventArgs e)

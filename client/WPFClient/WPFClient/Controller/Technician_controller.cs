@@ -208,7 +208,7 @@ namespace WPFClient.Controller
                         MessageBox.Show("Error while updating Project");
                     }
                 }
-                MessageBox.Show("All items have been assigned to the project");
+                MessageBox.Show("The item has been assigned to the project");
             }
 
         }
