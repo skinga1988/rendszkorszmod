@@ -297,33 +297,43 @@ namespace WPFClient.Controller
             //both textbox are filled
             if (orderer_name != "" && description != "")
             {
-                using (var client = RestHelper.GetRestClient())
+                // orderer doesn't exist
+                var existOrderer = await existOrdererName(orderer_name);
+                if (!existOrderer)
                 {
-                    var newOrderer = new
+                    using (var client = RestHelper.GetRestClient())
                     {
-                        ordererName = orderer_name,
-                        description = description,
-                        userId = userid,
-                        projectId = 0
-                    };
-                    var json = JsonConvert.SerializeObject(newOrderer);
-                    var response = await client.PostAsync("api/Orderer", new StringContent(json, Encoding.UTF8, "application/json"));
-                    string status = response.StatusCode.ToString();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Orderer created successfully
-                        MessageBox.Show("Orderer created successfully!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Orderer creation failed!");
+                        var newOrderer = new
+                        {
+                            ordererName = orderer_name,
+                            description = description,
+                            userId = userid,
+                            projectId = 0
+                        };
+                        var json = JsonConvert.SerializeObject(newOrderer);
+                        var response = await client.PostAsync("api/Orderer", new StringContent(json, Encoding.UTF8, "application/json"));
+                        string status = response.StatusCode.ToString();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // Orderer created successfully
+                            MessageBox.Show("Orderer created successfully!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Orderer creation failed!");
 
+                        }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Orderer already exists!");
+                }
+               
             }
             else
             {
-                MessageBox.Show("Fill both textbox!");
+                MessageBox.Show("Fill all the textbox!");
             }
         }
         //create new project
@@ -446,6 +456,18 @@ namespace WPFClient.Controller
                 var items = JsonConvert.DeserializeObject<List<Orderer_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.OrdererName == orderer_name);
                 return selectedItemType.Id;
+            }
+        }
+        //whether orderer name already exist
+        public async Task<bool> existOrdererName(string orderer_name)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Orderer");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Orderer_model>>(responseContent);
+                var selectedItemType = items.Any(item => item.OrdererName == orderer_name);
+                return selectedItemType;
             }
         }
         public async Task<int> GetProjectId(string _project_type, string _description, string _place, int _ordererId)
