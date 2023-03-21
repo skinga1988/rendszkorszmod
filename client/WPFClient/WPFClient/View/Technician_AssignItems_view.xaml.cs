@@ -46,6 +46,11 @@ namespace WPFClient.View
 
         private async void assignButton_Click(object sender, RoutedEventArgs e)
         {
+            if(quantityTextBox.Text == "")
+            {
+                MessageBox.Show("Please enter the quantity");
+                return;
+            }
             Technician_controller controller = new Technician_controller();
             await controller.AssignItems(this);
             Technician_view view = new Technician_view();
