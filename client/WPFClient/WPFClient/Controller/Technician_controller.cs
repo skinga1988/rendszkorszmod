@@ -287,7 +287,7 @@ namespace WPFClient.Controller
             }
         }
         
-        //create new orderer
+        //create new orderer A.0
         public async Task Button_Click_Create_orderer_controller(Techinican_create_orderer obj)
         {
             string orderer_name = obj.New_orderer_textbox.Text;
@@ -317,6 +317,9 @@ namespace WPFClient.Controller
                         {
                             // Orderer created successfully
                             MessageBox.Show("Orderer created successfully!");
+                            obj.Description_textbox.Text = "";
+                            obj.New_orderer_textbox.Text = "";
+
                         }
                         else
                         {
@@ -336,7 +339,7 @@ namespace WPFClient.Controller
                 MessageBox.Show("Fill all the textbox!");
             }
         }
-        //create new project
+        //create new project A.1
         public async Task Button_Click_new_Project(Technician_create_new_project obj)
         {
             string _project_type = obj.Project_type_combobox.Text;
@@ -350,75 +353,106 @@ namespace WPFClient.Controller
             {
                 //gets the orderer id
                 var _ordererId = await GetOrdererId(_orderer);
-                using (var client = RestHelper.GetRestClient())
+                //check whether orderer already has a project connected
+                var _ordererId_project = await GetOrdererProjectId(_orderer);
+                if (_ordererId_project == 0)
                 {
+                    using (var client = RestHelper.GetRestClient())
+                    {
 
-                    var newProjectRecord = new
-                    {
-                        projectType = _project_type,
-                        projectDescription = _description,
-                        place = _place,
-                        ordererId = _ordererId,
-                        userId = userid
-                    };
-                    var json = JsonConvert.SerializeObject(newProjectRecord);
-                    var response = await client.PostAsync("api/Project", new StringContent(json, Encoding.UTF8, "application/json"));
-                    string status = response.StatusCode.ToString();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        
-                        // Item created successfully
-                        MessageBox.Show("New Project record created successfully!");
-                        obj.Project_type_combobox.SelectedValue = 0;
-                        obj.Description_textbox.Text = "";
-                        obj.Place_textbox.Text = "";
-                        obj.Orderer_select.Text = "";
-                       
-                        
+                        var newProjectRecord = new
+                        {
+                            projectType = _project_type,
+                            projectDescription = _description,
+                            place = _place,
+                            ordererId = _ordererId,
+                            userId = userid
+                        };
+                        var json = JsonConvert.SerializeObject(newProjectRecord);
+                        var response = await client.PostAsync("api/Project", new StringContent(json, Encoding.UTF8, "application/json"));
+                        string status = response.StatusCode.ToString();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // Item created successfully
+                            MessageBox.Show("New Project record created successfully!");
+                            obj.Project_type_combobox.SelectedValue = 0;
+                            obj.Description_textbox.Text = "";
+                            obj.Place_textbox.Text = "";
+                            obj.Orderer_select.Text = "";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Project record creation failed: " + status);
+                            obj.Project_type_combobox.SelectedValue = 0;
+                            obj.Description_textbox.Text = "";
+                            obj.Place_textbox.Text = "";
+                            obj.Orderer_select.Text = "";
+                            return;
+                        }
                     }
-                    else
+                    //get the projectid
+                    var projectid = await GetProjectId(_project_type, _description, _place, _ordererId);
+                    using (var client = RestHelper.GetRestClient())
                     {
-                        MessageBox.Show("Project record creation failed: " + status);
-                        obj.Project_type_combobox.SelectedValue = 0;
-                        obj.Description_textbox.Text = "";
-                        obj.Place_textbox.Text = "";
-                        obj.Orderer_select.Text = "";
-                        return;
+
+                        var newProjectAccountRecord = new
+                        {
+                            projectAccounType = _project_type,
+                            createdDate = accountDateTime,
+                            projectId = projectid,
+                        };
+                        var json = JsonConvert.SerializeObject(newProjectAccountRecord);
+                        var response = await client.PostAsync("api/ProjectAccount", new StringContent(json, Encoding.UTF8, "application/json"));
+                        string status = response.StatusCode.ToString();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // Item created successfully
+                            MessageBox.Show("New ProjectAccount record created successfully!");
+                            obj.Project_type_combobox.SelectedValue = 0;
+                            obj.Description_textbox.Text = "";
+                            obj.Place_textbox.Text = "";
+                            obj.Orderer_select.Text = "";
+                        }
+                        else
+                        {
+                            MessageBox.Show("ProjectAccount record creation failed: " + status);
+                            obj.Project_type_combobox.SelectedValue = 0;
+                            obj.Description_textbox.Text = "";
+                            obj.Place_textbox.Text = "";
+                            obj.Orderer_select.Text = "";
+                            return;
+                        }
+                    }
+                    var _ordererDescription = await GetOrdererDescription(_orderer);
+                    var putOrderer = new
+                    {
+                        id = _ordererId,
+                        ordererName = _orderer,
+                        description = _ordererDescription,
+                        userId = userid,
+                        projectId = projectid,
+
+                    };
+                    using (var client = RestHelper.GetRestClient())
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/Orderer?id=" + _ordererId);
+                        var content = new StringContent(JsonConvert.SerializeObject(putOrderer), Encoding.UTF8, "application/json");
+                        request.Content = content;
+                        var response = await client.SendAsync(request);
+                        var status = response.StatusCode;
+                        if (status.ToString() == "NoContent")
+                        {
+                            MessageBox.Show("Orderer project_id updated successfully!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: project_id update denied: " + status.ToString());
+                        }
                     }
                 }
-                //get the projectid
-                var projectid = await GetProjectId(_project_type,_description, _place, _ordererId);
-                using (var client = RestHelper.GetRestClient())
+                else
                 {
-
-                    var newProjectAccountRecord = new
-                    {
-                        projectAccounType = _project_type,
-                        createdDate = accountDateTime,
-                        projectId = projectid,
-                    };
-                    var json = JsonConvert.SerializeObject(newProjectAccountRecord);
-                    var response = await client.PostAsync("api/ProjectAccount", new StringContent(json, Encoding.UTF8, "application/json"));
-                    string status = response.StatusCode.ToString();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Item created successfully
-                        MessageBox.Show("New ProjectAccount record created successfully!");
-                        obj.Project_type_combobox.SelectedValue = 0;
-                        obj.Description_textbox.Text = "";
-                        obj.Place_textbox.Text = "";
-                        obj.Orderer_select.Text = "";
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("ProjectAccount record creation failed: " + status);
-                        obj.Project_type_combobox.SelectedValue = 0;
-                        obj.Description_textbox.Text = "";
-                        obj.Place_textbox.Text = "";
-                        obj.Orderer_select.Text = "";
-                        return;
-                    }
+                    MessageBox.Show("Project already exist in connection with the Orderer!");
                 }
             }
             else
@@ -456,6 +490,28 @@ namespace WPFClient.Controller
                 var items = JsonConvert.DeserializeObject<List<Orderer_model>>(responseContent);
                 var selectedItemType = items.Find(item => item.OrdererName == orderer_name);
                 return selectedItemType.Id;
+            }
+        }
+        public async Task<int> GetOrdererProjectId(string orderer_name)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Orderer");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Orderer_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.OrdererName == orderer_name);
+                return selectedItemType.ProjectId;
+            }
+        }
+        public async Task<string> GetOrdererDescription(string orderer_name)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Orderer");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Orderer_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.OrdererName == orderer_name);
+                return selectedItemType.Description;
             }
         }
         //whether orderer name already exist

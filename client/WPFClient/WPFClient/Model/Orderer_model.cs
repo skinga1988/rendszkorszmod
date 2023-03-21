@@ -11,6 +11,7 @@ namespace WPFClient.Model
         public int Id { get; set; }
         public string OrdererName { get; set; }
         public string Description { get; set; }
+        public int ProjectId { get; set; }
         public User_model User { get; set; }
         public Project_model Project { get; set; }
     }
