@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFClient.View"
         mc:Ignorable="d"
-        Title="Technician_AssignItems_view" Height="340" Width="800" Loaded="Window_Loaded">
+        Title="Assign parts" Height="340" Width="800" Loaded="Window_Loaded">
     <Grid>
         <ComboBox x:Name="projectsComboBox" HorizontalAlignment="Left" Height="26" Margin="10,37,0,0" VerticalAlignment="Top" Width="235"
                   ItemsSource="{Binding Projects}" DisplayMemberPath="Place" SelectedValuePath="Id"/>
