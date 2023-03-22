@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFClient.Controller;
 using WPFClient.Model;
 using WPFClient.Utilities;
 
@@ -22,13 +23,16 @@ namespace WPFClient.View
     /// </summary>
     public partial class Technician_list_projects : Window
     {
+
+
         public Technician_list_projects()
         {
             InitializeComponent();
+
         }
 
 
-        private async Task refreshdataAsync()
+        private async Task RefreshdataAsync()
         {
             using (var client = RestHelper.GetRestClient())
             {
@@ -57,15 +61,18 @@ namespace WPFClient.View
         }
 
         //listing projects
-        private async void Button_Click_List2(object sender, RoutedEventArgs e)
-        {
-            await refreshdataAsync();
 
-        }
 
         private void ProjectsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
+
+        private async void Button_Click_list(object sender, RoutedEventArgs e)
+        {
+            await RefreshdataAsync();
+        }
+
+
     }
 }
