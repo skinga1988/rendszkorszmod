@@ -526,6 +526,61 @@ namespace WPFClient.Controller
                 return selectedItemType;
             }
         }
+        public async Task<string> GetProjectType(int projectId)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.Id == projectId);
+                return selectedItemType.ProjectType;
+            }
+        }
+        public async Task<string> GetProjectDescription(int projectId)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.Id == projectId);
+                return selectedItemType.ProjectDescription;
+            }
+        }
+        public async Task<string> GetProjectPlace(int projectId)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.Id == projectId);
+                return selectedItemType.Place;
+            }
+        }
+        public async Task<int> GetProjectOrdererId(int projectId)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.Id == projectId);
+                return selectedItemType.OrdererId;
+            }
+        }
+        public async Task<int> GetProjectUserId(int projectId)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemType = items.Find(item => item.Id == projectId);
+                return selectedItemType.UserId;
+            }
+        }
         public async Task<int> GetProjectId(string _project_type, string _description, string _place, int _ordererId)
         {
             using (var httpClient = RestHelper.GetRestClient())
@@ -568,6 +623,13 @@ namespace WPFClient.Controller
             string price_per_hour_string = obj.Price_per_hour_textbox.Text;
             string disembarkation_cost_string = obj.Disembarkation_cost_textbox.Text;
             var selectedStockId = obj.ProjectId_combobox.SelectedItem.ToString();
+            var selectedProjectkId = Convert.ToInt32(obj.ProjectId_combobox.SelectedItem);
+            var _projectType = await GetProjectType(selectedProjectkId);
+            var _projectDescription = await GetProjectDescription(selectedProjectkId);
+            var _projectPlace = await GetProjectPlace(selectedProjectkId);
+            var _projectOrdererId = await GetProjectOrdererId(selectedProjectkId);
+            var _projectUserId = await GetProjectUserId(selectedProjectkId);
+            
 
 
 
@@ -588,29 +650,50 @@ namespace WPFClient.Controller
                                 {
                                     if (disembarkation_cost > 0)
                                     {
-
+                                        int calculated_cost = (estimated_hours * price_per_hour) + disembarkation_cost;
+                                        var _projectDescription_2 = _projectDescription + "" +
+                " Wage Cost: " + calculated_cost.ToString();
+                                        var putProject = new
                                         {
-
-
-                                            int calculated_cost = (estimated_hours * price_per_hour) + disembarkation_cost;
-
-                                            MessageBox.Show("The calculated price is: " + calculated_cost);
+                                            Id = selectedProjectkId,
+                                            ProjectType= _projectType,
+                                            Projectdescription = _projectDescription_2,
+                                            Place = _projectPlace,
+                                            OrdererId = _projectOrdererId,
+                                            UserId = _projectUserId
+                                        };
+                                        using (var client = RestHelper.GetRestClient())
+                                            {
+                                                var request = new HttpRequestMessage(HttpMethod.Put, "api/Project?id=" + selectedProjectkId);
+                                                var content = new StringContent(JsonConvert.SerializeObject(putProject), Encoding.UTF8, "application/json");
+                                                request.Content = content;
+                                                var response = await client.SendAsync(request);
+                                                var status = response.StatusCode;
+                                                if (status.ToString() == "NoContent")
+                                                {
+                                                    MessageBox.Show("Project description updated successfully!");
+                                                }
+                                                else
+                                                {
+                                                    MessageBox.Show("Error: project description update denied: " + status.ToString());
+                                                }
+                                            }
+                                            obj.Wage_cost_textbox.Text = calculated_cost.ToString();
 
                                             // Get the text from the textbox
-                                            string textboxText = obj.Estimated_hours_textbox.Text;
+                                            //string textboxText = obj.Estimated_hours_textbox.Text;
 
                                             // Get the selected item from the ComboBox
-                                            int selectedItem = Convert.ToInt32(obj.ProjectId_combobox.SelectedItem.ToString());
+                                            //int selectedItem = Convert.ToInt32(obj.ProjectId_combobox.SelectedItem.ToString());
 
                                             // Create an object to hold the data
-                                            var workhours = new { textboxText, selectedItem };
+                                            //var workhours = new { textboxText, selectedItem };
 
                                             // Serialize the data to JSON
-                                            string jsonString = JsonConvert.SerializeObject(workhours);
+                                            //string jsonString = JsonConvert.SerializeObject(workhours);
 
                                             // Write the JSON to a file
-                                            File.WriteAllText("workhours.json", jsonString);
-                                        }
+                                            //File.WriteAllText("workhours.json", jsonString);
                                     }
                                 }
                             }
