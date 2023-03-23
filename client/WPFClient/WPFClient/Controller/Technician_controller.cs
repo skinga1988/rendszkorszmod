@@ -654,6 +654,35 @@ namespace WPFClient.Controller
             }
         }
 
+        // Load the already assigned items into the grid
+        internal async Task<ObservableCollection<ProductListGridRow>> GetAssignedItems(Project_model project)
+        {
+            ObservableCollection<ProductListGridRow> productlist = new ObservableCollection<ProductListGridRow>();
+            using (var client = RestHelper.GetRestClient())
+            {
+                var responseStockItem = await client.GetAsync("api/StockItem");
+                var contentStockItem = await responseStockItem.Content.ReadAsStringAsync();
+                var stockitems = JsonConvert.DeserializeObject<List<StockItem_model>>(contentStockItem);
+
+                var response = await client.GetAsync("api/StockAccount");
+                var content = await response.Content.ReadAsStringAsync();
+                var stockaccounts = JsonConvert.DeserializeObject<List<StockAccount_model>>(content);
+
+                // Filter for Reservation type and the current project
+                stockaccounts = stockaccounts.FindAll(i => i.Type == StockAccountType.Reservation);
+                stockaccounts = stockaccounts.FindAll(i => i.ProjectId == project.Id);
+                foreach (var stockaccount in stockaccounts)
+                {
+                    productlist.Add(new ProductListGridRow()
+                    {
+                        Name = stockitems.Where(i => i.Id == stockaccount.StockItemId).FirstOrDefault().ItemType,
+                        Count = stockaccount.Pieces
+                    });
+                }
+
+                return productlist;
+            }
+        }
     }
 
 }

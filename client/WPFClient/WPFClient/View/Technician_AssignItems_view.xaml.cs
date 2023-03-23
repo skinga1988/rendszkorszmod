@@ -25,6 +25,7 @@ namespace WPFClient.View
     {
         public ObservableCollection<StockItem_model> Products { get; set; }
         public ObservableCollection<Project_model> Projects { get; set; }
+        public ObservableCollection<ProductListGridRow> AssignedProducts { get; set; }
         public Technician_AssignItems_view()
         {
             InitializeComponent();
@@ -54,7 +55,13 @@ namespace WPFClient.View
             Technician_controller controller = new Technician_controller();
             await controller.AssignItems(this);
             quantityTextBox.Text = "";
+
+            // Redisplay item count
             await controller.GetAvailableCount(this);
+
+            // Redisplay assigned items
+            AssignedProducts = await controller.GetAssignedItems((Project_model)projectsComboBox.SelectedItem);
+            datagrid.ItemsSource = AssignedProducts;
         }
 
         private void PreviewTextInput_event(object sender, TextCompositionEventArgs e)
@@ -68,6 +75,13 @@ namespace WPFClient.View
         {
             Technician_controller technician_Controller = new Technician_controller();
             await technician_Controller.GetAvailableCount(this);
+        }
+
+        private async void projectsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Technician_controller controller = new Technician_controller();
+            AssignedProducts = await controller.GetAssignedItems((Project_model)projectsComboBox.SelectedItem);
+            datagrid.ItemsSource = AssignedProducts;
         }
     }
 }
