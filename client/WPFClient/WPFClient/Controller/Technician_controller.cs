@@ -20,6 +20,7 @@ namespace WPFClient.Controller
     internal class Technician_controller
     {
         public ObservableCollection<ProductListGridRow> gridRows { get; set; }
+        public ObservableCollection<ProjectListGridRow> gridRows2 { get; set; }
 
         // A.3
         public async Task GetProductList(Technician_ListItems_view view)
@@ -70,6 +71,11 @@ namespace WPFClient.Controller
             }
         }
 
+        internal Task Button_Click_list(Technician_list_projects technician_list_projects)
+        {
+            throw new NotImplementedException();
+        }
+
         // A.4
         public async Task AssignItems(Technician_AssignItems_view view)
         {
@@ -79,7 +85,7 @@ namespace WPFClient.Controller
             // 3. set the project status to Draft
 
             var product = (StockItem_model)view.productComboBox.SelectedItem;
-            var currentProject= (Project_model)view.projectsComboBox.SelectedItem;
+            var currentProject = (Project_model)view.projectsComboBox.SelectedItem;
             int currentProjectId = currentProject.Id;
             int count = Convert.ToInt32(view.quantityTextBox.Text);
             using (var client = RestHelper.GetRestClient())
@@ -241,16 +247,16 @@ namespace WPFClient.Controller
             {
                 int availibility = 0;
                 var product = (StockItem_model)view.productComboBox.SelectedItem;
-                
+
                 var response = await client.GetAsync("api/Stock");
                 var content = await response.Content.ReadAsStringAsync();
                 var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(content);
                 stocks = stocks.FindAll(i => i.StockItemId == product.Id);
-                foreach(var stock in stocks)
+                foreach (var stock in stocks)
                 {
                     availibility += (stock.AvailablePieces - stock.ReservedPieces);
                 }
-                view.availableTextBox.Text = availibility>=0?availibility.ToString():"0";
+                view.availableTextBox.Text = availibility >= 0 ? availibility.ToString() : "0";
             }
         }
 
@@ -286,7 +292,7 @@ namespace WPFClient.Controller
                 return new ObservableCollection<Project_model>(projects.FindAll(i => i.UserId == userid));
             }
         }
-        
+
         //create new orderer A.0
         public async Task Button_Click_Create_orderer_controller(Techinican_create_orderer obj)
         {
@@ -332,7 +338,7 @@ namespace WPFClient.Controller
                 {
                     MessageBox.Show("Orderer already exists!");
                 }
-               
+
             }
             else
             {
@@ -462,8 +468,8 @@ namespace WPFClient.Controller
         }
 
 
-            
-            
+
+
 
         ////LISTENERS-------------------------------------------------------------------------------------------
         //loads the content of the combobox orderers for new project
@@ -588,18 +594,18 @@ namespace WPFClient.Controller
                 var response = await httpClient.GetAsync("api/Project");
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
-                var selectedItemType = items.Any(item => item.ProjectDescription == _description 
+                var selectedItemType = items.Any(item => item.ProjectDescription == _description
                     && item.Place == _place && item.ProjectType == _project_type && item.OrdererId == _ordererId);
                 if (selectedItemType)
                 {
-                   var project = items.Find(item => item.ProjectDescription == _description && item.Place == _place && item.ProjectType == _project_type && item.OrdererId == _ordererId);
+                    var project = items.Find(item => item.ProjectDescription == _description && item.Place == _place && item.ProjectType == _project_type && item.OrdererId == _ordererId);
                     return project.Id;
                 }
                 else
                 {
                     return 0;
                 }
-                
+
             }
         }
 
@@ -629,7 +635,7 @@ namespace WPFClient.Controller
             var _projectPlace = await GetProjectPlace(selectedProjectkId);
             var _projectOrdererId = await GetProjectOrdererId(selectedProjectkId);
             var _projectUserId = await GetProjectUserId(selectedProjectkId);
-            
+
 
 
 
@@ -656,44 +662,44 @@ namespace WPFClient.Controller
                                         var putProject = new
                                         {
                                             Id = selectedProjectkId,
-                                            ProjectType= _projectType,
+                                            ProjectType = _projectType,
                                             Projectdescription = _projectDescription_2,
                                             Place = _projectPlace,
                                             OrdererId = _projectOrdererId,
                                             UserId = _projectUserId
                                         };
                                         using (var client = RestHelper.GetRestClient())
+                                        {
+                                            var request = new HttpRequestMessage(HttpMethod.Put, "api/Project?id=" + selectedProjectkId);
+                                            var content = new StringContent(JsonConvert.SerializeObject(putProject), Encoding.UTF8, "application/json");
+                                            request.Content = content;
+                                            var response = await client.SendAsync(request);
+                                            var status = response.StatusCode;
+                                            if (status.ToString() == "NoContent")
                                             {
-                                                var request = new HttpRequestMessage(HttpMethod.Put, "api/Project?id=" + selectedProjectkId);
-                                                var content = new StringContent(JsonConvert.SerializeObject(putProject), Encoding.UTF8, "application/json");
-                                                request.Content = content;
-                                                var response = await client.SendAsync(request);
-                                                var status = response.StatusCode;
-                                                if (status.ToString() == "NoContent")
-                                                {
-                                                    MessageBox.Show("Project description updated successfully!");
-                                                }
-                                                else
-                                                {
-                                                    MessageBox.Show("Error: project description update denied: " + status.ToString());
-                                                }
+                                                MessageBox.Show("Project description updated successfully!");
                                             }
-                                            obj.Wage_cost_textbox.Text = calculated_cost.ToString();
+                                            else
+                                            {
+                                                MessageBox.Show("Error: project description update denied: " + status.ToString());
+                                            }
+                                        }
+                                        obj.Wage_cost_textbox.Text = calculated_cost.ToString();
 
-                                            // Get the text from the textbox
-                                            //string textboxText = obj.Estimated_hours_textbox.Text;
+                                        // Get the text from the textbox
+                                        //string textboxText = obj.Estimated_hours_textbox.Text;
 
-                                            // Get the selected item from the ComboBox
-                                            //int selectedItem = Convert.ToInt32(obj.ProjectId_combobox.SelectedItem.ToString());
+                                        // Get the selected item from the ComboBox
+                                        //int selectedItem = Convert.ToInt32(obj.ProjectId_combobox.SelectedItem.ToString());
 
-                                            // Create an object to hold the data
-                                            //var workhours = new { textboxText, selectedItem };
+                                        // Create an object to hold the data
+                                        //var workhours = new { textboxText, selectedItem };
 
-                                            // Serialize the data to JSON
-                                            //string jsonString = JsonConvert.SerializeObject(workhours);
+                                        // Serialize the data to JSON
+                                        //string jsonString = JsonConvert.SerializeObject(workhours);
 
-                                            // Write the JSON to a file
-                                            //File.WriteAllText("workhours.json", jsonString);
+                                        // Write the JSON to a file
+                                        //File.WriteAllText("workhours.json", jsonString);
                                     }
                                 }
                             }
@@ -766,6 +772,34 @@ namespace WPFClient.Controller
                 return productlist;
             }
         }
-    }
 
+
+
+        public async Task GetProjectList(Technician_list_projects view)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                    gridRows2 = new ObservableCollection<ProjectListGridRow>();
+                    foreach (var project in projects)
+                    {
+                        gridRows2.Add(new ProjectListGridRow()
+                        {
+                            Id = project.Id,
+                            ProjectType = project.ProjectType,
+                            ProjectDescription = project.ProjectDescription,
+                            Place = project.Place,
+                            OrdererId = project.OrdererId,
+                            UserId = project.UserId
+                        });
+                    }
+                }
+                view.ProjectsDataGrid.DataContext = gridRows2;
+            }
+        }
+    }
 }

@@ -87,6 +87,7 @@
     <Compile Include="Model\StockItem_model.cs" />
     <Compile Include="Model\Stock_model.cs" />
     <Compile Include="Model\User_model.cs" />
+    <Compile Include="ProjectListGridRow.cs" />
     <Compile Include="Utilities\RestHelper.cs" />
     <Compile Include="View\LoginWindow_view.xaml.cs">
       <DependentUpon>LoginWindow_view.xaml</DependentUpon>
