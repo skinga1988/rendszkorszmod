@@ -547,7 +547,7 @@ namespace WPFClient.Controller
                 {
                     id = project.Id,
                     projectType = project.GetType(),
-                    projectDescription = project.ProjectDescription + ", price: " + totalPrice.ToString(),
+                    projectDescription = project.ProjectDescription + ", price: " + totalPrice.ToString() + " HUF",
                     place = project.Place,
                     ordererId = project.OrdererId,
                     userId = project.UserId,
