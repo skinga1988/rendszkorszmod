@@ -19,33 +19,36 @@ using WPFClient.Model;
 namespace WPFClient.View
 {
     /// <summary>
-    /// Interaction logic for Technician_AssignItems_view.xaml
+    /// Interaction logic for Technician_prereservation_view.xaml
     /// </summary>
-    public partial class Technician_AssignItems_view : Window
+    public partial class Technician_prereservation_view : Window
     {
         public ObservableCollection<StockItem_model> Products { get; set; }
         public ObservableCollection<Project_model> Projects { get; set; }
-        public ObservableCollection<ProductListGridRow> AssignedProducts { get; set; }
-        public Technician_AssignItems_view()
+        public ObservableCollection<ProductListGridRow> PrereservedProducts { get; set; }
+        public Technician_prereservation_view()
         {
             InitializeComponent();
             DataContext = this;  
         }
 
+        //loading the content of the page
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Technician_controller controller = new Technician_controller();
-            await controller.LoadAssignItemsData(this);
+            await controller.LoadPrereservationData_controller(this);
         }
 
+        //back to the Assign item page
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Technician_view view = new Technician_view();
+            Technician_AssignItems_view view = new Technician_AssignItems_view();
             view.Show();
             Close();
         }
 
-        private async void assignButton_Click(object sender, RoutedEventArgs e)
+        //pre-reserve button click
+        private async void prereserve_Button_Click(object sender, RoutedEventArgs e)
         {
             if(quantityTextBox.Text == "")
             {
@@ -53,38 +56,15 @@ namespace WPFClient.View
                 return;
             }
             Technician_controller controller = new Technician_controller();
-            await controller.AssignItems(this);
+            await controller.PrereserveItems_controller(this);
             quantityTextBox.Text = "";
 
             // Redisplay item count
-            await controller.GetAvailableCount(this);
+            await controller.GetPrereservedCount_controller(this);
 
-            // Redisplay assigned items
-            AssignedProducts = await controller.GetAssignedItems((Project_model)projectsComboBox.SelectedItem);
-            datagrid.ItemsSource = AssignedProducts;
-        }
-
-        //sets the project selected in the combobox as "Scheduled" phase
-        private async void set_as_scheduled_Click(object sender, RoutedEventArgs e)
-        {
-            Technician_controller technician_Controller = new Technician_controller();
-            await technician_Controller.set_as_scheduled_Click_controller(this);
-        }
-
-
-        //sets the project selected in the combobox as "Wait" phase
-        private async void set_as_wait_Click(object sender, RoutedEventArgs e)
-        {
-            Technician_controller technician_Controller = new Technician_controller();
-            await technician_Controller.set_as_wait_Click_controller(this);
-        }
-
-        //making a pre-reservation
-        private void make_prereservation_Click(object sender, RoutedEventArgs e)
-        {
-            Technician_prereservation_view window = new Technician_prereservation_view();
-            window.Show();
-            this.Close();
+            // Redisplay pre-reserved items
+            PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox.SelectedItem);
+            datagrid.ItemsSource = PrereservedProducts;
         }
 
         private void PreviewTextInput_event(object sender, TextCompositionEventArgs e)
@@ -97,14 +77,14 @@ namespace WPFClient.View
         private async void productComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Technician_controller technician_Controller = new Technician_controller();
-            await technician_Controller.GetAvailableCount(this);
+            await technician_Controller.GetPrereservedCount_controller(this);
         }
 
         private async void projectsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Technician_controller controller = new Technician_controller();
-            AssignedProducts = await controller.GetAssignedItems((Project_model)projectsComboBox.SelectedItem);
-            datagrid.ItemsSource = AssignedProducts;
+            PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox.SelectedItem);
+            datagrid.ItemsSource = PrereservedProducts;
         }
     }
 }

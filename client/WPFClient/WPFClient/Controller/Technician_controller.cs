@@ -219,6 +219,149 @@ namespace WPFClient.Controller
 
         }
 
+        // make a pre-reservation for button click -- NEEDS TO BE UPDATED
+        public async Task PrereserveItems_controller(Technician_prereservation_view view)
+        {
+            //// Tasks:
+            //// 1. make new StockAccount or update it
+            //// 2. increase the reserved in the Stock table
+            //// 3. set the project status to Draft
+
+            //var product = (StockItem_model)view.productComboBox.SelectedItem;
+            //var currentProject = (Project_model)view.projectsComboBox.SelectedItem;
+            //int currentProjectId = currentProject.Id;
+            //int count = Convert.ToInt32(view.quantityTextBox.Text);
+            //using (var client = RestHelper.GetRestClient())
+            //{
+            //    var response = await client.GetAsync("api/StockAccount");
+            //    var contentStockAccount = await response.Content.ReadAsStringAsync();
+            //    // Filter out any StockAccounts with different projectId and type
+            //    var stockAccounts = JsonConvert.DeserializeObject<List<StockAccount_model>>(contentStockAccount);
+            //    stockAccounts = stockAccounts.FindAll(i => i.ProjectId == currentProjectId);
+            //    stockAccounts = stockAccounts.FindAll(i => i.Type == StockAccountType.Reservation);
+
+            //    // Get Stock
+            //    response = await client.GetAsync("api/Stock");
+            //    var contentStock = await response.Content.ReadAsStringAsync();
+            //    var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
+            //    // Step 1: Update or create new StockAccount for a product
+            //    var stockAccount = stockAccounts.Where(i => i.StockItemId == product.Id).FirstOrDefault();
+            //    // We already have this product reserved, update the count and date
+            //    if (stockAccount != null)
+            //    {
+            //        var modifiedStockAccount = new
+            //        {
+            //            Id = stockAccount.Id,
+            //            StockAccountType = "Reservation",
+            //            Pieces = stockAccount.Pieces + count,
+            //            AccountTime = DateTime.Now,
+            //            ProjectId = stockAccount.ProjectId,
+            //            StockItemId = stockAccount.StockItemId,
+            //            UserId = userid
+            //        };
+            //        var content = new StringContent(JsonConvert.SerializeObject(modifiedStockAccount), Encoding.UTF8, "application/json");
+            //        response = await client.PutAsync("api/StockAccount?id=" + stockAccount.Id, content);
+            //    }
+            //    // Create new StockAccount
+            //    else
+            //    {
+            //        var newStockAccount = new
+            //        {
+            //            StockAccountType = "Reservation",
+            //            Pieces = count,
+            //            AccountTime = DateTime.Now,
+            //            ProjectId = currentProjectId,
+            //            StockItemId = product.Id,
+            //            UserId = userid
+            //        };
+            //        var content = new StringContent(JsonConvert.SerializeObject(newStockAccount), Encoding.UTF8, "application/json");
+            //        response = await client.PostAsync("api/StockAccount", content);
+            //    }
+            //    if (!response.IsSuccessStatusCode)
+            //    {
+            //        MessageBox.Show("Failed to update StockAccount table");
+            //    }
+            //    // Step 2: increase reserved pieces in Stock table
+            //    // Iterate through all Stocks containing the current product
+            //    var productstock = stocks.Where(i => i.StockItemId == product.Id);
+            //    if (productstock.Count() > 0)
+            //    {
+            //        foreach (Stock_model stock in productstock)
+            //        {
+            //            // If we need more pieces than available in the stock
+            //            if (count > (stock.AvailablePieces - stock.ReservedPieces))
+            //            {
+            //                count -= (stock.AvailablePieces - stock.ReservedPieces);
+            //                stock.ReservedPieces = stock.AvailablePieces;
+            //                UpdateStock(stock);
+            //            }
+            //            else
+            //            // If we have enough pieces in a stock
+            //            {
+            //                stock.ReservedPieces += count;
+            //                count = 0;
+            //                UpdateStock(stock);
+            //                break;
+            //            }
+            //        }
+            //        // If we reserved all available pieces and we still need more
+            //        // add the remaining count to the reservedPieces value of the first Stock in the list
+            //        if (count > 0)
+            //        {
+            //            productstock.First().ReservedPieces += count;
+            //            UpdateStock(productstock.First());
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("StockItem not found in Stock table");
+            //    }
+
+            //    // Step 4: update project status
+            //    string projectstatus = "Draft";
+            //    var responseProject = await client.GetAsync("api/Project/" + currentProjectId);
+            //    var contentProject = await responseProject.Content.ReadAsStringAsync();
+            //    var project = JsonConvert.DeserializeObject<Project_model>(contentProject);
+            //    ProjectStatus projectStatusEnum;
+            //    Enum.TryParse<ProjectStatus>(projectstatus, true, out projectStatusEnum);
+
+            //    // Make changes to project status only if we actually need to change it
+            //    if (project.ProjectType != projectstatus)
+            //    {
+            //        var projectAccount = new
+            //        {
+            //            projectAccounType = projectstatus,
+            //            createdDate = DateTime.Now,
+            //            projectId = currentProjectId
+            //        };
+            //        var contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
+            //        var responseProjectAccount = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
+            //        if (!responseProjectAccount.IsSuccessStatusCode)
+            //        {
+            //            MessageBox.Show("Error creating new ProjectAccount");
+            //        }
+
+            //        var updatedProject = new
+            //        {
+            //            id = project.Id,
+            //            projectType = projectstatus,
+            //            projectDescription = project.ProjectDescription,
+            //            place = project.Place,
+            //            ordererId = project.OrdererId,
+            //            userid = project.UserId,
+            //        };
+            //        var requestProject = new StringContent(JsonConvert.SerializeObject(updatedProject), Encoding.UTF8, "application/json");
+            //        var responseProjectUpdate = await client.PutAsync("api/Project?id=" + currentProjectId, requestProject);
+            //        if (!responseProjectUpdate.IsSuccessStatusCode)
+            //        {
+            //            MessageBox.Show("Error while updating Project");
+            //        }
+            //    }
+            //    MessageBox.Show("The item has been assigned to the project");
+            //}
+
+        }
+
         private async void UpdateStock(Stock_model stock)
         {
             var putStockRecord = new
@@ -258,6 +401,26 @@ namespace WPFClient.Controller
                 }
                 view.availableTextBox.Text = availibility >= 0 ? availibility.ToString() : "0";
             }
+        }
+
+        // Calculates available pieces for a Pre-reservation -- NEEDS TO BE UPDATED
+        internal async Task GetPrereservedCount_controller(Technician_prereservation_view view)
+        {
+            //using (var client = RestHelper.GetRestClient())
+            //{
+            //    int availibility = 0;
+            //    var product = (StockItem_model)view.productComboBox.SelectedItem;
+
+            //    var response = await client.GetAsync("api/Stock");
+            //    var content = await response.Content.ReadAsStringAsync();
+            //    var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(content);
+            //    stocks = stocks.FindAll(i => i.StockItemId == product.Id);
+            //    foreach (var stock in stocks)
+            //    {
+            //        availibility += (stock.AvailablePieces - stock.ReservedPieces);
+            //    }
+            //    view.availableTextBox.Text = availibility >= 0 ? availibility.ToString() : "0";
+            //}
         }
 
         // Fetches StockItems for products ComboBox
@@ -506,7 +669,7 @@ namespace WPFClient.Controller
                 }
 
                 //2: creating a new row in the ProjectAccounts table
-                //create a new projectAccount object with the Scheduled status
+                // 2/1: create a new projectAccount object with the Scheduled status
                 var projectAccount = new ProjectAccount_model
                 {
                     Type = ProjectAccountStatus.Scheduled,
@@ -515,7 +678,7 @@ namespace WPFClient.Controller
                     ProjectId = project.Id
 
                 };
-                //creating a json object from the projectAccount object
+                // 2/2: creating a json object from the projectAccount object
                 var json = JsonConvert.SerializeObject(projectAccount);
                 using (var client = RestHelper.GetRestClient())
                 {
@@ -532,7 +695,7 @@ namespace WPFClient.Controller
                 }
 
                 //3: price calculation for the Scheduled project, updating the Projects table
-                //3/1: price calculation
+                // 3/1: price calculation
                 int totalPrice = 0;
                 var stockAccounts = await GetStockAccountsByProjectId(project.Id);
                 foreach (var account in stockAccounts)
@@ -540,13 +703,13 @@ namespace WPFClient.Controller
                     var stockItem = await GetStockItemById(account.StockItemId);
                     totalPrice += stockItem.ItemPrice * account.Pieces;
                 }
-                MessageBox.Show("Total price for project " + project.Id.ToString() + " is " + totalPrice + ". Project description is updated in the Projects table.");
+                MessageBox.Show("Total price for project " + project.Id.ToString() + " is " + totalPrice + ".");
 
-                //3/2: updating the Projects table
+                // 3/2: updating the Projects table
                 var projectRow = new
                 {
                     id = project.Id,
-                    projectType = project.GetType(),
+                    projectType = "Scheduled",
                     projectDescription = project.ProjectDescription + ", price: " + totalPrice.ToString() + " HUF",
                     place = project.Place,
                     ordererId = project.OrdererId,
@@ -562,7 +725,7 @@ namespace WPFClient.Controller
                     var status = response.StatusCode;
                     if (status.ToString() == "NoContent")
                     {
-                        MessageBox.Show("Project status is modified to Scheduled: project id = " + project.Id + ".");
+                        MessageBox.Show("Project description is updated with the price. Project id = " + project.Id + ".");
                     }
                     else
                     {
@@ -612,7 +775,7 @@ namespace WPFClient.Controller
                 }
 
                 //2: creating a new row in the ProjectAccounts table
-                //create a new projectAccount object with the Scheduled status
+                //  2/1: create a new projectAccount object with the Scheduled status
                 var projectAccount = new ProjectAccount_model
                 {
                     Type = ProjectAccountStatus.Wait,
@@ -621,7 +784,7 @@ namespace WPFClient.Controller
                     ProjectId = project.Id
 
                 };
-                //creating a json object from the projectAccount object
+                // 2/2: creating a json object from the projectAccount object
                 var json = JsonConvert.SerializeObject(projectAccount);
                 using (var client = RestHelper.GetRestClient())
                 {
@@ -866,6 +1029,18 @@ namespace WPFClient.Controller
             view.productComboBox.SelectedIndex = 0;
         }
 
+        // Loads data into ComboBoxes in Technician_prereservation_view
+        public async Task LoadPrereservationData_controller(Technician_prereservation_view view)
+        {
+            view.Projects = await GetProjectCollection();
+            view.projectsComboBox.ItemsSource = view.Projects;
+            view.projectsComboBox.SelectedIndex = 0;
+
+            view.Products = await GetProductCollection();
+            view.productComboBox.ItemsSource = view.Products;
+            view.productComboBox.SelectedIndex = 0;
+        }
+
         //calculates the cost of working hours
         public async Task Button_Click_Calculate_workhours(Technician_calculate_workcost obj)
         {
@@ -1018,6 +1193,35 @@ namespace WPFClient.Controller
             }
         }
 
+        // Load the already pre-reserved items into the grid -- NEEDS TO BE UPDATED
+        internal async Task<ObservableCollection<ProductListGridRow>> GetPrereservedItems_controller(Project_model project)
+        {
+            ObservableCollection<ProductListGridRow> productlist = new ObservableCollection<ProductListGridRow>();
+            using (var client = RestHelper.GetRestClient())
+            {
+                var responseStockItem = await client.GetAsync("api/StockItem");
+                var contentStockItem = await responseStockItem.Content.ReadAsStringAsync();
+                var stockitems = JsonConvert.DeserializeObject<List<StockItem_model>>(contentStockItem);
+
+                var response = await client.GetAsync("api/StockAccount");
+                var content = await response.Content.ReadAsStringAsync();
+                var stockaccounts = JsonConvert.DeserializeObject<List<StockAccount_model>>(content);
+
+                // Filter for Reservation type and the current project
+                stockaccounts = stockaccounts.FindAll(i => i.Type == StockAccountType.Reservation);
+                stockaccounts = stockaccounts.FindAll(i => i.ProjectId == project.Id);
+                foreach (var stockaccount in stockaccounts)
+                {
+                    productlist.Add(new ProductListGridRow()
+                    {
+                        Name = stockitems.Where(i => i.Id == stockaccount.StockItemId).FirstOrDefault().ItemType,
+                        Count = stockaccount.Pieces
+                    });
+                }
+
+                return productlist;
+            }
+        }
 
 
         public async Task GetProjectList(Technician_list_projects view)
