@@ -32,19 +32,7 @@ namespace WPFClient.View
         }
 
 
-        private async Task RefreshdataAsync()
-        {
-            using (var client = RestHelper.GetRestClient())
-            {
-                var response = await client.GetAsync("api/Project");
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
-                    ProjectsDataGrid.ItemsSource = projects;
-                }
-            }
-        }
+        
 
         ////BUTTONS----------------------------------------------------------------------------------------------------
         //Back button: back to the technician main menu
@@ -70,7 +58,9 @@ namespace WPFClient.View
 
         private async void Button_Click_list(object sender, RoutedEventArgs e)
         {
-            await RefreshdataAsync();
+            //await RefreshdataAsync();
+            Technician_controller controller = new Technician_controller();
+            await controller.GetProjectList(this);
         }
 
 

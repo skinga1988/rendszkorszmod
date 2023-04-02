@@ -10,7 +10,7 @@
         <TextBlock x:Name="List_projects_textblock" Text="List projects" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="0,10,0,0"></TextBlock>
         <Button Content="Back to menu" HorizontalAlignment="Left" Margin="712,22,0,0" VerticalAlignment="Top" Click="Button_Click_Back4" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back4"/>
         <Button x:Name="List_projects" Content="List" HorizontalAlignment="Center" Height="28" Margin="0,66,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_list"/>
-        <DataGrid x:Name="ProjectsDataGrid" AutoGenerateColumns="False" Margin="54,123,54,33" Width="745">
+        <DataGrid x:Name="ProjectsDataGrid" d:ItemsSource="{d:SampleData ItemCount=6}" ItemsSource="{Binding}"  AutoGenerateColumns="False" Margin="54,123,54,33" Width="745">
             <DataGrid.Columns >
                 <DataGridTextColumn Width="90" Header="ID" Binding="{Binding Id}" />
                 <DataGridTextColumn Width="144" Header="Project Type" Binding="{Binding ProjectType}" />
