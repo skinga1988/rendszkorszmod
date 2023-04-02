@@ -64,6 +64,20 @@ namespace WPFClient.View
             datagrid.ItemsSource = AssignedProducts;
         }
 
+        //sets the project selected in the combobox as "Scheduled" phase
+        private async void set_as_scheduled_Click(object sender, RoutedEventArgs e)
+        {
+            Technician_controller technician_Controller = new Technician_controller();
+            await technician_Controller.set_as_scheduled_Click_controller(this);
+        }
+
+
+        //sets the project selected in the combobox as "Scheduled" phase
+        private async void set_as_wait_Click(object sender, RoutedEventArgs e)
+        {
+            Technician_controller technician_Controller = new Technician_controller();
+            await technician_Controller.set_as_wait_Click_controller(this);
+        }
         private void PreviewTextInput_event(object sender, TextCompositionEventArgs e)
         {
             // Filter every non-numerical character
