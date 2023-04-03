@@ -50,21 +50,21 @@ namespace WPFClient.View
         //pre-reserve button click
         private async void prereserve_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(quantityTextBox.Text == "")
+            if(quantityTextBox_prereservation.Text == "")
             {
                 MessageBox.Show("Please enter the quantity");
                 return;
             }
             Technician_controller controller = new Technician_controller();
             await controller.PrereserveItems_controller(this);
-            quantityTextBox.Text = "";
+            quantityTextBox_prereservation.Text = "";
 
             // Redisplay item count
             await controller.GetPrereservedCount_controller(this);
 
             // Redisplay pre-reserved items
-            PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox.SelectedItem);
-            datagrid.ItemsSource = PrereservedProducts;
+            PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox_prereservation.SelectedItem);
+            datagrid_prereservation.ItemsSource = PrereservedProducts;
         }
 
         private void PreviewTextInput_event(object sender, TextCompositionEventArgs e)
@@ -83,8 +83,8 @@ namespace WPFClient.View
         private async void projectsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Technician_controller controller = new Technician_controller();
-            PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox.SelectedItem);
-            datagrid.ItemsSource = PrereservedProducts;
+            PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox_prereservation.SelectedItem);
+            datagrid_prereservation.ItemsSource = PrereservedProducts;
         }
     }
 }

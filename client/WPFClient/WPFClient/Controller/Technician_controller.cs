@@ -440,6 +440,55 @@ namespace WPFClient.Controller
             }
         }
 
+        // Fetches items for products ComboBox for pre-reservation
+        internal async Task<ObservableCollection<StockItem_model>> GetProductCollection_prereservation()
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                //get the content of the StockItems table
+                var stockItems_Response = await client.GetAsync("https://localhost:7243/api/StockItem");
+                var stockItems_Content = await stockItems_Response.Content.ReadAsStringAsync();
+                var stockItems = JsonConvert.DeserializeObject<List<StockItem_model>>(stockItems_Content);
+                //if (stockItems == null)
+                //{
+                //    return new ObservableCollection<StockItem_model>();
+                //}
+
+                //get the content of the Stocks table
+                var stock_Response = await client.GetAsync("https://localhost:7243/api/Stock");
+                
+                if (!stock_Response.IsSuccessStatusCode)
+                {
+                    return new ObservableCollection<StockItem_model>();
+                }
+                
+                //filter those items in the Stock table where the the AvailablePieces-ReservedPieces = 0
+                var stock_Content = await stock_Response.Content.ReadAsStringAsync();
+                var stock_items = JsonConvert.DeserializeObject<List<Stock_model>>(stock_Content);
+                var filteredStock_items = stock_items.Where(x => x.AvailablePieces - x.ReservedPieces == 0).ToList();
+
+                // Replace the StockItemId with the corresponding item name
+                var stockItems_WithNames = new List<StockItem_model>();
+                foreach (var iterator_stock in filteredStock_items)
+                {
+                    var stockItem = stockItems.FirstOrDefault(x => x.Id == iterator_stock.StockItemId);
+                    if (stockItem != null)
+                    {
+                        stockItems_WithNames.Add(new StockItem_model
+                        {
+                            Id = stockItem.Id,
+                            ItemPrice = stockItem.ItemPrice,
+                            ItemType = stockItem.ItemType,
+                            MaxItem = stockItem.MaxItem
+                        });
+                    }
+                }   
+
+                var sortedItems = stockItems_WithNames.OrderBy(x => x.ItemType).ToList();
+                return new ObservableCollection<StockItem_model>(sortedItems);
+            }
+        }
+
         // Fetches projects for ComboBox
         internal async Task<ObservableCollection<Project_model>> GetProjectCollection()
         {
@@ -453,6 +502,21 @@ namespace WPFClient.Controller
                 var content = await response.Content.ReadAsStringAsync();
                 var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
                 return new ObservableCollection<Project_model>(projects.FindAll(i => i.UserId == userid && (i.ProjectType == "New" || i.ProjectType == "Draft" || i.ProjectType == "Wait")));
+            }
+        }
+
+        internal async Task<ObservableCollection<Project_model>> GetProjectCollection_prereservation()
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ObservableCollection<Project_model>();
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                return new ObservableCollection<Project_model>(projects.FindAll(i => i.UserId == userid && i.ProjectType == "Wait"));
             }
         }
 
@@ -1032,13 +1096,13 @@ namespace WPFClient.Controller
         // Loads data into ComboBoxes in Technician_prereservation_view
         public async Task LoadPrereservationData_controller(Technician_prereservation_view view)
         {
-            view.Projects = await GetProjectCollection();
-            view.projectsComboBox.ItemsSource = view.Projects;
-            view.projectsComboBox.SelectedIndex = 0;
+            view.Projects = await GetProjectCollection_prereservation();
+            view.projectsComboBox_prereservation.ItemsSource = view.Projects;
+            view.projectsComboBox_prereservation.SelectedIndex = 0;
 
-            view.Products = await GetProductCollection();
-            view.productComboBox.ItemsSource = view.Products;
-            view.productComboBox.SelectedIndex = 0;
+            view.Products = await GetProductCollection_prereservation();
+            view.productComboBox_prereservation.ItemsSource = view.Products;
+            view.productComboBox_prereservation.SelectedIndex = 0;
         }
 
         //calculates the cost of working hours
