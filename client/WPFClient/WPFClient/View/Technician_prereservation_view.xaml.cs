@@ -59,9 +59,6 @@ namespace WPFClient.View
             await controller.PrereserveItems_controller(this);
             quantityTextBox_prereservation.Text = "";
 
-            // Redisplay item count
-            await controller.GetPrereservedCount_controller(this);
-
             // Redisplay pre-reserved items
             PrereservedProducts = await controller.GetPrereservedItems_controller((Project_model)projectsComboBox_prereservation.SelectedItem);
             datagrid_prereservation.ItemsSource = PrereservedProducts;
@@ -72,12 +69,6 @@ namespace WPFClient.View
             // Filter every non-numerical character
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private async void productComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Technician_controller technician_Controller = new Technician_controller();
-            await technician_Controller.GetPrereservedCount_controller(this);
         }
 
         private async void projectsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
