@@ -92,145 +92,154 @@ namespace WPFClient.Controller
             var currentProject= (Project_model)view.projectsComboBox.SelectedItem;
             int currentProjectId = currentProject.Id;
             int count = Convert.ToInt32(view.quantityTextBox.Text);
-            using (var client = RestHelper.GetRestClient())
+            int sumcount = await GetSumCountForProduct(product.Id);
+            if (count > sumcount)
             {
-                var response = await client.GetAsync("api/StockAccount");
-                var contentStockAccount = await response.Content.ReadAsStringAsync();
-                // Filter out any StockAccounts with different projectId and type
-                var stockAccounts = JsonConvert.DeserializeObject<List<StockAccount_model>>(contentStockAccount);
-                stockAccounts = stockAccounts.FindAll(i => i.ProjectId == currentProjectId);
-                stockAccounts = stockAccounts.FindAll(i => i.Type == StockAccountType.Reservation);
+                MessageBox.Show("Not enough avaliable pieces");
+            }
+            else
+            {
+                using (var client = RestHelper.GetRestClient())
+                {
+                    var response = await client.GetAsync("api/StockAccount");
+                    var contentStockAccount = await response.Content.ReadAsStringAsync();
+                    // Filter out any StockAccounts with different projectId and type
+                    var stockAccounts = JsonConvert.DeserializeObject<List<StockAccount_model>>(contentStockAccount);
+                    stockAccounts = stockAccounts.FindAll(i => i.ProjectId == currentProjectId);
+                    stockAccounts = stockAccounts.FindAll(i => i.Type == StockAccountType.Reservation);
 
-                // Get Stock
-                response = await client.GetAsync("api/Stock");
-                var contentStock = await response.Content.ReadAsStringAsync();
-                var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
-                // Step 1: Update or create new StockAccount for a product
-                var stockAccount = stockAccounts.Where(i => i.StockItemId == product.Id).FirstOrDefault();
-                // We already have this product reserved, update the count and date
-                if (stockAccount != null)
-                {
-                    var modifiedStockAccount = new
+                    // Get Stock
+                    response = await client.GetAsync("api/Stock");
+                    var contentStock = await response.Content.ReadAsStringAsync();
+                    var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
+                    // Step 1: Update or create new StockAccount for a product
+                    var stockAccount = stockAccounts.Where(i => i.StockItemId == product.Id).FirstOrDefault();
+                    // We already have this product reserved, update the count and date
+                    if (stockAccount != null)
                     {
-                        Id = stockAccount.Id,
-                        StockAccountType = "Reservation",
-                        Pieces = stockAccount.Pieces + count,
-                        AccountTime = DateTime.Now,
-                        ProjectId = stockAccount.ProjectId,
-                        StockItemId = stockAccount.StockItemId,
-                        UserId = userid
-                    };
-                    var content = new StringContent(JsonConvert.SerializeObject(modifiedStockAccount), Encoding.UTF8, "application/json");
-                    response = await client.PutAsync("api/StockAccount?id=" + stockAccount.Id, content);
-                }
-                // Create new StockAccount
-                else
-                {
-                    var newStockAccount = new
-                    {
-                        StockAccountType = "Reservation",
-                        Pieces = count,
-                        AccountTime = DateTime.Now,
-                        ProjectId = currentProjectId,
-                        StockItemId = product.Id,
-                        UserId = userid
-                    };
-                    var content = new StringContent(JsonConvert.SerializeObject(newStockAccount), Encoding.UTF8, "application/json");
-                    response = await client.PostAsync("api/StockAccount", content);
-                }
-                if (!response.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Failed to update StockAccount table");
-                }
-                // Step 2: increase reserved pieces in Stock table
-                // Iterate through all Stocks containing the current product
-                var productstock = stocks.Where(i => i.StockItemId == product.Id);
-                if (productstock.Count() > 0)
-                {
-                    foreach (Stock_model stock in productstock)
-                    {
-                        // If we need more pieces than available in the stock
-                        if (count > (stock.AvailablePieces - stock.ReservedPieces))
+                        var modifiedStockAccount = new
                         {
-                            count -= (stock.AvailablePieces - stock.ReservedPieces);
-                            stock.ReservedPieces = stock.AvailablePieces;
-                            UpdateStock(stock);
-                        }
-                        else
-                        // If we have enough pieces in a stock
-                        {
-                            stock.ReservedPieces += count;
-                            count = 0;
-                            UpdateStock(stock);
-                            break;
-                        }
-                    }
-                    // If we reserved all available pieces and we still need more
-                    // add the remaining count to the reservedPieces value of the first Stock in the list
-                    if (count > 0)
-                    {
-                        productstock.First().ReservedPieces += count;
-                        UpdateStock(productstock.First());
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("StockItem not found in Stock table");
-                }
-
-                // Step 4: update project status if necessary
-                string projectstatus = "Draft";
-                var responseProject = await client.GetAsync("api/Project/" + currentProjectId);
-                var contentProject = await responseProject.Content.ReadAsStringAsync();
-                var project = JsonConvert.DeserializeObject<Project_model>(contentProject);
-                if (project.ProjectType != projectstatus)
-                {
-                    MessageBox.Show("Cannot assign unless the status is DRAFT.");
-                }
-                else
-                {
-                    ProjectStatus projectStatusEnum;
-                    Enum.TryParse<ProjectStatus>(projectstatus, true, out projectStatusEnum);
-
-                    // Make changes to project status only if we actually need to change it
-                    if (project.ProjectType != projectstatus)
-                    {
-                        var projectAccount = new
-                        {
-                            projectAccounType = projectstatus,
-                            createdDate = DateTime.Now,
-                            projectId = currentProjectId
+                            Id = stockAccount.Id,
+                            StockAccountType = "Reservation",
+                            Pieces = stockAccount.Pieces + count,
+                            AccountTime = DateTime.Now,
+                            ProjectId = stockAccount.ProjectId,
+                            StockItemId = stockAccount.StockItemId,
+                            UserId = userid
                         };
-                        var contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
-                        var responseProjectAccount = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
-                        if (!responseProjectAccount.IsSuccessStatusCode)
+                        var content = new StringContent(JsonConvert.SerializeObject(modifiedStockAccount), Encoding.UTF8, "application/json");
+                        response = await client.PutAsync("api/StockAccount?id=" + stockAccount.Id, content);
+                    }
+                    // Create new StockAccount
+                    else
+                    {
+                        var newStockAccount = new
                         {
-                            MessageBox.Show("Error creating new ProjectAccount");
-                        }
-
-                        var updatedProject = new
-                        {
-                            id = project.Id,
-                            projectType = projectstatus,
-                            projectDescription = project.ProjectDescription,
-                            place = project.Place,
-                            ordererId = project.OrdererId,
-                            userid = project.UserId,
+                            StockAccountType = "Reservation",
+                            Pieces = count,
+                            AccountTime = DateTime.Now,
+                            ProjectId = currentProjectId,
+                            StockItemId = product.Id,
+                            UserId = userid
                         };
-                        var requestProject = new StringContent(JsonConvert.SerializeObject(updatedProject), Encoding.UTF8, "application/json");
-                        var responseProjectUpdate = await client.PutAsync("api/Project?id=" + currentProjectId, requestProject);
-                        if (!responseProjectUpdate.IsSuccessStatusCode)
+                        var content = new StringContent(JsonConvert.SerializeObject(newStockAccount), Encoding.UTF8, "application/json");
+                        response = await client.PostAsync("api/StockAccount", content);
+                    }
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Failed to update StockAccount table");
+                    }
+                    // Step 2: increase reserved pieces in Stock table
+                    // Iterate through all Stocks containing the current product
+                    var productstock = stocks.Where(i => i.StockItemId == product.Id);
+                    if (productstock.Count() > 0)
+                    {
+                        foreach (Stock_model stock in productstock)
                         {
-                            MessageBox.Show("Error while updating Project");
+                            // If we need more pieces than available in the stock
+                            if (count > (stock.AvailablePieces - stock.ReservedPieces))
+                            {
+                                count -= (stock.AvailablePieces - stock.ReservedPieces);
+                                stock.ReservedPieces = stock.AvailablePieces;
+                                UpdateStock(stock);
+                            }
+                            else
+                            // If we have enough pieces in a stock
+                            {
+                                stock.ReservedPieces += count;
+                                count = 0;
+                                UpdateStock(stock);
+                                break;
+                            }
                         }
-                        MessageBox.Show("The item has been assigned to the project");
+                        // If we reserved all available pieces and we still need more
+                        // add the remaining count to the reservedPieces value of the first Stock in the list
+                        if (count > 0)
+                        {
+                            productstock.First().ReservedPieces += count;
+                            UpdateStock(productstock.First());
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Poject status is already DRAFT, ProjectAccounts table is not updated.");
+                        MessageBox.Show("StockItem not found in Stock table");
+                    }
+
+                    // Step 4: update project status if necessary
+                    string projectstatus = "Draft";
+                    var responseProject = await client.GetAsync("api/Project/" + currentProjectId);
+                    var contentProject = await responseProject.Content.ReadAsStringAsync();
+                    var project = JsonConvert.DeserializeObject<Project_model>(contentProject);
+                    if (project.ProjectType != projectstatus)
+                    {
+                        MessageBox.Show("Cannot assign unless the status is DRAFT.");
+                    }
+                    else
+                    {
+                        ProjectStatus projectStatusEnum;
+                        Enum.TryParse<ProjectStatus>(projectstatus, true, out projectStatusEnum);
+
+                        // Make changes to project status only if we actually need to change it
+                        if (project.ProjectType != projectstatus)
+                        {
+                            var projectAccount = new
+                            {
+                                projectAccounType = projectstatus,
+                                createdDate = DateTime.Now,
+                                projectId = currentProjectId
+                            };
+                            var contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
+                            var responseProjectAccount = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
+                            if (!responseProjectAccount.IsSuccessStatusCode)
+                            {
+                                MessageBox.Show("Error creating new ProjectAccount");
+                            }
+
+                            var updatedProject = new
+                            {
+                                id = project.Id,
+                                projectType = projectstatus,
+                                projectDescription = project.ProjectDescription,
+                                place = project.Place,
+                                ordererId = project.OrdererId,
+                                userid = project.UserId,
+                            };
+                            var requestProject = new StringContent(JsonConvert.SerializeObject(updatedProject), Encoding.UTF8, "application/json");
+                            var responseProjectUpdate = await client.PutAsync("api/Project?id=" + currentProjectId, requestProject);
+                            if (!responseProjectUpdate.IsSuccessStatusCode)
+                            {
+                                MessageBox.Show("Error while updating Project");
+                            }
+                            MessageBox.Show("The item has been assigned to the project");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Poject status is already DRAFT, ProjectAccounts table is not updated.");
+                        }
                     }
                 }
             }
+            
         }
 
         // make a pre-reservation for button click
@@ -971,7 +980,28 @@ namespace WPFClient.Controller
 
             }
         }
+        //get GetSumCountForProduct
 
+        public async Task<int> GetSumCountForProduct(int stockItemtId)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync("https://localhost:7243/api/Stock");
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Failed to retrieve stock: {response.ReasonPhrase}");
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(content);
+                var selectedStocks = stocks.FindAll(s => s.StockItemId == stockItemtId).ToList();
+                var sum = 0;
+                foreach (var stock in selectedStocks )
+                {
+                    sum += (stock.AvailablePieces - stock.ReservedPieces);
+                }
+                return sum;
+            }
+        }
         //get project by ID
         public async Task<Project_model> GetProjectById(int projectId)
         {
