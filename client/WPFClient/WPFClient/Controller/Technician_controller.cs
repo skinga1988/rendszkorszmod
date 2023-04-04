@@ -83,11 +83,6 @@ namespace WPFClient.Controller
         // A.4
         public async Task AssignItems(Technician_AssignItems_view view)
         {
-            // Tasks:
-            // 1. make new StockAccount or update it
-            // 2. increase the reserved in the Stock table
-            // 3. set the project status to Draft
-
             var product = (StockItem_model)view.productComboBox.SelectedItem;
             var currentProject= (Project_model)view.projectsComboBox.SelectedItem;
             int currentProjectId = currentProject.Id;
@@ -95,7 +90,7 @@ namespace WPFClient.Controller
             int sumcount = await GetSumCountForProduct(product.Id);
             if (count > sumcount)
             {
-                MessageBox.Show("Not enough avaliable pieces");
+                MessageBox.Show("Not enough avaliable pieces!");
             }
             else
             {
@@ -114,7 +109,7 @@ namespace WPFClient.Controller
                     var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
                     // Step 1: Update or create new StockAccount for a product
                     var stockAccount = stockAccounts.Where(i => i.StockItemId == product.Id).FirstOrDefault();
-                    // We already have this product reserved, update the count and date
+                    // If we already have this product reserved, update the count and date
                     if (stockAccount != null)
                     {
                         var modifiedStockAccount = new
@@ -130,7 +125,7 @@ namespace WPFClient.Controller
                         var content = new StringContent(JsonConvert.SerializeObject(modifiedStockAccount), Encoding.UTF8, "application/json");
                         response = await client.PutAsync("api/StockAccount?id=" + stockAccount.Id, content);
                     }
-                    // Create new StockAccount
+                    // Else create new StockAccount
                     else
                     {
                         var newStockAccount = new
@@ -145,10 +140,16 @@ namespace WPFClient.Controller
                         var content = new StringContent(JsonConvert.SerializeObject(newStockAccount), Encoding.UTF8, "application/json");
                         response = await client.PostAsync("api/StockAccount", content);
                     }
+
                     if (!response.IsSuccessStatusCode)
                     {
                         MessageBox.Show("Failed to update StockAccount table");
                     }
+                    else
+                    {
+                        MessageBox.Show("New reservation to the project is done in the StockAccounts table.");
+                    }
+
                     // Step 2: increase reserved pieces in Stock table
                     // Iterate through all Stocks containing the current product
                     var productstock = stocks.Where(i => i.StockItemId == product.Id);
@@ -171,6 +172,7 @@ namespace WPFClient.Controller
                                 UpdateStock(stock);
                                 break;
                             }
+                            MessageBox.Show("The Stock table is updated.");
                         }
                         // If we reserved all available pieces and we still need more
                         // add the remaining count to the reservedPieces value of the first Stock in the list
@@ -182,7 +184,7 @@ namespace WPFClient.Controller
                     }
                     else
                     {
-                        MessageBox.Show("StockItem not found in Stock table");
+                        MessageBox.Show("StockItem not found in Stock table.");
                     }
 
                     // Step 4: update project status if necessary
@@ -190,65 +192,62 @@ namespace WPFClient.Controller
                     var responseProject = await client.GetAsync("api/Project/" + currentProjectId);
                     var contentProject = await responseProject.Content.ReadAsStringAsync();
                     var project = JsonConvert.DeserializeObject<Project_model>(contentProject);
-                    if (project.ProjectType != projectstatus)
-                    {
-                        MessageBox.Show("Cannot assign unless the status is DRAFT.");
-                    }
-                    else
-                    {
-                        ProjectStatus projectStatusEnum;
-                        Enum.TryParse<ProjectStatus>(projectstatus, true, out projectStatusEnum);
+                    ProjectStatus projectStatusEnum;
+                    Enum.TryParse<ProjectStatus>(projectstatus, true, out projectStatusEnum);
 
-                        // Make changes to project status only if we actually need to change it
-                        if (project.ProjectType != projectstatus)
+                    // Make changes to project status only if we actually need to change it
+                    if (project.ProjectType == "New")
+                    {
+                        //create a new entry in the ProjectAccounts table with "Draft" status
+                        var projectAccount = new
                         {
-                            var projectAccount = new
-                            {
-                                projectAccounType = projectstatus,
-                                createdDate = DateTime.Now,
-                                projectId = currentProjectId
-                            };
-                            var contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
-                            var responseProjectAccount = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
-                            if (!responseProjectAccount.IsSuccessStatusCode)
-                            {
-                                MessageBox.Show("Error creating new ProjectAccount");
-                            }
-
-                            var updatedProject = new
-                            {
-                                id = project.Id,
-                                projectType = projectstatus,
-                                projectDescription = project.ProjectDescription,
-                                place = project.Place,
-                                ordererId = project.OrdererId,
-                                userid = project.UserId,
-                            };
-                            var requestProject = new StringContent(JsonConvert.SerializeObject(updatedProject), Encoding.UTF8, "application/json");
-                            var responseProjectUpdate = await client.PutAsync("api/Project?id=" + currentProjectId, requestProject);
-                            if (!responseProjectUpdate.IsSuccessStatusCode)
-                            {
-                                MessageBox.Show("Error while updating Project");
-                            }
-                            MessageBox.Show("The item has been assigned to the project");
+                            projectAccounType = projectstatus,
+                            createdDate = DateTime.Now,
+                            projectId = currentProjectId
+                        };
+                        var contentProjectAccount = new StringContent(JsonConvert.SerializeObject(projectAccount), Encoding.UTF8, "application/json");
+                        var responseProjectAccount = await client.PostAsync("api/ProjectAccount", contentProjectAccount);
+                        if (!responseProjectAccount.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Error creating new ProjectAccount.");
                         }
                         else
                         {
-                            MessageBox.Show("Poject status is already DRAFT, ProjectAccounts table is not updated.");
+                            MessageBox.Show("A new entry in the ProjectAccounts table is created with Draft status.");
                         }
+
+                        //update the status to "Draft" in the Projects table
+                        var updatedProject = new
+                        {
+                            id = project.Id,
+                            projectType = projectstatus,
+                            projectDescription = project.ProjectDescription,
+                            place = project.Place,
+                            ordererId = project.OrdererId,
+                            userid = project.UserId,
+                        };
+                        var requestProject = new StringContent(JsonConvert.SerializeObject(updatedProject), Encoding.UTF8, "application/json");
+                        var responseProjectUpdate = await client.PutAsync("api/Project?id=" + currentProjectId, requestProject);
+                        if (!responseProjectUpdate.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Error while updating Project.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Project status is updated in the Projects table.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Project status was not updated in Projects and ProjectAccounts tables.");
                     }
                 }
             }
-            
         }
 
         // make a pre-reservation for button click
         public async Task PrereserveItems_controller(Technician_prereservation_view view)
         {
-            //Tasks:
-            // 1. create a new row in the StockAccounts table with Pre-reservation StockAccountType
-            // 2. show the pre-reserved items in the datagrid
-
             //get the data from the comboboxes (project and product)
             var stockAccounts_Pieces = view.quantityTextBox_prereservation.Text;
             var stockAccounts_ProjectId = (view.projectsComboBox_prereservation.SelectedItem as Project_model).Id;
