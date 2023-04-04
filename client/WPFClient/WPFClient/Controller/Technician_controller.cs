@@ -1132,11 +1132,13 @@ namespace WPFClient.Controller
         public async Task LoadAssignItemsData(Technician_AssignItems_view view)
         {
             view.Projects = await GetProjectCollection();
-            view.projectsComboBox.ItemsSource = view.Projects;
+            var sortedProjects = view.Projects.OrderBy(p => p.Place);
+            view.projectsComboBox.ItemsSource = sortedProjects;
             view.projectsComboBox.SelectedIndex = 0;
 
             view.Products = await GetProductCollection();
-            view.productComboBox.ItemsSource = view.Products;
+            var sortedProducts = view.Products.OrderBy(p => p.ItemType);
+            view.productComboBox.ItemsSource = sortedProducts;
             view.productComboBox.SelectedIndex = 0;
         }
 
@@ -1144,11 +1146,13 @@ namespace WPFClient.Controller
         public async Task LoadPrereservationData_controller(Technician_prereservation_view view)
         {
             view.Projects = await GetProjectCollection_prereservation();
-            view.projectsComboBox_prereservation.ItemsSource = view.Projects;
+            var sortedProjects = view.Projects.OrderBy(p => p.Place);
+            view.projectsComboBox_prereservation.ItemsSource = sortedProjects;
             view.projectsComboBox_prereservation.SelectedIndex = 0;
 
             view.Products = await GetProductCollection_prereservation();
-            view.productComboBox_prereservation.ItemsSource = view.Products;
+            var sortedProducts = view.Products.OrderBy(p => p.ItemType);
+            view.productComboBox_prereservation.ItemsSource = sortedProducts;
             view.productComboBox_prereservation.SelectedIndex = 0;
         }
 
@@ -1299,12 +1303,12 @@ namespace WPFClient.Controller
                         Count = stockaccount.Pieces
                     });
                 }
-
+                productlist = new ObservableCollection<ProductListGridRow>(productlist.OrderBy(p => p.Name));
                 return productlist;
             }
         }
 
-        // Load the already pre-reserved items into the grid -- NEEDS TO BE UPDATED
+        // Load the already pre-reserved items into the grid
         internal async Task<ObservableCollection<ProductListGridRow>> GetPrereservedItems_controller(Project_model project)
         {
             ObservableCollection<ProductListGridRow> productlist = new ObservableCollection<ProductListGridRow>();
@@ -1333,6 +1337,7 @@ namespace WPFClient.Controller
                         Count = stockaccount.Pieces
                     });
                 }
+                productlist = new ObservableCollection<ProductListGridRow>(productlist.OrderBy(p => p.Name));
                 return productlist;
             }
         }
