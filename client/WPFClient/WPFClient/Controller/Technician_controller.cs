@@ -18,6 +18,7 @@ using System.Security.Principal;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace WPFClient.Controller
 {
@@ -241,6 +242,83 @@ namespace WPFClient.Controller
                     {
                         MessageBox.Show("Project status was not updated in Projects and ProjectAccounts tables.");
                     }
+
+                    //check if there is a prereservation based on projectId and itemId
+                    var preReservations = await getPreReservationsByProjectIdAndItemId(currentProjectId, product.Id);
+                    int assignedQuantity = Convert.ToInt32(view.quantityTextBox.Text);
+                    if (preReservations.Count > 0)
+                    {
+                        //create a list for the IDs to delete from the StockAccounts table
+                        List<int> idsToDelete = new List<int>();
+                        foreach (var row in preReservations)
+                        {
+                            idsToDelete.Add(row.Id);
+                        }
+
+                        //delete all the prereserved lines for the project and item combination
+                        foreach (var ID in idsToDelete)
+                        {
+                            var deleteResponse = await client.DeleteAsync("https://localhost:7243/api/StockAccount/" + ID);
+                            string deleteStatus = deleteResponse.StatusCode.ToString();
+                            if (deleteResponse.IsSuccessStatusCode)
+                            {
+                                MessageBox.Show("Id " + ID + " was deleted from ProjectAccounts tables.");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Delete for id " + ID + " was not successful from ProjectAccounts table: " + deleteStatus);
+                            }
+                        }
+
+                        //get the total amount of prereserved items for a project+item combination
+                        var preReservationsGrouped = preReservations
+                            .Where(i => i.ProjectId == currentProjectId && i.Type == StockAccountType.PreReservation && i.StockItemId == product.Id)
+                            .GroupBy(i => i.StockItemId)
+                            .Select(g => new StockAccount_model
+                            {
+                                ProjectId = currentProjectId,
+                                StockItemId = g.Key,
+                                Type = StockAccountType.PreReservation,
+                                Pieces = g.Sum(i => i.Pieces)
+                            })
+                            .ToList();
+                        int totalPreReservedItemsCount = preReservationsGrouped[0].Pieces;
+
+                        
+                        //if the assigned quantity is more then the prereserved quantity
+                        if (assignedQuantity < preReservationsGrouped[0].Pieces)
+                        {
+                            //make a prereservation with the "prereserved-assigned" quantity
+                            int newQuantityToPreReserve = totalPreReservedItemsCount - assignedQuantity;
+                            var new_StockAccounts_row = new
+                            {
+                                stockAccountType = "PreReservation",
+                                pieces = newQuantityToPreReserve,
+                                accountTime = DateTime.Now,
+                                projectId = currentProjectId,
+                                stockItemId = product.Id,
+                                userId = userid
+                            };
+
+                            var json = JsonConvert.SerializeObject(new_StockAccounts_row);
+                            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                            var putResponse = await client.PostAsync("https://localhost:7243/api/StockAccount", httpContent);
+                            var status = putResponse.StatusCode;
+                            if (putResponse.IsSuccessStatusCode)
+                            {
+                                MessageBox.Show("New row created in the StockAccounts table. " + newQuantityToPreReserve + " pieces are prereserved.");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error: status update denied: " + status.ToString());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("There is no prereservation for this project and item in the StockAccounts table.");
+                    }
+
                 }
             }
         }
@@ -271,7 +349,6 @@ namespace WPFClient.Controller
                 var status = response.StatusCode;
                 if (response.IsSuccessStatusCode)
                 {
-                    var responseBody = await response.Content.ReadAsStringAsync();
                     MessageBox.Show("New row created in the StockAccounts table.");
                 }
                 else
@@ -1285,6 +1362,20 @@ namespace WPFClient.Controller
                     }
                 }
                 view.ProjectsDataGrid.DataContext = gridRows2;
+            }
+        }
+
+        public async Task<List<StockAccount_model>> getPreReservationsByProjectIdAndItemId(int projectId, int itemId)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/StockAccount");
+                var contentStockAccount = await response.Content.ReadAsStringAsync();
+                // Filter out any StockAccounts with different projectId and type
+                var preReservations = JsonConvert.DeserializeObject<List<StockAccount_model>>(contentStockAccount);
+                preReservations = preReservations.FindAll(i => i.ProjectId == projectId && i.Type == StockAccountType.PreReservation && i.StockItemId == itemId);
+                //preReservations = preReservations.FindAll(i => i.Type == StockAccountType.PreReservation);
+                return preReservations;
             }
         }
     }
