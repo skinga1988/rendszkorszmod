@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using WPFClient.View;
 
 namespace WPFClient
 {
@@ -40,6 +41,13 @@ namespace WPFClient
         private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
         {
             this.Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Storekeeper_listprojects_view list = new Storekeeper_listprojects_view();
+            this.Close();
+            list.Show();
         }
     }
 }

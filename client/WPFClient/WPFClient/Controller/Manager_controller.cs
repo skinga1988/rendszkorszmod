@@ -14,11 +14,16 @@ using WPFClient.Model;
 using System.Security.RightsManagement;
 using WPFClient.Utilities;
 using Xceed.Wpf.Toolkit.Primitives;
+using System.Collections.ObjectModel;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace WPFClient.Controller
 {
     internal class Manager_controller
     {
+
+        public ObservableCollection<ProductListGridRow> gridRows { get; set; }
+
         ////BUTTONS--------------------------------------------------------------------------------------------
         //modifies the price of the item
         public async Task Button_Click_modify_price_controller(Manager_modify_price_view obj)
@@ -651,8 +656,53 @@ namespace WPFClient.Controller
 
         }
 
-
-
-
+        public async Task GetMissingProducts(Manager_ListMissingPartItems_view view)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/StockItem");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
+                var sortedItems = items.OrderBy(x => x.ItemType).ToList();
+                gridRows = new ObservableCollection<ProductListGridRow>();
+                foreach (var item in sortedItems)
+                {
+                    gridRows.Add(new ProductListGridRow()
+                    {
+                        Id = item.Id,
+                        Name = item.ItemType,
+                        Price = item.ItemPrice,
+                        Availibility = 0
+                    });
+                }
+                // Get availibility
+                var responseStock = await RestHelper.GetRestClient().GetAsync("api/Stock");
+                if (!responseStock.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                var contentStock = await responseStock.Content.ReadAsStringAsync();
+                var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
+                foreach (var stock in stocks)
+                {
+                    var item = gridRows.Where(i => i.Id == stock.StockItemId).FirstOrDefault();
+                    if (item != null)
+                    {
+                        item.Availibility += stock.AvailablePieces;
+                        item.Availibility -= stock.ReservedPieces;
+                        if (item.Availibility < 0)
+                        {
+                            item.Availibility = 0;
+                        }
+                    }
+                }
+                var missing = gridRows.Where(i => i.Availibility == 0).ToList();
+                view.grid.DataContext = missing;
+            }
+        }
     }
 }

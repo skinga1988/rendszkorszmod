@@ -98,11 +98,23 @@
     <Compile Include="View\Manager_create_new_stockrecords.xaml.cs">
       <DependentUpon>Manager_create_new_stockrecords.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Manager_ListMissingPartItems_view.xaml.cs">
+      <DependentUpon>Manager_ListMissingPartItems_view.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Manager_listReservedPartItems_view.xaml.cs">
+      <DependentUpon>Manager_listReservedPartItems_view.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Manager_modify_max_item.xaml.cs">
       <DependentUpon>Manager_modify_max_item.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Manager_modify_price_view.xaml.cs">
       <DependentUpon>Manager_modify_price_view.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Storekeeper_listitems_view.xaml.cs">
+      <DependentUpon>Storekeeper_listitems_view.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Storekeeper_listprojects_view.xaml.cs">
+      <DependentUpon>Storekeeper_listprojects_view.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Storekeeper_view.xaml.cs">
       <DependentUpon>Storekeeper_view.xaml</DependentUpon>
@@ -150,11 +162,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Manager_ListMissingPartItems_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Manager_listReservedPartItems_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Manager_modify_max_item.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Manager_modify_price_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Storekeeper_listitems_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Storekeeper_listprojects_view.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

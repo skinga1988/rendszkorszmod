@@ -54,5 +54,9 @@ namespace WPFClient.View
             await classObj.ListBoxLoad_controller2(this);
         }
 
+        private void ProjectId_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
