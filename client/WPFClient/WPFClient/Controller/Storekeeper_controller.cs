@@ -146,7 +146,7 @@ namespace WPFClient.Controller
                         RowId = item.RowId,
                         ColumnId = item.ColumnId,
                         BoxId = item.BoxId,
-                        Name = item.StockItem.ItemType
+                        //Name = item.StockItem.ItemType,
 
                     });
                 }

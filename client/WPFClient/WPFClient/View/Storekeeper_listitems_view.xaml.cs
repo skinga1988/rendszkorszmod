@@ -28,7 +28,7 @@ namespace WPFClient.View
 
         private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
-            Technician_view window = new Technician_view();
+            Storekeeper_view window = new Storekeeper_view();
             window.Show();
             this.Close();
         }
@@ -38,13 +38,12 @@ namespace WPFClient.View
             this.Close();
         }
 
+        
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Storekeeper_controller controller = new Storekeeper_controller();
             await controller.GetItemList(this);
         }
-
-
-
     }
 }
