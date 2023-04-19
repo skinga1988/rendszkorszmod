@@ -79,6 +79,8 @@
     <Compile Include="Controller\Manager_controller.cs" />
     <Compile Include="Controller\Storekeeper_controller.cs" />
     <Compile Include="Controller\Technician_controller.cs" />
+    <Compile Include="ItemListGridRow.cs" />
+    <Compile Include="MissingListGridRow.cs" />
     <Compile Include="Model\ProductListGridRow_model.cs" />
     <Compile Include="Model\Orderer_model.cs" />
     <Compile Include="Model\ProjectAccount_model.cs" />

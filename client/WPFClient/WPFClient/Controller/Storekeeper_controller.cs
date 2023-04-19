@@ -15,6 +15,7 @@ namespace WPFClient.Controller
 {
     internal class Storekeeper_controller
     {
+        public ObservableCollection<ItemListGridRow> gridItems { get; set; }
 
         public ObservableCollection<ProjectListGridRow> gridRows2 { get; set; }
 
@@ -124,8 +125,33 @@ namespace WPFClient.Controller
             }
         }
 
-       
+        public async Task GetItemList(Storekeeper_listitems_view view)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Stock");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                var content = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Stock_model>>(content);
+                var sortedItems = items.OrderBy(x => x.Id).ToList();
+                gridItems = new ObservableCollection<ItemListGridRow>();
+                foreach (var item in sortedItems)
+                {
+                    gridItems.Add(new ItemListGridRow()
+                    {
+                        Id = item.Id,
+                        RowId = item.RowId,
+                        ColumnId = item.ColumnId,
+                        BoxId = item.BoxId,
+                        Name = item.StockItem.ItemType
 
-
+                    });
+                }
+                view.grid.DataContext = gridItems;
+            }
+        }
     }
 }

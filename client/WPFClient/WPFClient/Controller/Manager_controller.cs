@@ -16,13 +16,18 @@ using WPFClient.Utilities;
 using Xceed.Wpf.Toolkit.Primitives;
 using System.Collections.ObjectModel;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 
 namespace WPFClient.Controller
 {
     internal class Manager_controller
     {
 
-        public ObservableCollection<ProductListGridRow> gridRows { get; set; }
+        public ObservableCollection<ProductListGridRow> stockaccount { get; set; }
+
+        public ObservableCollection<MissingListGridRow> gridRows2 { get; set; }
 
         ////BUTTONS--------------------------------------------------------------------------------------------
         //modifies the price of the item
@@ -37,7 +42,7 @@ namespace WPFClient.Controller
                     var selectedItemType = obj.Part_Item_combobox.SelectedItem.ToString();
                     var selectedItemId = await GetIdForSelectedItem(selectedItemType);
                     var selectedItemMaxItem = await GetMaxQuantityForSelectedItem(selectedItemType);
-                    
+
                     var putObject = new
                     {
                         id = selectedItemId,
@@ -140,7 +145,7 @@ namespace WPFClient.Controller
                                 AvailablePieces = available_pieces_,
                                 ReservedPieces = reserved_pieces_,
                                 StockItemId = stockitem_id_
-                            };                           
+                            };
                             var request = new HttpRequestMessage(HttpMethod.Put, "api/Stock?id=" + selectedItemId_);
                             var content = new StringContent(JsonConvert.SerializeObject(putStock), Encoding.UTF8, "application/json");
                             request.Content = content;
@@ -148,7 +153,7 @@ namespace WPFClient.Controller
                             var status = response.StatusCode;
                             if (status.ToString() == "NoContent")
                             {
-                                MessageBox.Show("Stock Id: " + selectedItemId_ + " successfully updated.");                               
+                                MessageBox.Show("Stock Id: " + selectedItemId_ + " successfully updated.");
                             }
                             else
                             {
@@ -156,19 +161,19 @@ namespace WPFClient.Controller
                             }
                         }
                     }
-                    
+
                 }
                 else
-            {
-                MessageBox.Show("Maximum number must be greater than 0!");
+                {
+                    MessageBox.Show("Maximum number must be greater than 0!");
+                }
             }
-        }
             else
             {
                 MessageBox.Show("Maximum number must be an integer!");
             }
 
-}
+        }
 
         //creates a new item in the StockItem table
         public async Task Button_Click_Create_controller(Manager_create_new_part_item_view obj)
@@ -525,7 +530,7 @@ namespace WPFClient.Controller
         public async Task Stock_item_select_SelectionChanged(Manager_create_new_stockrecords obj)
         {
             var selectedItem = obj.Stock_item_select.SelectedItem.ToString();
-           
+
         }
 
         public async Task Part_Item_combobox_SelectionChanged_2(Manager_modify_max_item obj)
@@ -656,10 +661,17 @@ namespace WPFClient.Controller
 
         }
 
+        //B.3, B.4: Get missing items and number of prereservation for them
         public async Task GetMissingProducts(Manager_ListMissingPartItems_view view)
         {
             using (var client = RestHelper.GetRestClient())
             {
+
+                var responseAccount = await client.GetAsync("api/StockAccount");
+                var contentAccount = await responseAccount.Content.ReadAsStringAsync();
+                var stockaccounts = JsonConvert.DeserializeObject<List<StockAccount_model>>(contentAccount);
+
+
                 var response = await client.GetAsync("api/StockItem");
                 if (!response.IsSuccessStatusCode)
                 {
@@ -668,16 +680,31 @@ namespace WPFClient.Controller
                 var content = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
                 var sortedItems = items.OrderBy(x => x.ItemType).ToList();
-                gridRows = new ObservableCollection<ProductListGridRow>();
+                stockaccount = new ObservableCollection<ProductListGridRow>();
+
+                // Filter for Prereservation type and the current project
+                stockaccounts = stockaccounts.FindAll(i => i.Type == StockAccountType.PreReservation);
+
+                //group the prereserved items
+                var groupedStockAccounts = stockaccounts.GroupBy(i => i.StockItemId).Select(g => new { StockItemId = g.Key, Pieces = g.Sum(i => i.Pieces) });
+
                 foreach (var item in sortedItems)
                 {
-                    gridRows.Add(new ProductListGridRow()
+                    foreach (var item2 in groupedStockAccounts)
                     {
-                        Id = item.Id,
-                        Name = item.ItemType,
-                        Price = item.ItemPrice,
-                        Availibility = 0
-                    });
+                        if (item.ItemType == items.Where(i => i.Id == item2.StockItemId).FirstOrDefault().ItemType)
+                        {
+                            stockaccount.Add(new ProductListGridRow()
+                            {
+                                Id = item.Id,
+                                Name = item.ItemType,
+                                Price = item.ItemPrice,
+                                Availibility = 0,
+                                Count = item2.Pieces,
+
+                            });
+                        }
+                    }
                 }
                 // Get availibility
                 var responseStock = await RestHelper.GetRestClient().GetAsync("api/Stock");
@@ -689,7 +716,7 @@ namespace WPFClient.Controller
                 var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(contentStock);
                 foreach (var stock in stocks)
                 {
-                    var item = gridRows.Where(i => i.Id == stock.StockItemId).FirstOrDefault();
+                    var item = stockaccount.Where(i => i.Id == stock.StockItemId).FirstOrDefault();
                     if (item != null)
                     {
                         item.Availibility += stock.AvailablePieces;
@@ -700,9 +727,16 @@ namespace WPFClient.Controller
                         }
                     }
                 }
-                var missing = gridRows.Where(i => i.Availibility == 0).ToList();
+
+                var missing = stockaccount.Where(i => i.Availibility == 0).ToList();
                 view.grid.DataContext = missing;
             }
         }
+
+
+
+
+
+
     }
 }

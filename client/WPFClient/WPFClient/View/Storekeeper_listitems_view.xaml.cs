@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFClient.Controller;
 
 namespace WPFClient.View
 {
@@ -23,5 +24,27 @@ namespace WPFClient.View
         {
             InitializeComponent();
         }
+
+
+        private void Button_Click_Back(object sender, RoutedEventArgs e)
+        {
+            Technician_view window = new Technician_view();
+            window.Show();
+            this.Close();
+        }
+
+        private void Button_ContextMenuClosing_Back(object sender, ContextMenuEventArgs e)
+        {
+            this.Close();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Storekeeper_controller controller = new Storekeeper_controller();
+            await controller.GetItemList(this);
+        }
+
+
+
     }
 }

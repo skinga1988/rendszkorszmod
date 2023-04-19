@@ -7,24 +7,33 @@
         mc:Ignorable="d"
         Title="Manager_ListMissingPartItems_view" Height="450" Width="800">
     <Grid>
+        <Label Content="Missing part items" HorizontalAlignment="Left" Margin="309,21,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Button x:Name="list1" Content="List" HorizontalAlignment="Left" Margin="344,74,0,0" VerticalAlignment="Top" Height="31" Width="83" Click="Button_Click_1" RenderTransformOrigin="0.918,4.227"/>
         <Button x:Name="menuButton" Height="20" Margin="0,28,10,0" VerticalAlignment="Top" Click="Button_Click" Content="Back to menu" ContextMenuClosing="Button_ContextMenuClosing_Back" HorizontalAlignment="Right" Width="114"/>
-        <DataGrid x:Name="grid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,72,10,-27" RowHeight="25" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid x:Name="grid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="72,136,72,70" RowHeight="25" ItemsSource="{Binding}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="gridName" Header="Product name" Binding="{Binding Name}" IsReadOnly="True" Width="400">
+                <DataGridTextColumn x:Name="gridName" Header="Product name" Binding="{Binding Name}" IsReadOnly="True" Width="200">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="gridPrice" Header="Price" Binding="{Binding Price}" IsReadOnly="True">
+                <DataGridTextColumn x:Name="gridPrice" Header="Price" Binding="{Binding Price}" IsReadOnly="True" Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="gridAvailable" Header="Availability (pcs)" Binding="{Binding Availibility}" IsReadOnly="True">
+                <DataGridTextColumn x:Name="gridAvailable" Header="Availability (pcs)" Binding="{Binding Availibility}" IsReadOnly="True" Width="150">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="amountColumn_prereservation" Header="Prereserved pieces" Binding="{Binding Count}" IsReadOnly="True" Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center" />
@@ -33,7 +42,5 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="List" HorizontalAlignment="Left" Margin="98,28,0,0" VerticalAlignment="Top" Height="20" Width="79" Click="Button_Click_1"/>
-
     </Grid>
 </Window>
