@@ -44,12 +44,9 @@ namespace WPFClient.View
             System.Environment.Exit(0);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        
 
-        }
-
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Manager_controller controller = new Manager_controller();
             await controller.GetMissingProducts(this);

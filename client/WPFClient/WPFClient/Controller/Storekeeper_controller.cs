@@ -138,17 +138,32 @@ namespace WPFClient.Controller
                 var items = JsonConvert.DeserializeObject<List<Stock_model>>(content);
                 var sortedItems = items.OrderBy(x => x.Id).ToList();
                 gridItems = new ObservableCollection<ItemListGridRow>();
+
+                var responsestockitem = await client.GetAsync("api/StockItem");
+                if (!responsestockitem.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                var contentitem = await response.Content.ReadAsStringAsync();
+                var stockitems = JsonConvert.DeserializeObject<List<StockItem_model>>(content);
+                var sortedStockItems = stockitems.OrderBy(x => x.ItemType).ToList();
+
                 foreach (var item in sortedItems)
                 {
-                    gridItems.Add(new ItemListGridRow()
+                    foreach (var stockitem in sortedStockItems)
                     {
-                        Id = item.Id,
-                        RowId = item.RowId,
-                        ColumnId = item.ColumnId,
-                        BoxId = item.BoxId,
-                        //Name = item.StockItem.ItemType,
-
-                    });
+                        if (item.StockItemId == stockitem.Id)
+                        {
+                            gridItems.Add(new ItemListGridRow()
+                            {
+                                Id = item.StockItemId,
+                                Name = stockitem.ItemType,
+                                RowId = item.RowId,
+                                ColumnId = item.ColumnId,
+                                BoxId = item.BoxId
+                            });
+                        }
+                    }
                 }
                 view.grid.DataContext = gridItems;
             }
