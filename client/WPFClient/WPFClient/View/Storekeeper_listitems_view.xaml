@@ -17,7 +17,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="Name" Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="100">
+                <DataGridTextColumn x:Name="ItemType" Header="Item type" Binding="{Binding Name}" IsReadOnly="True" Width="100">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center" />
