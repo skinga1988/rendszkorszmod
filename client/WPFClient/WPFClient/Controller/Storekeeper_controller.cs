@@ -63,9 +63,9 @@ namespace WPFClient.Controller
 
         public async Task<Project_model> GetProjectById(int projectId)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                var response = await client.GetAsync("https://localhost:7243/api/Project/" + projectId);
+                var response = await client.GetAsync("api/Project/" + projectId);
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
