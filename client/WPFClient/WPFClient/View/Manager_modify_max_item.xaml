@@ -12,8 +12,8 @@
         <ComboBox x:Name="Part_Item_combobox_2" HorizontalAlignment="Left" Height="20" Margin="357,117,0,0" VerticalAlignment="Top" Width="175" Loaded="ListBoxLoaded" SelectionChanged="Part_Item_combobox_SelectionChanged_2"></ComboBox>
         <TextBlock x:Name="Current_MaxNumber_textblock" Text="Current maximum number:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="154,142,0,0"><Run Language="hu-hu"/></TextBlock>
         <TextBox x:Name="Current_maximum_number_textbox" HorizontalAlignment="Left" Height="20" Margin="357,142,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
-        <Button x:Name="Modify_maxnum_button" Content="Modify" HorizontalAlignment="Left" Height="28" Margin="358,192,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_modify_maxnum"/>
-        <TextBox x:Name="New_maxnum_textbox" HorizontalAlignment="Left" Height="20" Margin="357,167,0,0" VerticalAlignment="Top" Width="176" TextWrapping="Wrap"/>
+        <Button x:Name="Modify_maxnum_button" Content="Modify" HorizontalAlignment="Left" Height="28" Margin="357,192,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click_modify_maxnum"/>
+        <TextBox x:Name="New_maxnum_textbox" HorizontalAlignment="Left" Height="20" Margin="357,167,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
         <TextBlock x:Name="New_maxnum_textblock" Text="New maximum number:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="154,167,0,0"><Run Language="hu-hu"/></TextBlock>
         <Button Content="Back to menu" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
     </Grid>

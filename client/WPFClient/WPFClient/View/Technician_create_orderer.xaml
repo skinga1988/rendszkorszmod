@@ -12,8 +12,8 @@
         <TextBlock x:Name="New_orderer_textblock" Text="Orderer name:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,117,0,0" Width="128"></TextBlock>
         <TextBox x:Name="New_orderer_textbox" HorizontalAlignment="Left" Height="20" Margin="389,117,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
         <TextBlock x:Name="Decription_textblock" Text="Description:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,152,0,0"><Run Language="hu-hu"/></TextBlock>
-        <TextBox x:Name="Description_textbox" HorizontalAlignment="Left" Height="20" Margin="389,152,0,0" VerticalAlignment="Top" Width="174" TextWrapping="Wrap"/>
-        <Button x:Name="Create_button" Content="Create" HorizontalAlignment="Left" Height="28" Margin="390,189,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_Create_orderer"/>
+        <TextBox x:Name="Description_textbox" HorizontalAlignment="Left" Height="20" Margin="389,152,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <Button x:Name="Create_button" Content="Create" HorizontalAlignment="Left" Height="28" Margin="389,189,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click_Create_orderer"/>
 
 
     </Grid>

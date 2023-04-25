@@ -10,7 +10,7 @@
         <TextBlock x:Name="Create_new_part_item_textblock" Text="Create new part item" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
         <Button Content="Back to menu" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
         <TextBlock x:Name="New_item_type_textblock" Text="New item type:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,117,0,0" Width="128"></TextBlock>
-        <TextBox x:Name="New_item_type_textbox" HorizontalAlignment="Left" Height="20" Margin="389,117,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <TextBox x:Name="New_item_type_textbox" HorizontalAlignment="Left" Height="20" Margin="390,117,0,0" VerticalAlignment="Top" Width="174" TextWrapping="Wrap"/>
         <TextBlock x:Name="Item_price_textblock" Text="Item price:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,142,0,0"><Run Language="hu-hu"/></TextBlock>
         <TextBox x:Name="Item_price_textbox" HorizontalAlignment="Left" Height="20" Margin="390,142,0,0" VerticalAlignment="Top" Width="174" TextWrapping="Wrap"/>
         <TextBlock x:Name="Max_quantity_textblock" Text="Max quantity:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="256,167,0,0"><Run Language="hu-hu"/></TextBlock>

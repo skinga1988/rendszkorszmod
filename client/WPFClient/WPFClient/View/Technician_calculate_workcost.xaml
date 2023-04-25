@@ -9,16 +9,16 @@
     <Grid  Margin="0,0,0,-6">
         <TextBlock x:Name="Calculate_workcost_textblock" Text="Calculate cost of working hours" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="232,41,0,0"></TextBlock>
         <TextBlock x:Name="Estimated_hours_textblock" Text="Estimated hours of work:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="137,159,0,0" Width="185" Height="35"></TextBlock>
-        <TextBox x:Name="Estimated_hours_textbox" HorizontalAlignment="Left" Height="20" Margin="358,159,0,0" VerticalAlignment="Top" Width="174" TextWrapping="Wrap"/>
+        <TextBox x:Name="Estimated_hours_textbox" HorizontalAlignment="Left" Height="20" Margin="357,159,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
         <TextBlock x:Name="Price_per_hour_textblock" Text="Price per hour:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="207,199,0,0" Width="184" Height="35"></TextBlock>
-        <TextBox x:Name="Price_per_hour_textbox" HorizontalAlignment="Left" Height="20" Margin="358,200,0,0" VerticalAlignment="Top" Width="174" TextWrapping="Wrap"/>
+        <TextBox x:Name="Price_per_hour_textbox" HorizontalAlignment="Left" Height="20" Margin="357,200,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
         <TextBlock x:Name="Disembarkation_cost_textblock" Text="Disembarkation cost:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="159,237,0,0" Width="185" Height="35"></TextBlock>
-        <TextBox x:Name="Disembarkation_cost_textbox" HorizontalAlignment="Left" Height="21" Margin="358,237,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <TextBox x:Name="Disembarkation_cost_textbox" HorizontalAlignment="Left" Height="21" Margin="357,237,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
         <TextBlock x:Name="ProjectId_textblock" Text="Project ID:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="234,117,0,0" Width="96"></TextBlock>
         <ComboBox x:Name="ProjectId_combobox" HorizontalAlignment="Left" Height="20" Margin="357,117,0,0" VerticalAlignment="Top" Width="175" Loaded="ListBoxLoad2" SelectionChanged="ProjectId_combobox_SelectionChanged" ></ComboBox>
-        <Button x:Name="Calculate_workcost_button" Content="Calculate" HorizontalAlignment="Left" Height="28" Margin="357,287,0,0" VerticalAlignment="Top" Width="174" Click="Button_Click_calculate_workcost"/>
+        <Button x:Name="Calculate_workcost_button" Content="Calculate" HorizontalAlignment="Left" Height="28" Margin="357,287,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click_calculate_workcost"/>
         <Button Content="Back to menu" HorizontalAlignment="Left" Margin="662,54,0,0" VerticalAlignment="Top" Click="Button_Click_Back3" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back3"/>
         <TextBlock x:Name="Wage_cost_textblock" Text="Wage cost:" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Margin="226,364,0,0" Width="112" Height="35"></TextBlock>
-        <TextBox x:Name="Wage_cost_textbox" IsReadOnly="True" HorizontalAlignment="Left" Height="22" Margin="356,360,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
+        <TextBox x:Name="Wage_cost_textbox" IsReadOnly="True" HorizontalAlignment="Left" Height="22" Margin="357,360,0,0" VerticalAlignment="Top" Width="175" TextWrapping="Wrap"/>
     </Grid>
 </Window>

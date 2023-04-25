@@ -15,7 +15,7 @@
             <ComboBoxItem x:Name="Item1" Content="New"></ComboBoxItem>
         </ComboBox>
         <TextBlock x:Name="Description_textblock" HorizontalAlignment="Left" Margin="256,83,0,0" TextWrapping="Wrap" Text="Project Description" VerticalAlignment="Top" Width="113"/>
-        <TextBox x:Name="Description_textbox" HorizontalAlignment="Left" Margin="384,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122"/>
+        <TextBox x:Name="Description_textbox" HorizontalAlignment="Left" Margin="386,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock HorizontalAlignment="Left" Margin="256,151,0,0" TextWrapping="Wrap" Text="Orderer" VerticalAlignment="Top"/>
         <ComboBox x:Name="Orderer_select" HorizontalAlignment="Left" Margin="386,148,0,0" VerticalAlignment="Top" Width="120" Loaded="ListBoxLoaded_orderer"/>
         <Button  Content="Create" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click_new_Project"/>

@@ -15,9 +15,9 @@
             <ComboBoxItem x:Name="Item1" Content="Income"></ComboBoxItem>
         </ComboBox>
         <TextBlock x:Name="Pieces_textbox" HorizontalAlignment="Left" Margin="119,75,0,0" TextWrapping="Wrap" Text="Pieces" VerticalAlignment="Top" Width="99"/>
-        <TextBox x:Name="Pieces_editable_textbox" HorizontalAlignment="Left" Margin="251,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122"/>
+        <TextBox x:Name="Pieces_editable_textbox" HorizontalAlignment="Left" Margin="252,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock HorizontalAlignment="Left" Margin="119,109,0,0" TextWrapping="Wrap" Text="StockItem" VerticalAlignment="Top"/>
-        <ComboBox x:Name="Stock_item_select" HorizontalAlignment="Left" Margin="253,109,0,0" VerticalAlignment="Top" Width="120" Loaded="ListBoxLoaded" SelectionChanged="Stock_item_select_SelectionChanged"/>
+        <ComboBox x:Name="Stock_item_select" HorizontalAlignment="Left" Margin="252,109,0,0" VerticalAlignment="Top" Width="120" Loaded="ListBoxLoaded" SelectionChanged="Stock_item_select_SelectionChanged"/>
         <TextBlock HorizontalAlignment="Left" Margin="433,45,0,0" TextWrapping="Wrap" Text="Row Number" VerticalAlignment="Top"/>
         <ComboBox x:Name="Row_n" HorizontalAlignment="Left" Margin="549,37,0,0" VerticalAlignment="Top" Width="120">
             <ComboBoxItem>1</ComboBoxItem>
