@@ -258,7 +258,7 @@ namespace WPFClient.Controller
                         //delete all the prereserved lines for the project and item combination
                         foreach (var ID in idsToDelete)
                         {
-                            var deleteResponse = await client.DeleteAsync("https://localhost:7243/api/StockAccount/" + ID);
+                            var deleteResponse = await client.DeleteAsync("api/StockAccount/" + ID);
                             string deleteStatus = deleteResponse.StatusCode.ToString();
                             if (deleteResponse.IsSuccessStatusCode)
                             {
@@ -302,7 +302,7 @@ namespace WPFClient.Controller
 
                             var json = JsonConvert.SerializeObject(new_StockAccounts_row);
                             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                            var putResponse = await client.PostAsync("https://localhost:7243/api/StockAccount", httpContent);
+                            var putResponse = await client.PostAsync("api/StockAccount", httpContent);
                             var status = putResponse.StatusCode;
                             if (putResponse.IsSuccessStatusCode)
                             {
@@ -341,11 +341,11 @@ namespace WPFClient.Controller
                 userId = userid
             };
 
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
                 var json = JsonConvert.SerializeObject(new_StockAccounts_row);
                 var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7243/api/StockAccount", httpContent);
+                var response = await client.PostAsync("api/StockAccount", httpContent);
                 var status = response.StatusCode;
                 if (response.IsSuccessStatusCode)
                 {
@@ -422,12 +422,12 @@ namespace WPFClient.Controller
             using (var client = RestHelper.GetRestClient())
             {
                 //get the content of the StockItems table
-                var stockItems_Response = await client.GetAsync("https://localhost:7243/api/StockItem");
+                var stockItems_Response = await client.GetAsync("api/StockItem");
                 var stockItems_Content = await stockItems_Response.Content.ReadAsStringAsync();
                 var stockItems = JsonConvert.DeserializeObject<List<StockItem_model>>(stockItems_Content);
 
                 //get the content of the Stocks table
-                var stock_Response = await client.GetAsync("https://localhost:7243/api/Stock");
+                var stock_Response = await client.GetAsync("api/Stock");
                 
                 if (!stock_Response.IsSuccessStatusCode)
                 {
@@ -1060,9 +1060,9 @@ namespace WPFClient.Controller
 
         public async Task<int> GetSumCountForProduct(int stockItemtId)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                var response = await client.GetAsync("https://localhost:7243/api/Stock");
+                var response = await client.GetAsync("api/Stock");
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Failed to retrieve stock: {response.ReasonPhrase}");
@@ -1081,9 +1081,9 @@ namespace WPFClient.Controller
         //get project by ID
         public async Task<Project_model> GetProjectById(int projectId)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                var response = await client.GetAsync("https://localhost:7243/api/Project/" + projectId);
+                var response = await client.GetAsync("api/Project/" + projectId);
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
@@ -1100,9 +1100,9 @@ namespace WPFClient.Controller
         //gets a list of ProjectAccouts object that belongs to a projectId
         public async Task<List<StockAccount_model>> GetStockAccountsByProjectId(int projectId)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                var response = await client.GetAsync("https://localhost:7243/api/StockAccount");
+                var response = await client.GetAsync("api/StockAccount");
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Failed to retrieve stock accounts: {response.ReasonPhrase}");
@@ -1116,9 +1116,9 @@ namespace WPFClient.Controller
         //gets a StockItem object by the StockItemId
         public async Task<StockItem_model> GetStockItemById(int stockItemId)
         {
-            using (var client = new HttpClient())
+            using (var client = RestHelper.GetRestClient())
             {
-                var response = await client.GetAsync("https://localhost:7243/api/StockItem/" + stockItemId);
+                var response = await client.GetAsync("api/StockItem/" + stockItemId);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Failed to retrieve stock item with Id {stockItemId}: {response.ReasonPhrase}");
