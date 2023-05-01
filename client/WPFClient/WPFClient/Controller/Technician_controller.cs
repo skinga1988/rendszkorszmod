@@ -85,7 +85,7 @@ namespace WPFClient.Controller
         public async Task AssignItems(Technician_AssignItems_view view)
         {
             var product = (StockItem_model)view.productComboBox.SelectedItem;
-            var currentProject= (Project_model)view.projectsComboBox.SelectedItem;
+            var currentProject = (Project_model)view.projectsComboBox.SelectedItem;
             int currentProjectId = currentProject.Id;
             int count = Convert.ToInt32(view.quantityTextBox.Text);
             int sumcount = await GetSumCountForProduct(product.Id);
@@ -284,7 +284,7 @@ namespace WPFClient.Controller
                             .ToList();
                         int totalPreReservedItemsCount = preReservationsGrouped[0].Pieces;
 
-                        
+
                         //if the assigned quantity is more then the prereserved quantity
                         if (assignedQuantity < preReservationsGrouped[0].Pieces)
                         {
@@ -428,21 +428,21 @@ namespace WPFClient.Controller
 
                 //get the content of the Stocks table
                 var stock_Response = await client.GetAsync("api/Stock");
-                
+
                 if (!stock_Response.IsSuccessStatusCode)
                 {
                     return new ObservableCollection<StockItem_model>();
                 }
-                
+
                 //filter those items in the Stock table where the the sum(AvailablePieces)-sum(ReservedPieces) = 0
                 var stock_Content = await stock_Response.Content.ReadAsStringAsync();
                 var stock_items = JsonConvert.DeserializeObject<List<Stock_model>>(stock_Content);
                 var groupedStock_items = stock_items.GroupBy(x => x.StockItemId).Select(g => new
-                                            {
-                                                StockItemId = g.Key,
-                                                AvailablePiecesSum = g.Sum(x => x.AvailablePieces),
-                                                ReservedPiecesSum = g.Sum(x => x.ReservedPieces)
-                                            }).ToList();
+                {
+                    StockItemId = g.Key,
+                    AvailablePiecesSum = g.Sum(x => x.AvailablePieces),
+                    ReservedPiecesSum = g.Sum(x => x.ReservedPieces)
+                }).ToList();
                 var filteredStock_items = groupedStock_items.Where(x => x.AvailablePiecesSum - x.ReservedPiecesSum == 0).ToList();
 
                 //extend the filteredStock_items with those items, that does not have a line in the Stock table
@@ -481,7 +481,7 @@ namespace WPFClient.Controller
                             MaxItem = stockItem.MaxItem
                         });
                     }
-                }   
+                }
 
                 var sortedItems = stockItems_WithNames.OrderBy(x => x.ItemType).ToList();
                 return new ObservableCollection<StockItem_model>(sortedItems);
@@ -711,7 +711,7 @@ namespace WPFClient.Controller
                 // Filter for Reservation type and the current project
                 stockAccounts_PreReservation = stockAccounts_lines.FindAll(i => i.Type == StockAccountType.PreReservation);
                 stockAccounts_PreReservation = stockAccounts_PreReservation.FindAll(i => i.ProjectId == project.Id);
-                
+
             }
             if (stockAccounts_PreReservation.Count > 0)
             {
@@ -1071,7 +1071,7 @@ namespace WPFClient.Controller
                 var stocks = JsonConvert.DeserializeObject<List<Stock_model>>(content);
                 var selectedStocks = stocks.FindAll(s => s.StockItemId == stockItemtId).ToList();
                 var sum = 0;
-                foreach (var stock in selectedStocks )
+                foreach (var stock in selectedStocks)
                 {
                     sum += (stock.AvailablePieces - stock.ReservedPieces);
                 }
@@ -1513,6 +1513,54 @@ namespace WPFClient.Controller
             }
         }
 
+        public async Task<string> GetTypeForSelectedItem(int selectedItem)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemID = items.Find(item => item.Id == selectedItem);
+                return selectedItemID.ProjectType;
+            }
+        }
+
+        public async Task<string> GetPlaceForSelectedItem(int selectedItem)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemID = items.Find(item => item.Id == selectedItem);
+                return selectedItemID.Place;
+            }
+        }
+
+        public async Task<int> GetOrderIDForSelectedItem(int selectedItem)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemID = items.Find(item => item.Id == selectedItem);
+                return selectedItemID.OrdererId;
+            }
+        }
+
+        public async Task<int> GetUserIDForSelectedItem(int selectedItem)
+        {
+            using (var httpClient = RestHelper.GetRestClient())
+            {
+                var response = await httpClient.GetAsync("api/Project");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var items = JsonConvert.DeserializeObject<List<Project_model>>(responseContent);
+                var selectedItemID = items.Find(item => item.Id == selectedItem);
+                return selectedItemID.UserId;
+            }
+        }
+
         public async Task Modify_description(Technician_closeProject_view obj)
         {
 
@@ -1520,38 +1568,46 @@ namespace WPFClient.Controller
             //if not empty field
             if (new_description != "")
             {
-                var selectedItemID_obj = obj.ProjectID_combobox.SelectedItem;
-                int selectedItemID = Convert.ToInt32(selectedItemID_obj);
+                var selectedProjectID_obj = obj.ProjectID_combobox.SelectedItem;
+                int selectedProjectID = Convert.ToInt32(selectedProjectID_obj);
                 //var selectedItemType = await GetTypeForSelectedItem(selectedItemID);
+                //var selectedItemPlace = await GetTypeForSelectedItem(selectedItemID);
+                //var selectedItemOrdererID = await GetTypeForSelectedItem(selectedItemID);
+                //var selectedItemUserID = await GetTypeForSelectedItem(selectedItemID);
+                var project = await GetProjectById(selectedProjectID);
 
-                using (var client = RestHelper.GetRestClient())
+                if (project != null)
                 {
-                    var response = await client.GetAsync("api/Project");
-                    if (response.IsSuccessStatusCode)
+                    var putObject = new
                     {
-                        var content = await response.Content.ReadAsStringAsync();
-                        var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
-                        gridRows2 = new ObservableCollection<ProjectListGridRow>();
-                        foreach (var project in projects)
+                        id = project.Id,
+                        projectType = project.ProjectType,
+                        projectDescription = new_description,
+                        place = project.Place,
+                        ordererId = project.OrdererId,
+                        userId = project.UserId,
+                    };
+
+                    using (var client = RestHelper.GetRestClient())
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/Project?id=" + project.Id);
+                        var content = new StringContent(JsonConvert.SerializeObject(putObject), Encoding.UTF8, "application/json");
+                        request.Content = content;
+                        var response = await client.SendAsync(request);
+                        var status = response.StatusCode;
+                        if (status.ToString() == "NoContent")
                         {
-                            if (project.Id == selectedItemID)
-                                gridRows2.Add(new ProjectListGridRow()
-                                {
-                                    Id = project.Id,
-                                    ProjectType = project.ProjectType,
-                                    ProjectDescription = new_description,
-                                    Place = project.Place,
-                                    OrdererId = project.OrdererId,
-                                    UserId = project.UserId
-                                });
+                            MessageBox.Show("Description is modified to for project id = " + project.Id + ".");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: Update denied: " + status.ToString());
                         }
                     }
-                    obj.ProjectsDataGrid.DataContext = gridRows2;
+
                 }
+
             }
         }
-    
-
-
     }
 }

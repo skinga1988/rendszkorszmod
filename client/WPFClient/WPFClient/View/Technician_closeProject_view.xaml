@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="Technician_closeProject_view" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <Label Content="Close Project" HorizontalAlignment="Left" Margin="352,18,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
-        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="668,18,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back" Height="18"/>
-        <DataGrid x:Name="ProjectsDataGrid" d:ItemsSource="{d:SampleData ItemCount=6}" ItemsSource="{Binding}"  AutoGenerateColumns="False" Margin="28,200,27,29" Width="745">
+        <Label Content="Close Project" HorizontalAlignment="Left" Margin="374,13,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Button Content="Back to menu" HorizontalAlignment="Left" Margin="668,13,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back" Height="31"/>
+        <DataGrid x:Name="ProjectsDataGrid" d:ItemsSource="{d:SampleData ItemCount=6}" ItemsSource="{Binding}"  AutoGenerateColumns="False" Margin="28,200,18,29">
             <DataGrid.Columns >
                 <DataGridTextColumn Width="90" Header="ID" Binding="{Binding Id}" />
                 <DataGridTextColumn Width="144" Header="Project Type" Binding="{Binding ProjectType}" />
@@ -21,13 +21,13 @@
         </DataGrid>
         <Button Content="Set COMPLETED" HorizontalAlignment="Left" Margin="443,70,0,0" VerticalAlignment="Top" Width="105" Height="24" Click="Button_Click_completed"/>
         <ComboBox x:Name="ProjectID_combobox" HorizontalAlignment="Left" Height="28" Margin="191,73,0,0" VerticalAlignment="Top" Width="175" Loaded="ListBoxLoad" SelectionChanged="ProjectId_combobox_SelectionChanged" />
-        <Label Content="Select project for closing" HorizontalAlignment="Left" Margin="28,71,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label Content="Select project for closing" HorizontalAlignment="Left" Margin="28,71,0,0" VerticalAlignment="Top" Height="25" FontWeight="Bold"/>
         <Button Content="Set FAILED" HorizontalAlignment="Left" Margin="605,70,0,0" VerticalAlignment="Top" Width="105" Height="24" Click="Button_Click_failed"/>
-        <Label Content="Update description" HorizontalAlignment="Left" Margin="28,116,0,0" VerticalAlignment="Top"/>
+        <Label Content="Update description" HorizontalAlignment="Left" Margin="28,116,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <Label Content="or" HorizontalAlignment="Left" Margin="565,69,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="New_description_textbox" HorizontalAlignment="Left" Margin="191,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="245" Height="22"/>
-        <Button Content="Update " HorizontalAlignment="Left" Margin="466,120,0,0" VerticalAlignment="Top" Click="Button_Click" Height="22" Width="82"/>
-        <Button x:Name="List_projects" Content="Refresh list" HorizontalAlignment="Left" Height="22" Margin="50,161,0,0" VerticalAlignment="Top" Width="89" Click="Button_Click_list"/>
+        <Button Content="Update " HorizontalAlignment="Left" Margin="477,120,0,0" VerticalAlignment="Top" Click="Button_Click" Height="22" Width="82"/>
+        <Button x:Name="List_projects" Content="Refresh list" HorizontalAlignment="Left" Height="22" Margin="383,163,0,0" VerticalAlignment="Top" Width="89" Click="Button_Click_list" FontWeight="Bold"/>
 
     </Grid>
 </Window>
