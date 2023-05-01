@@ -81,11 +81,6 @@ namespace WPFClient
             list.Show();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            Manager_listReservedPartItems_view list = new Manager_listReservedPartItems_view();
-            this.Close();
-            list.Show();
-        }
+       
     }
 }

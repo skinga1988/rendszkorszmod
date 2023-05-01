@@ -103,9 +103,6 @@
     <Compile Include="View\Manager_ListMissingPartItems_view.xaml.cs">
       <DependentUpon>Manager_ListMissingPartItems_view.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Manager_listReservedPartItems_view.xaml.cs">
-      <DependentUpon>Manager_listReservedPartItems_view.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Manager_modify_max_item.xaml.cs">
       <DependentUpon>Manager_modify_max_item.xaml</DependentUpon>
     </Compile>
@@ -168,10 +165,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Manager_ListMissingPartItems_view.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Manager_listReservedPartItems_view.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
