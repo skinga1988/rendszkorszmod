@@ -1384,6 +1384,174 @@ namespace WPFClient.Controller
             }
         }
 
-       
+
+        public async Task GetProjectListForCompletion(Technician_closeProject_view view)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                    gridRows2 = new ObservableCollection<ProjectListGridRow>();
+                    foreach (var project in projects)
+                    {
+                        gridRows2.Add(new ProjectListGridRow()
+                        {
+                            Id = project.Id,
+                            ProjectType = project.ProjectType,
+                            ProjectDescription = project.ProjectDescription,
+                            Place = project.Place,
+                            OrdererId = project.OrdererId,
+                            UserId = project.UserId
+                        });
+                    }
+                }
+                view.ProjectsDataGrid.DataContext = gridRows2;
+            }
+        }
+
+        public async Task ListBoxLoad_listprojectsForCompletion(Technician_closeProject_view obj)
+        {
+            using (var client = RestHelper.GetRestClient())
+            {
+                var response = await client.GetAsync("api/Project");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                    var sortedProjects = projects.OrderBy(x => x.Id).ToList();
+                    obj.ProjectID_combobox.ItemsSource = sortedProjects.Select(x => x.Id);
+                }
+            }
+        }
+
+        public async Task SetProject_completed(Technician_closeProject_view view)
+        {
+            var SelectedProjectId = Convert.ToInt32(view.ProjectID_combobox.SelectedItem);
+            var project = await GetProjectById(SelectedProjectId);
+            if (project.ProjectType == "Completed")
+            {
+                MessageBox.Show("This project is already in 'Completed' status.");
+            }
+            else
+            {
+                if (project != null)
+                {
+                    var putObject = new
+                    {
+                        id = project.Id,
+                        projectType = "Completed",
+                        projectDescription = project.ProjectDescription,
+                        place = project.Place,
+                        ordererId = project.OrdererId,
+                        userId = project.UserId,
+                    };
+
+                    using (var client = RestHelper.GetRestClient())
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/Project?id=" + project.Id);
+                        var content = new StringContent(JsonConvert.SerializeObject(putObject), Encoding.UTF8, "application/json");
+                        request.Content = content;
+                        var response = await client.SendAsync(request);
+                        var status = response.StatusCode;
+                        if (status.ToString() == "NoContent")
+                        {
+                            MessageBox.Show("Project status is modified to Completed: project id = " + project.Id + ".");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: status update denied: " + status.ToString());
+                        }
+                    }
+
+                }
+            }
+        }
+
+        public async Task SetProject_failed(Technician_closeProject_view view)
+        {
+            var SelectedProjectId = Convert.ToInt32(view.ProjectID_combobox.SelectedItem);
+            var project = await GetProjectById(SelectedProjectId);
+            if (project.ProjectType == "Failed")
+            {
+                MessageBox.Show("This project is already in 'Failed' status.");
+            }
+            else
+            {
+                if (project != null)
+                {
+                    var putObject = new
+                    {
+                        id = project.Id,
+                        projectType = "Failed",
+                        projectDescription = project.ProjectDescription,
+                        place = project.Place,
+                        ordererId = project.OrdererId,
+                        userId = project.UserId,
+                    };
+
+                    using (var client = RestHelper.GetRestClient())
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Put, "api/Project?id=" + project.Id);
+                        var content = new StringContent(JsonConvert.SerializeObject(putObject), Encoding.UTF8, "application/json");
+                        request.Content = content;
+                        var response = await client.SendAsync(request);
+                        var status = response.StatusCode;
+                        if (status.ToString() == "NoContent")
+                        {
+                            MessageBox.Show("Project status is modified to Failed: project id = " + project.Id + ".");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: status update denied: " + status.ToString());
+                        }
+                    }
+
+                }
+            }
+        }
+
+        public async Task Modify_description(Technician_closeProject_view obj)
+        {
+
+            string new_description = obj.New_description_textbox.Text;
+            //if not empty field
+            if (new_description != "")
+            {
+                var selectedItemID_obj = obj.ProjectID_combobox.SelectedItem;
+                int selectedItemID = Convert.ToInt32(selectedItemID_obj);
+                //var selectedItemType = await GetTypeForSelectedItem(selectedItemID);
+
+                using (var client = RestHelper.GetRestClient())
+                {
+                    var response = await client.GetAsync("api/Project");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                        gridRows2 = new ObservableCollection<ProjectListGridRow>();
+                        foreach (var project in projects)
+                        {
+                            if (project.Id == selectedItemID)
+                                gridRows2.Add(new ProjectListGridRow()
+                                {
+                                    Id = project.Id,
+                                    ProjectType = project.ProjectType,
+                                    ProjectDescription = new_description,
+                                    Place = project.Place,
+                                    OrdererId = project.OrdererId,
+                                    UserId = project.UserId
+                                });
+                        }
+                    }
+                    obj.ProjectsDataGrid.DataContext = gridRows2;
+                }
+            }
+        }
+    
+
+
     }
 }

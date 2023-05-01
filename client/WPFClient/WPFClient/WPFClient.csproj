@@ -124,6 +124,9 @@
     <Compile Include="View\Manager_view.xaml.cs">
       <DependentUpon>Manager_view.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Technician_closeProject_view.xaml.cs">
+      <DependentUpon>Technician_closeProject_view.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Technician_prereservation_view.xaml.cs">
       <DependentUpon>Technician_prereservation_view.xaml</DependentUpon>
     </Compile>
@@ -195,6 +198,10 @@
     <Page Include="View\Manager_view.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Technician_closeProject_view.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Technician_prereservation_view.xaml">
       <Generator>MSBuild:Compile</Generator>

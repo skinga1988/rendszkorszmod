@@ -87,5 +87,12 @@ namespace WPFClient
             window.Show();
             this.Close();
         }
+
+        private async void closeProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            Technician_closeProject_view window = new Technician_closeProject_view();
+            window.Show();
+            this.Close();
+        }
     }
 }
