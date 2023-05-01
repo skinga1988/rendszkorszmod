@@ -136,7 +136,7 @@ namespace WPFClient.Controller
                 }
                 var content = await response.Content.ReadAsStringAsync();
                 var items = JsonConvert.DeserializeObject<List<Stock_model>>(content);
-                var sortedItems = items.OrderBy(x => x.RowId).ThenBy(x => x.ColumnId).ThenBy(x => x.BoxId).ToList();
+                var sortedItems = items.OrderByDescending(x => x.RowId).ThenBy(x => x.ColumnId).ThenBy(x => x.BoxId).ToList();
                 gridItems = new ObservableCollection<ItemListGridRow>();
 
                 var responsestockitem = await client.GetAsync("api/StockItem");
