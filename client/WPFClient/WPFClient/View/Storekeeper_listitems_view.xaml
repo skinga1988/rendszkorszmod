@@ -8,7 +8,7 @@
         Title="Storekeeper_listitems_view" Height="450" Width="800"  Loaded="Window_Loaded">
     <Grid>
         <Button Content="Back to menu" HorizontalAlignment="Left" Margin="670,25,0,0" VerticalAlignment="Top" Click="Button_Click_Back" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
-        <DataGrid x:Name="grid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="145,68,145,60" RowHeight="25" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid x:Name="grid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="90,68,90,60" RowHeight="25" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Id" Header="Item Id" Binding="{Binding Id}" IsReadOnly="True" Width="100">
                     <DataGridTextColumn.ElementStyle>
@@ -45,7 +45,9 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Count" Binding="{Binding Count}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-     </Grid>
+        <Button x:Name="OK" Content="Finish collection" HorizontalAlignment="Left" Height="20" Margin="517,25,0,0" VerticalAlignment="Top" Width="105" Click="OK_Click"/>
+    </Grid>
 </Window>
