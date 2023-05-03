@@ -20,8 +20,11 @@ namespace WPFClient.View
     /// </summary>
     public partial class Storekeeper_listitems_view : Window
     {
-        public Storekeeper_listitems_view()
+        int projectId;
+        List<ItemListGridRow> items;
+        public Storekeeper_listitems_view(int projectId)
         {
+            this.projectId = projectId;
             InitializeComponent();
         }
 
@@ -43,7 +46,13 @@ namespace WPFClient.View
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Storekeeper_controller controller = new Storekeeper_controller();
-            await controller.GetItemList(this);
+            items =  await controller.GetItemList(this, projectId);
+        }
+
+        private async void OK_Click(object sender, RoutedEventArgs e)
+        {
+            Storekeeper_controller controller = new Storekeeper_controller();
+            await controller.RemoveItemsFromStore(items, projectId);
         }
     }
 }

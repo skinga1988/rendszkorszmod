@@ -62,7 +62,8 @@ namespace WPFClient.View
             Storekeeper_controller classObj = new Storekeeper_controller();
             await classObj.SetInProgressProject(this);
 
-            Storekeeper_listitems_view window = new Storekeeper_listitems_view();
+            int projectId = Convert.ToInt32(ProjectID_combobox.SelectedItem);
+            Storekeeper_listitems_view window = new Storekeeper_listitems_view(projectId);
             this.Close();
             window.Show();
         }
