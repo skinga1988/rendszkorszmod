@@ -53,6 +53,10 @@ namespace WPFClient.View
         {
             Storekeeper_controller controller = new Storekeeper_controller();
             await controller.RemoveItemsFromStore(items, projectId);
+            MessageBox.Show("All items have been removed");
+            Storekeeper_view window = new Storekeeper_view();
+            window.Show();
+            this.Close();
         }
     }
 }
