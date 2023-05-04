@@ -8,12 +8,8 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TextBlock x:Name="Storekeeper_Page" Text="Storekeeper" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="350,31,0,0"></TextBlock>
-        <TextBlock Text="Project" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,66,0,0" Width="144"/>
-        <Button Content="1. List projects" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left" Click="Button_Click"/>
-        <TextBlock Text="Part items" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,124,0,0" Width="144"/>
-        <Button Content="2. List items for a project" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
-        <TextBlock Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,182,0,0" Width="144"><Run Language="hu-hu" Text="Warehouse"/></TextBlock>
-        <Button Content="3. Optimize route" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left"/>
+        <TextBlock Text="Project" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="10,99,0,0" Width="144"/>
+        <Button Content="1. List projects" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top" Width="144" HorizontalContentAlignment="Left" Click="Button_Click"/>
         <Button Content="Logout" HorizontalAlignment="Left" Margin="659,99,0,0" VerticalAlignment="Top" Click="Button_Click_Logout" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
 
     </Grid>

@@ -14,12 +14,11 @@
         <Button x:Name="listPartsButton" Content="3. List part items" HorizontalAlignment="Left" Margin="11,189,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left" Click="Button_Click_list_items"/>
         <Button x:Name="assignPartsButton" Content="4. Assign part item to project" HorizontalAlignment="Left" Margin="11,217,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left" Click="Button_Click_assign_items"/>
         <Button x:Name="calculateWorkingCostButton" Content="5. Calculate working cost" HorizontalAlignment="Left" Margin="11,282,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left" Click="Button_Click_5calculate_workcost"/>
-        <Button x:Name="calculatePriceButton" Content="6. Calculate price" HorizontalAlignment="Left" Margin="11,307,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left"/>
         <Button x:Name="closeProjectButton" Content="7. Close project" HorizontalAlignment="Left" Margin="11,124,0,0" VerticalAlignment="Top" Width="174" HorizontalContentAlignment="Left" Click="closeProjectButton_Click"/>
         <TextBlock Text="Part items" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="11,149,0,0" Width="174"/>
         <TextBlock Text="Price" Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="11,242,0,0" Width="174"/>
         <Button Content="Logout" HorizontalAlignment="Left" Margin="658,49,0,0" VerticalAlignment="Top" Click="Button_Click_Logout" Width="105" ContextMenuClosing="Button_ContextMenuClosing_Back"/>
-        <Button x:Name="createOrderer" HorizontalContentAlignment="Left" Content="8. Create Orderer"  HorizontalAlignment="Left" Margin="11,374,0,0" VerticalAlignment="Top" Width="173" Click="Button_Click_new_orderer"/>
-        <TextBlock  Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="11,332,0,0" TextWrapping="Wrap" Text="Orderer"  Width="173" Height="37"/>
+        <Button x:Name="createOrderer" HorizontalContentAlignment="Left" Content="8. Create Orderer"  HorizontalAlignment="Left" Margin="11,362,0,0" VerticalAlignment="Top" Width="173" Click="Button_Click_new_orderer"/>
+        <TextBlock  Foreground="black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" FontWeight="Bold" Margin="11,320,0,0" TextWrapping="Wrap" Text="Orderer"  Width="173" Height="37"/>
     </Grid>
 </Window>

@@ -1394,6 +1394,7 @@ namespace WPFClient.Controller
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                    //projects = projects.FindAll(i => i.ProjectType != "Completed");
                     gridRows2 = new ObservableCollection<ProjectListGridRow>();
                     foreach (var project in projects)
                     {
@@ -1422,7 +1423,7 @@ namespace WPFClient.Controller
                     var content = await response.Content.ReadAsStringAsync();
                     var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
                     var sortedProjects = projects.OrderBy(x => x.Id).ToList();
-                    obj.ProjectID_combobox.ItemsSource = sortedProjects.Select(x => x.Id);
+                        obj.ProjectID_combobox.ItemsSource = sortedProjects.Select(x => x.Id);
                 }
             }
         }
@@ -1431,9 +1432,9 @@ namespace WPFClient.Controller
         {
             var SelectedProjectId = Convert.ToInt32(view.ProjectID_combobox.SelectedItem);
             var project = await GetProjectById(SelectedProjectId);
-            if (project.ProjectType == "Completed")
+            if (project.ProjectType != "Scheduled" && project.ProjectType != "InProgress")
             {
-                MessageBox.Show("This project is already in 'Completed' status.");
+                MessageBox.Show("This project cannot be completed.");
             }
             else
             {
@@ -1458,7 +1459,7 @@ namespace WPFClient.Controller
                         var status = response.StatusCode;
                         if (status.ToString() == "NoContent")
                         {
-                            MessageBox.Show("Project status is modified to Completed: project id = " + project.Id + ".");
+                            MessageBox.Show("Project status is modified to Completed.");
                         }
                         else
                         {
@@ -1477,6 +1478,10 @@ namespace WPFClient.Controller
             if (project.ProjectType == "Failed")
             {
                 MessageBox.Show("This project is already in 'Failed' status.");
+            }
+            else if (project.ProjectType == "Completed")
+            {
+                MessageBox.Show("This project is already in 'Completed' status.");
             }
             else
             {
@@ -1501,7 +1506,7 @@ namespace WPFClient.Controller
                         var status = response.StatusCode;
                         if (status.ToString() == "NoContent")
                         {
-                            MessageBox.Show("Project status is modified to Failed: project id = " + project.Id + ".");
+                            MessageBox.Show("Project status is modified to Failed.");
                         }
                         else
                         {

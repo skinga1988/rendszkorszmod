@@ -31,6 +31,7 @@ namespace WPFClient.Controller
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
+                    projects = projects.FindAll(i => i.ProjectType == "Scheduled");
                     gridRows2 = new ObservableCollection<ProjectListGridRow>();
                     foreach (var project in projects)
                     {
@@ -59,6 +60,7 @@ namespace WPFClient.Controller
                     var content = await response.Content.ReadAsStringAsync();
                     var projects = JsonConvert.DeserializeObject<List<Project_model>>(content);
                     var sortedProjects = projects.OrderBy(x => x.Id).ToList();
+                    sortedProjects = sortedProjects.FindAll(i => i.ProjectType == "Scheduled");
                     obj.ProjectID_combobox.ItemsSource = sortedProjects.Select(x => x.Id);
                 }
             }
