@@ -1432,7 +1432,11 @@ namespace WPFClient.Controller
         {
             var SelectedProjectId = Convert.ToInt32(view.ProjectID_combobox.SelectedItem);
             var project = await GetProjectById(SelectedProjectId);
-            if (project.ProjectType != "Scheduled" && project.ProjectType != "InProgress")
+            if (view.ProjectID_combobox.Text == "") 
+            {
+                MessageBox.Show("Please choose a project!");
+            }
+            else if (project.ProjectType != "Scheduled" && project.ProjectType != "InProgress")
             {
                 MessageBox.Show("This project cannot be completed.");
             }
@@ -1475,7 +1479,11 @@ namespace WPFClient.Controller
         {
             var SelectedProjectId = Convert.ToInt32(view.ProjectID_combobox.SelectedItem);
             var project = await GetProjectById(SelectedProjectId);
-            if (project.ProjectType == "Failed")
+            if (view.ProjectID_combobox.Text == "")
+            {
+                MessageBox.Show("Please choose a project!");
+            }
+            else if (project.ProjectType == "Failed")
             {
                 MessageBox.Show("This project is already in 'Failed' status.");
             }
